@@ -1,0 +1,206 @@
+[object]
+LoadingBench=Loading Bench
+
+
+[item]
+Niter=Niter
+Gunpowder=Gunpowder
+Bullet_Casing=Bullet Casing
+Canister=Canister
+Mechanical_Parts=Basic Mechanical Parts
+Mechanical_Parts_Good=Advanced Mechanical Parts
+Mechanical_Parts_Great=Superior Mechanical Parts
+Gun_Parts= Gun Parts
+
+AmmoPouchPlus=Smart Ammo Pouch
+AmmoBagPlus=Smart Ammo Bag
+
+SeedGun=Seed Shooter
+SeedGunShotgun=Seed Spreader
+SeedGunMega=Seed Sprayer
+ProduceCannon=Produce Cannon
+ProduceCannonMega=Produce Blaster
+Junk_Pistol=Junk Pistol
+Normal_Revolver=Revolver
+Double_Barrel=Double Barrel Shotgun
+Lever_Action_Rifle=Lever Action Rifle
+AWP=AWE
+Light_Machinegun=Pocket Machinegun
+Flamethrower=Flamethrower
+Range_Flamethrower=Pressurized Flamethrower
+Grenade_Launcher=Grenade Launcher
+
+Gasoline=Gasoline
+CryoFlame=Cryo Powder
+Napalm=Napalm
+MoltenSlime_Bullet=Boiling Slime
+Standard_Bullet=Hardened Bullet
+Blunt_Bullet=Blunt Bullet
+Frozen_Bullet=Frozen Bullet
+Flame_Bullet=Flame Bullet
+Lightning_Bullet=Lightning Bullet
+Leach_Bullet=Leaching Bullet
+Quality_Bullet=Quality Bullet
+Freezing_Bullet=Freezing Bullet
+Hellfire_Bullet=Hellfire Bullet
+Grenade_Launcher_Shell=Frag Shell
+Grenade_Launcher_Mine_Shell=Breaching Shell
+Grenade_Launcher_Fire_Shell=Incendiary Shell
+Splintering_Bullet=Splintering Bullet
+Grenade_Launcher_Proxy_Shell=Proximity Shell
+
+Seed_Bullet=Seed_Bullet_Basic
+Grass_Seed_Bullet=Seed_Bullet_Grass
+Cold_Seed_Bullet=Seed_Bullet_Cold
+Fire_Seed_Bullet=Seed_Bullet_Fire
+Light_Seed_Bullet=Seed_Bullet_Light
+Pierce_Seed_Bullet=Seed_Bullet_Pierce
+Metal_Seed_Bullet=Seed_Bullet_Metal
+Essence_Seed_Bullet=Seed_Bullet_Essence
+
+Apple_Food_Bullet=Apple_Food_Bullet
+Banana_Food_Bullet=Banana_Food_Bullet
+Blackberry_Food_Bullet=Blackberry_Food_Bullet
+Blueberry_Food_Bullet=Blueberry_Food_Bullet
+Cabbage_Food_Bullet=Cabbage_Food_Bullet
+Carrot_Food_Bullet=Carrot_Food_Bullet
+Chilipepper_Food_Bullet=Chilipepper_Food_Bullet
+Coconut_Food_Bullet=Coconut_Food_Bullet
+Corn_Food_Bullet=Corn_Food_Bullet
+Coffee_Food_Bullet=Coffee_Food_Bullet
+Eggplant_Food_Bullet=Eggplant_Food_Bullet
+Lemon_Food_Bullet=Lemon_Food_Bullet
+Onion_Food_Bullet=Onion_Food_Bullet
+Potato_Food_Bullet=Potato_Food_Bullet
+Pumpkin_Food_Bullet=Pumpkin_Food_Bullet
+Rice_Food_Bullet=Rice_Food_Bullet
+Strawberry_Food_Bullet=Strawberry_Food_Bullet
+Sugarbeet_Food_Bullet=Sugarbeet_Food_Bullet
+Tomato_Food_Bullet=Tomato_Food_Bullet
+Wheat_Food_Bullet=Wheat_Food_Bullet
+
+
+[itemtooltip]
+Shotguntier=Pellets per shot: <pellets>
+
+bouncingammotipnew=§#00B715+10%§#FFFFFF damage and §#00B715+2%§#FFFFFF crit chance per bounce
+
+SeedgunTip=Uses seeds as ammo
+SeedgunTip2=Some seeds may have different effects
+
+FoodgunTip=Uses farm produce as ammo
+FoodgunTip2=Some food may have different effects
+
+JunkPistolTip=Bullets tumble out randomly
+
+RevolverTip=Must reload after 6 shots
+RevolverTip2=Partial reloads take less time
+
+DoubleBarrelPrimaryTip=[input=mouse1]Single-barrel shot
+DoubleBarrelSecondaryTip=[input=mouse2]Double-barrel shot
+
+CryoBlasterSecondaryTip=[input=mouse2]Cold Snap
+
+Lever_Action_RifleSecondaryTip=[input=mouse2]Piercing shot
+
+snipertip=[input=mouse2]Activate sniper scope
+snipertipcrit=Fires slower but increases accuracy and crits while scoped
+awptip=[input=mouse2]Activate an §#EAAC00enhanced §#FFFFFFsniper scope
+
+FlamethrowerTip=Requires liquid fuel
+FlamethrowerTip2=Toasty!
+
+RangeFlamethrowerTip=Weaker, but shoots farther
+
+GrenadeLauncherTip=Launches explosive shells
+GrenadeLauncherTip2=Range can not be controlled
+
+LightMachinegunTip=Move faster while firing
+LightMachinegunTip2=Hard to control
+LightMachinegunTip3=Has a 25% chance to not consume ammo
+
+AmmoPouchPlusTip=Displays active ammo
+AmmoBagPlusTip=Displays active ammo
+AmmoPouchPlusTipPrimary=[input=mouse1]Cycle current ammo
+AmmoPouchPlusTip1=Does not store picked up ammo
+
+FlamethrowerAmmoTip=Flamethrower fuel
+
+
+[bullettooltip]
+frozenbullettip=Slowdown on hit: §#00B71520%
+frozenbullettip2=§#00B6FFFrost§#FFFFFF damage per second: §#00B7153
+frozenbullettip3=§#00B715+50%§#FFFFFF damage against slimes & worms
+
+bluntbullettip=§#EAAC00Armor§#FFFFFF penetration: §#00B7152
+bluntbullettip2=Increased knockback
+bluntbullettip3=§#00B715+50%§#FFFFFF damage against skeletons
+
+flamebullettip=§#FF6100Fire§#FFFFFF damage per second: §#00B71512
+flamebullettip2=§#00B715+50%§#FFFFFF damage against zombies, mummies, & vampires
+
+standardbullettip=§#EAAC00Armor§#FFFFFF penetration: §#00B7153
+
+lightningbullettip=Lightning seeks out the closest mob from the target
+
+leachbullettip=Returns a small amount of health on hit
+leachbullettip2=Provides a large boost to resilience on hit
+leachbullettip3=§#00B7150.3§#FFFFFFs cooldown for effect
+
+splinteringbullettip=Bursts into shrapnel on impact
+
+GrenadeLauncherBullettip=Standard explosive shell
+GrenadeLauncherMineBullettip=Destroys objects
+GrenadeLauncherProxyBullettip=Explodes when stepped on, or after 15 seconds
+GrenadeLauncherProxyBullettip2=Does minimal damage on direct hits
+GrenadeLauncherProxyBullettip3=Can be set at any range
+GrenadeLauncherFireBullettip=Creates a pool of fire
+
+GasolineTip=Armor penetration: 7
+
+CryoFlameTip1=Targets freeze after taking enough damage
+CryoFlameTip2=Frozen enemies loose armor
+
+NapalmTip=Armor penetration: 7
+NapalmTip2=Flames stick to the ground
+NapalmTip3=30% decreased range & flame speed
+
+MoltenSlimeTip=Targets explode after taking enough damage
+MoltenSlimeTip2=15% increased range & flame speed
+
+seedbullettip=§#FF0000DEV ITEM ONLY
+seedbullettip2=§#FF0000UNUSEABLE IN-GAME
+
+[text]
+
+
+[tech]
+GUNCRAFTING=Loading Bench
+
+
+[mob]
+
+
+[buff]
+CryoFreezeDebuff=Frozen
+FrostyDebuff=Freezing
+NapalmDebuff=Burning
+HellfireBuff=Burning
+GasolineDebuff=Burning
+LightningDebuff=Shocked
+MoltenSlimeDebuff=Slimed
+DoubleBarrelCooldownDebuff=Double Shot Cooldown
+LeverActionRifleCooldownDebuff=Piercing Shot Cooldown
+BouncyDebuff=Bouncy
+SniperZoomBuff=Sniper Zoom
+AWPZoomBuff=Sniper Zoom
+CryoBlasterCooldownDebuff=Cold Snap Cooldown
+FreezeNerfDebuff=Freezing
+
+
+[deaths]
+grenadename=grenade
+shrapnel=shrapnel
+beamrifle1=<victim> was disintegrated by <attacker>
+beamrifle2=<attacker> crossed the streams on <victim>
+beamcharged=<victim> let it overcharge

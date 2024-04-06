@@ -17,7 +17,6 @@ public class MerchantItems {
         //remove ammo pouch
         int listcount = 0;
         while (listcount < list.size()) {
-            System.out.println(list.get(listcount).item.getItemDisplayName());
             if (list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("ammopouch")){
                 list.remove(listcount);
             }else {

@@ -16,7 +16,7 @@ public class NapalmBullet extends BulletItem {
     public NapalmBullet() {
         super(1000);
         this.damage = 5;
-        this.armorPen = 7;
+        this.armorPen = 2;
         this.rarity = Item.Rarity.COMMON;
     }
 

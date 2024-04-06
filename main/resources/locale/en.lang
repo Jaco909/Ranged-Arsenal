@@ -139,7 +139,7 @@ bluntbullettip3=§#00B715+50%§#FFFFFF damage against skeletons
 flamebullettip=§#FF6100Fire§#FFFFFF damage per second: §#00B71512
 flamebullettip2=§#00B715+50%§#FFFFFF damage against zombies, mummies, & vampires
 
-standardbullettip=§#EAAC00Armor§#FFFFFF penetration: §#00B7153
+standardbullettip=§#EAAC00Armor§#FFFFFF penetration: §#00B7152
 
 lightningbullettip=Lightning seeks out the closest mob from the target
 
@@ -156,12 +156,12 @@ GrenadeLauncherProxyBullettip2=Does minimal damage on direct hits
 GrenadeLauncherProxyBullettip3=Can be set at any range
 GrenadeLauncherFireBullettip=Creates a pool of fire
 
-GasolineTip=Armor penetration: 7
+GasolineTip=§#EAAC00Armor§#FFFFFF penetration: §#00B7153
 
 CryoFlameTip1=Targets freeze after taking enough damage
 CryoFlameTip2=Frozen enemies loose armor
 
-NapalmTip=Armor penetration: 7
+NapalmTip=§#EAAC00Armor§#FFFFFF penetration: §#00B7152
 NapalmTip2=Flames stick to the ground
 NapalmTip3=30% decreased range & flame speed
 

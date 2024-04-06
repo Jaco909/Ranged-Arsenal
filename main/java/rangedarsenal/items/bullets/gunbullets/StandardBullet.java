@@ -19,6 +19,7 @@ public class StandardBullet extends BulletItem {
     public StandardBullet() {
         super(1000);
         this.damage = 9;
+        this.armorPen = 2;
         this.rarity = Rarity.NORMAL;
     }
     public Projectile getProjectile(float x, float y, float targetX, float targetY, float velocity, int range, GameDamage damage, int knockback, Mob owner) {

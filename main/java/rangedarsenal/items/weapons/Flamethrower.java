@@ -50,14 +50,8 @@ public class Flamethrower extends GunProjectileToolItem {
         return 0.25F;
     }
 
-    protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
-        super.addExtraGunTooltips(tooltips, item, perspective, blackboard);
-        tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTip"));
-        //tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTip2"));
-    }
-
     protected void addAmmoTooltips(ListGameTooltips tooltips, InventoryItem item) {
-        super.addAmmoTooltips(tooltips, item);
+        tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTip"));
     }
 
     public boolean animDrawBehindHand() {

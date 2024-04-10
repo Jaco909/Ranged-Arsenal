@@ -32,9 +32,13 @@ public class GunsmithItems {
         //remove vanilla weps
         int listcount = 0;
         while (listcount < list.size()) {
-            if (list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("handgun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("shotgun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("machinegun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("sniperrifle") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("deathripper")){
-                list.remove(listcount);
-            }else {
+            if (list.get(listcount) != null) {
+                if (list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("handgun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("shotgun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("machinegun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("sniperrifle") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("deathripper")) {
+                    list.remove(listcount);
+                } else {
+                    listcount++;
+                }
+            } else {
                 listcount++;
             }
         }

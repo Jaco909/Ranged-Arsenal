@@ -92,6 +92,7 @@ public class rangedarsenal {
         ItemRegistry.registerItem("AmmoPouchPlus", new AmmoPouchPlus(), 100f, true);
         ItemRegistry.registerItem("AmmoBagPlus", new AmmoBagPlus(), 100f, true);
         ItemRegistry.replaceItem("ammopouch", new AmmoPouchFix(), 100f, true);
+        ItemRegistry.replaceItem("potionpouch", new PotionPouchFix(), 100f, true);
 
         //MATERIALS
         ItemRegistry.registerItem("Niter", new Niter(), 0.05f, true);

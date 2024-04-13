@@ -26,9 +26,9 @@ public class PotionPouchFix extends PotionPouch {
 
     public boolean isValidRequestItem(Item item) {
         if (item == null) {
-            return !this.isValidRequestType(null);
+            return false;
         } else {
-            return this.isValidRequestType(item.type);
+            return item.isPotion();
         }
     }
 }

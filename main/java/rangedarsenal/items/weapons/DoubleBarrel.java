@@ -40,7 +40,7 @@ public class DoubleBarrel extends GunProjectileToolItem implements ItemInteractA
         this.attackYOffset = 10;
         this.attackRange.setBaseValue(655);
         this.velocity.setBaseValue(350);
-        this.knockback.setBaseValue(50).setUpgradedValue(1.0F, 60).setUpgradedValue(2.0F, 70).setUpgradedValue(3.0F, 80).setUpgradedValue(4.0F, 90);
+        this.knockback.setBaseValue(50).setUpgradedValue(1.0F, 65).setUpgradedValue(2.0F, 80).setUpgradedValue(3.0F, 90).setUpgradedValue(4.0F, 105);
         this.resilienceGain.setBaseValue(0.1F);
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }
@@ -58,10 +58,6 @@ public class DoubleBarrel extends GunProjectileToolItem implements ItemInteractA
 
     protected void addAmmoTooltips(ListGameTooltips tooltips, InventoryItem item) {
         super.addAmmoTooltips(tooltips, item);
-    }
-
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
     }
 
     public float getAttackMovementMod(InventoryItem item) {
@@ -123,12 +119,12 @@ public class DoubleBarrel extends GunProjectileToolItem implements ItemInteractA
                     projectile.moveDist((double) this.moveDist);
                 }
 
-                projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 32.0F);
+                projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 28.0F);
                 if (level.isServer()) {
                     level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
                 }
             }
-            player.getInv().removeItems(player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo"),1,true,true,true,"bulletammo");
+            player.getInv().removeItems(player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo"),1,true,true,true, true,"bulletammo");
             Screen.playSound(GameResources.shotgun, SoundEffect.effect(player).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.8f, 0.85f)));
             Screen.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.75F).pitch(1F));
         }

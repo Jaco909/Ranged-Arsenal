@@ -29,7 +29,7 @@ public class Flamethrower extends GunProjectileToolItem {
         super(new String[]{"Gasoline", "CryoFlame", "Napalm", "MoltenSlime_Bullet"}, 1000);
         this.rarity = Rarity.RARE;
         this.attackAnimTime.setBaseValue(40).setUpgradedValue(1.0F, 35);
-        this.attackDamage.setBaseValue(5.0F).setUpgradedValue(1.0F, 7).setUpgradedValue(2.0F, 8).setUpgradedValue(3.0F, 9).setUpgradedValue(4.0F, 10);
+        this.attackDamage.setBaseValue(7.0F).setUpgradedValue(1.0F, 9).setUpgradedValue(2.0F, 10).setUpgradedValue(3.0F, 11).setUpgradedValue(4.0F, 12);
         this.attackXOffset = 12;
         this.attackYOffset = 14;
         this.attackRange.setBaseValue(230).setUpgradedValue(1.0F, 320);
@@ -54,9 +54,6 @@ public class Flamethrower extends GunProjectileToolItem {
         tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTip"));
     }
 
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
     protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));

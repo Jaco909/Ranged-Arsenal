@@ -26,7 +26,7 @@ public class LightMachinegun extends GunProjectileToolItem {
         super(NORMAL_AMMO_TYPES, 1600);
         this.rarity = Rarity.COMMON;
         this.attackAnimTime.setBaseValue(100);
-        this.attackDamage.setBaseValue(9.0F).setUpgradedValue(1.0F, 15F).setUpgradedValue(2.0F, 18F).setUpgradedValue(3.0F, 22F).setUpgradedValue(4.0F, 27F);
+        this.attackDamage.setBaseValue(9.0F).setUpgradedValue(1.0F, 13F).setUpgradedValue(2.0F, 22F).setUpgradedValue(3.0F, 26F).setUpgradedValue(4.0F, 31F);
         this.attackXOffset = 10;
         this.attackYOffset = 10;
         this.moveDist = 50;
@@ -53,9 +53,7 @@ public class LightMachinegun extends GunProjectileToolItem {
     public float getAttackMovementMod(InventoryItem item) {
         return 0.7F;
     }
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
+
     protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));

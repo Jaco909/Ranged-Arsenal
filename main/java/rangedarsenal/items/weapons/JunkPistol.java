@@ -45,10 +45,6 @@ public class JunkPistol extends GunProjectileToolItem {
         super.addAmmoTooltips(tooltips, item);
     }
 
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
-
     public void playFireSound(AttackAnimMob mob) {
         Screen.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.68f).pitch(GameRandom.globalRandom.getFloatBetween(0.5f, 0.78f)));
     }

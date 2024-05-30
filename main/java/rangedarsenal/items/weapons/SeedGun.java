@@ -52,9 +52,7 @@ public class SeedGun extends GunProjectileToolItem {
         Screen.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.37f).pitch(1f));
         Screen.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.3f, 1.8f)));;
     }
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
+
     public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
         int bulletID = contentReader.getNextShortUnsigned();
         if (bulletID != 65535) {

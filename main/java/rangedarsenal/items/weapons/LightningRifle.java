@@ -80,10 +80,6 @@ public class LightningRifle extends GunProjectileToolItem implements ItemInterac
         tooltips.add(Localization.translate("itemtooltip", "CryoBlasterSecondaryTip"), 400);
     }
 
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
-
     public boolean canLevelInteract(Level level, int x, int y, PlayerMob player, InventoryItem item) {
         return true;
     }

@@ -53,9 +53,6 @@ public class GrenadeLauncher extends GunProjectileToolItem {
     public GameMessage getSettlerCanUseError(HumanMob mob, InventoryItem item) {
         return new LocalMessage("ui", "settlercantuseitem");
     }
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
 
     public float getAttackMovementMod(InventoryItem item) {
         //makes proxy easier to use

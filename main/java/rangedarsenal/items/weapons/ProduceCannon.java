@@ -49,9 +49,7 @@ public class ProduceCannon extends GunProjectileToolItem {
     public void playFireSound(AttackAnimMob mob) {
         Screen.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.79f).pitch(1.71F));
     }
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
+
     public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
         int bulletID = contentReader.getNextShortUnsigned();
         if (bulletID != 65535) {

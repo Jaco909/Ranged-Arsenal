@@ -33,7 +33,7 @@ public class ProduceCannonMega extends GunProjectileToolItem {
         super(FOOD_AMMO_TYPES, 1200);
         this.rarity = Rarity.LEGENDARY;
         this.attackAnimTime.setBaseValue(397).setUpgradedValue(1.0F, 331);
-        this.attackDamage.setBaseValue(60.0F).setUpgradedValue(1.0F, 75.0F);
+        this.attackDamage.setBaseValue(60.0F).setUpgradedValue(1.0F, 81.0F);
         this.attackXOffset = 10;
         this.attackYOffset = 10;
         this.attackRange.setBaseValue(641).setUpgradedValue(1.0F, 700);
@@ -49,9 +49,7 @@ public class ProduceCannonMega extends GunProjectileToolItem {
     public void playFireSound(AttackAnimMob mob) {
         Screen.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.79f).pitch(1.71F));
     }
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
+
     public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
         int bulletID = contentReader.getNextShortUnsigned();
         if (bulletID != 65535) {

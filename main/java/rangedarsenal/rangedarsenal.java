@@ -83,7 +83,6 @@ public class rangedarsenal {
     public void init() {
         System.out.println("Ranged Arsenal loaded!");
 
-
         //OBJECTS
         RecipeTechRegistry.registerTech("GUNCRAFTING", new StaticMessage("Loading Bench"));
         ObjectRegistry.registerObject("LoadingBench", new LoadingBench(), 10f, true);

@@ -44,10 +44,6 @@ public class NormalRevolver extends GunProjectileToolItem {
         super.addAmmoTooltips(tooltips, item);
     }
 
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
-
    public int getAvailableAmmoNR(PlayerMob player, int bullets) {
        return bullets;
    }

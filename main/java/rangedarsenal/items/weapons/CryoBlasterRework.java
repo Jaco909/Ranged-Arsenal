@@ -35,7 +35,7 @@ public class CryoBlasterRework extends GunProjectileToolItem implements ItemInte
         super(NORMAL_AMMO_TYPES, 1500);
         this.rarity = Rarity.EPIC;
         this.attackAnimTime.setBaseValue(300);
-        this.attackDamage.setBaseValue(50.0F).setUpgradedValue(1.0F, 73.0F);
+        this.attackDamage.setBaseValue(55.0F).setUpgradedValue(1.0F, 73.0F);
         this.attackXOffset = 10;
         this.attackYOffset = 12;
         this.attackRange.setBaseValue(1000);
@@ -53,10 +53,6 @@ public class CryoBlasterRework extends GunProjectileToolItem implements ItemInte
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         super.addExtraGunTooltips(tooltips, item, perspective, blackboard);
         tooltips.add(Localization.translate("itemtooltip", "CryoBlasterSecondaryTip"), 400);
-    }
-
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
     }
 
     public boolean canLevelInteract(Level level, int x, int y, PlayerMob player, InventoryItem item) {

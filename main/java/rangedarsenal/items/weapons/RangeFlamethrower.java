@@ -57,9 +57,6 @@ public class RangeFlamethrower extends GunProjectileToolItem {
         super.addAmmoTooltips(tooltips, item);
     }
 
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
     protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));

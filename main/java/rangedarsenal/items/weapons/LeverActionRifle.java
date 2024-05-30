@@ -150,7 +150,7 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
             Projectile projectile = this.getProjectile(item, (BulletItem) bullet, player.x, player.y, (float) x, (float) y, range, player);
             projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
             projectile.piercing = 5;
-            player.getInv().removeItems(player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo"),1,true,true,true,"bulletammo");
+            player.getInv().removeItems(player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo"),1,true,true,true, true,"bulletammo");
             projectile.setDamage(new GameDamage(this.getDamageType(item), this.attackDamage.getValue(this.getUpgradeTier(item)),0,1f));
             projectile.getUniqueID(random);
             level.entityManager.projectiles.addHidden(projectile);

@@ -37,7 +37,7 @@ public class SniperRework extends GunProjectileToolItem implements ItemInteractA
         super(NORMAL_AMMO_TYPES, 1000);
         this.rarity = Rarity.UNCOMMON;
         this.attackAnimTime.setBaseValue(600);
-        this.attackDamage.setBaseValue(43.0F).setUpgradedValue(1.0F, 122F);
+        this.attackDamage.setBaseValue(43.0F).setUpgradedValue(1.0F, 131F);
         this.attackXOffset = 20;
         this.attackYOffset = 10;
         this.attackCooldownTime.setBaseValue(850);

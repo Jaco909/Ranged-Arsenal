@@ -52,9 +52,7 @@ public class SeedGunMega extends GunProjectileToolItem {
     public void playFireSound(AttackAnimMob mob) {
         Screen.playSound(GameResources.grass, SoundEffect.effect(mob).volume(0.94f).pitch(GameRandom.globalRandom.getFloatBetween(1.6f, 1.7f)));;
     }
-    public boolean animDrawBehindHand() {
-        return super.animDrawBehindHand();
-    }
+
     public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
         int bulletID = contentReader.getNextShortUnsigned();
         if (bulletID != 65535) {

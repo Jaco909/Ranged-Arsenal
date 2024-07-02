@@ -3,6 +3,7 @@ package rangedarsenal.patches;
 import necesse.engine.modLoader.annotations.ModMethodPatch;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
+import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
@@ -44,7 +45,7 @@ public class DeathRipperSpreadPatch {
             projectile.moveDist((double)thiss.moveDist);
         }
 
-        projectile.setAngle(projectile.getAngle() + spreadRandom.getFloatOffset(0.0F, 6.0F-thiss.getUpgradeTier(item)));
+        projectile.setAngle(projectile.getAngle() + spreadRandom.getFloatOffset(0.0F, GameMath.limit(6.0F-thiss.getUpgradeTier(item),0,6)));
         if (level.isServer()) {
             level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
         }

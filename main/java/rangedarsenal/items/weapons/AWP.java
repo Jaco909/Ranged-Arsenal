@@ -39,7 +39,7 @@ public class AWP extends GunProjectileToolItem implements ItemInteractAction {
     public AWP() {
         super(NORMAL_AMMO_TYPES, 3000);
         this.rarity = Rarity.LEGENDARY;
-        this.attackAnimTime.setBaseValue(1358).setUpgradedValue(1.0F, 1328).setUpgradedValue(2.0F, 1268).setUpgradedValue(3.0F, 1200).setUpgradedValue(4.0F, 1100);
+        this.attackAnimTime.setBaseValue(1358).setUpgradedValue(1.0F, 1328).setUpgradedValue(2.0F, 1268).setUpgradedValue(3.0F, 1200).setUpgradedValue(4.0F, 1100).setUpgradedValue(4.0F, 989);
         this.attackDamage.setBaseValue(224F).setUpgradedValue(1.0F, 260F).setUpgradedValue(2.0F, 280F).setUpgradedValue(3.0F, 300F).setUpgradedValue(4.0F, 320F);
         this.attackXOffset = 20;
         this.attackYOffset = 10;

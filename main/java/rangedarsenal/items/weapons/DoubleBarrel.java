@@ -40,7 +40,7 @@ public class DoubleBarrel extends GunProjectileToolItem implements ItemInteractA
         this.attackYOffset = 10;
         this.attackRange.setBaseValue(655);
         this.velocity.setBaseValue(350);
-        this.knockback.setBaseValue(50).setUpgradedValue(1.0F, 65).setUpgradedValue(2.0F, 80).setUpgradedValue(3.0F, 90).setUpgradedValue(4.0F, 105);
+        this.knockback.setBaseValue(50).setUpgradedValue(1.0F, 65).setUpgradedValue(5.0F, 115);
         this.resilienceGain.setBaseValue(0.1F);
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }

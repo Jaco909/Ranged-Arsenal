@@ -34,6 +34,12 @@ public class RecipePatch {
             if (recipe.resultID.equalsIgnoreCase("voidbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
                 recipes.remove();
             }
+            if (recipe.resultID.equalsIgnoreCase("crystalbullet") && recipe.tech.getStringID().equalsIgnoreCase("fallen")) {
+                recipes.remove();
+            }
+            if (recipe.resultID.equalsIgnoreCase("sapphirerevolver") && recipe.tech.getStringID().equalsIgnoreCase("demonic")) {
+                recipes.remove();
+            }
         }
     }
 }

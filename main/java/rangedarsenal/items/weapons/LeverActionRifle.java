@@ -37,15 +37,14 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
     public LeverActionRifle() {
         super(NORMAL_AMMO_TYPES, 500);
         this.rarity = Rarity.NORMAL;
-        this.attackAnimTime.setBaseValue(1200).setUpgradedValue(1.0F, 1100).setUpgradedValue(2.0F, 1000).setUpgradedValue(3.0F, 900).setUpgradedValue(4.0F, 800);
+        this.attackAnimTime.setBaseValue(1200).setUpgradedValue(1.0F, 1100).setUpgradedValue(5.0F, 700);
         this.attackDamage.setBaseValue(34.0F).setUpgradedValue(1.0F, 120.0F);
         this.attackXOffset = 20;
         this.attackYOffset = 10;
         this.velocity.setBaseValue(700).setUpgradedValue(1.0F, 750);
-        this.attackRange.setBaseValue(1000).setUpgradedValue(1.0F, 1100).setUpgradedValue(2.0F, 1200).setUpgradedValue(3.0F, 1300).setUpgradedValue(4.0F, 1400);
-        //this.ammoConsumeChance = 1.15f;
+        this.attackRange.setBaseValue(1000).setUpgradedValue(1.0F, 1100).setUpgradedValue(5.0F, 1500);
         this.knockback.setBaseValue(50);
-        this.resilienceGain.setBaseValue(0.4f).setUpgradedValue(1.0F, 0.401f).setUpgradedValue(2.0F, 0.402f).setUpgradedValue(3.0F, 0.403f).setUpgradedValue(4.0F, 0.404f);
+        this.resilienceGain.setBaseValue(0.4f).setUpgradedValue(1.0F, 0.401f).setUpgradedValue(4.0F, 0.405f);
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }
 
@@ -84,31 +83,6 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
         return !player.buffManager.hasBuff("LeverActionRifleCooldownDebuff");
     }
 
-    /*protected void fireProjectilesalt(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
-        int range;
-        if (this.controlledRange) {
-            Point newTarget = this.controlledRangePosition(new GameRandom((long)(seed + 10)), player, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
-            x = newTarget.x;
-            y = newTarget.y;
-            range = (int)player.getDistance((float)x, (float)y);
-        } else {
-            range = this.getAttackRange(item);
-        }
-
-        Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
-        projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-        projectile.dropItem = consumeAmmo;
-        projectile.getUniqueID(new GameRandom((long)seed));
-        level.entityManager.projectiles.addHidden(projectile);
-        if (this.moveDist != 0) {
-            projectile.moveDist((double)this.moveDist);
-        }
-
-        if (level.isServer()) {
-            level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
-        }
-
-    }*/
     protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));
@@ -123,7 +97,7 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
         }
         Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
         projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-        projectile.piercing = 1;
+        projectile.piercing = projectile.piercing+1;
         projectile.dropItem = consumeAmmo;
         projectile.getUniqueID(random);
         level.entityManager.projectiles.addHidden(projectile);

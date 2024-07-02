@@ -2,6 +2,7 @@ package rangedarsenal;
 
 import necesse.engine.localization.message.StaticMessage;
 import necesse.engine.modLoader.annotations.ModEntry;
+import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.registries.*;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.hostile.ZombieMob;
@@ -47,14 +48,12 @@ public class rangedarsenal {
 
     //TO-DO:
     /*
-    //1.0.1
+    FIXES
     -ammobag in crafting menu shows ammo counter
     -clean food gun if stack
-    -ammo bag color crash? Find it!
     -onion knockback
-    -optimize old crap better
 
-    //1.1
+    CONTENT
     -draw sniper crit chance under mouse?
     -web gun? Forgot that was a thing.
     -seed bag?
@@ -63,9 +62,6 @@ public class rangedarsenal {
     -incursion drop pools
     -range flamethrower rework
     -better ammo bag?
-
-    //1.1.1
-    -clean up unused crap
      */
 
     public static String[] SEED_AMMO_TYPES= new String[]{"grassseed","swampgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"};
@@ -76,7 +72,7 @@ public class rangedarsenal {
 
     public void preInit() {
         ArrayList vanilla = new ArrayList(Arrays.asList(GunProjectileToolItem.NORMAL_AMMO_TYPES));
-        vanilla.addAll(Arrays.asList("Standard_Bullet","Frozen_Bullet","Flame_Bullet","Blunt_Bullet","Leach_Bullet","Lightning_Bullet","Splintering_Bullet"));
+        vanilla.addAll(Arrays.asList("Standard_Bullet","Frozen_Bullet","Flame_Bullet","Blunt_Bullet","Leach_Bullet","Lightning_Bullet","Splintering_Bullet","Ruby_Bullet","Amethyst_Bullet","Sapphire_Bullet"));
         GunProjectileToolItem.NORMAL_AMMO_TYPES = (String[])vanilla.toArray(new String[0]);
     }
 
@@ -115,6 +111,9 @@ public class rangedarsenal {
         ItemRegistry.registerItem("Blunt_Bullet", new BluntBullet(), 0.2f, true);
         ItemRegistry.registerItem("Lightning_Bullet", new LightningBullet(), 0.3f, true);
         ItemRegistry.registerItem("Splintering_Bullet", new SplinteringBullet(), 0.1f, true);
+        ItemRegistry.replaceItem("crystalbullet", new SapphireBullet(), 0.2f, true);
+        ItemRegistry.registerItem("Ruby_Bullet", new RubyBullet(), 0.2f, true);
+        //ItemRegistry.registerItem("Amethyst_Bullet", new AmethystBullet(), 0.2f, true);
 
         //Seed Gun
         ItemRegistry.registerItem("Seed_Bullet", new SeedBullet(), 0f, false,false);
@@ -180,6 +179,11 @@ public class rangedarsenal {
         ItemRegistry.registerItem("ProduceCannonMega", new ProduceCannonMega(),300f,true,true);
         ItemRegistry.registerItem("LightningRifle", new LightningRifle(),1f,false,false);
         ItemRegistry.registerItem("BeamRifle", new BeamRifle(),1f,false,false);
+        ItemRegistry.replaceItem("shardcannon", new ShardCannonRework(),1500f,true,true);
+        ItemRegistry.replaceItem("sapphirerevolver", new SapphireRevolverRework(),1500f,true,true);
+        ItemRegistry.registerItem("shardcannonRED", new ShardCannonRED(),1f,false,false);
+        ItemRegistry.replaceItem("machinegun", new MachinegunRework(),65f,true,true);
+
 
         //PROJECTILES
         ProjectileRegistry.registerProjectile("Frozen_Bullet_Projectile", FrozenBulletProjectile.class,"","");
@@ -190,6 +194,11 @@ public class rangedarsenal {
         ProjectileRegistry.registerProjectile("Splintering_Bullet_Projectile", SplinteringBulletProjectile.class,"","");
         ProjectileRegistry.registerProjectile("New_Void_Bullet_Projectile", NewVoidBulletProjectile.class,"","");
         ProjectileRegistry.registerProjectile("LightningRifle_Bullet_Projectile", LightningRifleBulletProjectile.class,"","");
+        ProjectileRegistry.registerProjectile("Sapphire_Bullet_Projectile", SapphireBulletProjectile.class,"crystalbullet","crystalbullet_shadow");
+        ProjectileRegistry.registerProjectile("Ruby_Bullet_Projectile", RubyBulletProjectile.class,"rubybullet","crystalbullet_shadow");
+        //ProjectileRegistry.registerProjectile("Amethyst_Bullet_Projectile", AmethystBulletProjectile.class,"amethystbullet","crystalbullet_shadow");
+        ProjectileRegistry.registerProjectile("SapphireSplosion_Bullet_Projectile", SapphireSplosionBulletProjectile.class,"crystalbullet","crystalbullet_shadow");
+
 
         //seeds
         ProjectileRegistry.registerProjectile("Seed_Bullet_Projectile", SeedBulletProjectile.class,"","");
@@ -253,6 +262,7 @@ public class rangedarsenal {
         BuffRegistry.registerBuff("BouncyDebuff", new BouncyDebuff());
         BuffRegistry.registerBuff("HealDelayBuff", new HealDelayBuff());
         BuffRegistry.registerBuff("FreezeNerfDebuff", new FreezeNerfDebuff());
+        BuffRegistry.registerBuff("ShardCannonCooldownDebuff", new ShardCannonCooldownDebuff());
 
         //EVENTS
         LevelEventRegistry.registerEvent("SlimeSplosionEvent", SlimeSplosionEvent.class);
@@ -471,6 +481,19 @@ public class rangedarsenal {
                 }
         ).showAfter("shotgun").showBefore("Gasoline"));
 
+        Recipes.registerModRecipe(new Recipe(
+                "sapphirerevolver",
+                1,
+                RecipeTechRegistry.FALLEN_WORKSTATION,
+                new Ingredient[]{
+                        new Ingredient("sapphire", 10),
+                        new Ingredient("pearlescentdiamond", 10),
+                        new Ingredient("omnicrystal",20)
+                },
+                false,
+                (new GNDItemMap().setInt("upgradeLevel", 100))
+        ).showAfter("gemstonelongsword").showBefore("shardcannon"));
+
         //GUN BULLETS
         Recipes.registerModRecipe(new Recipe(
                 "simplebullet",
@@ -580,6 +603,39 @@ public class rangedarsenal {
                         new Ingredient("Bullet_Casing", 25)
                 }
         ).showBefore("handgun"));
+        Recipes.registerModRecipe(new Recipe(
+                "crystalbullet",
+                100,
+                RecipeTechRegistry.getTech("GUNCRAFTING"),
+                new Ingredient[]{
+                        new Ingredient("sapphire", 3),
+                        new Ingredient("alchemyshard", 15),
+                        new Ingredient("Gunpowder", 5),
+                        new Ingredient("Bullet_Casing", 100)
+                }
+        ).showBefore("handgun"));
+        Recipes.registerModRecipe(new Recipe(
+                "Ruby_Bullet",
+                100,
+                RecipeTechRegistry.getTech("GUNCRAFTING"),
+                new Ingredient[]{
+                        new Ingredient("ruby", 3),
+                        new Ingredient("obsidian", 5),
+                        new Ingredient("Gunpowder", 5),
+                        new Ingredient("Bullet_Casing", 100)
+                }
+        ).showBefore("handgun"));
+       /* Recipes.registerModRecipe(new Recipe(
+                "Amethyst_Bullet",
+                100,
+                RecipeTechRegistry.getTech("GUNCRAFTING"),
+                new Ingredient[]{
+                        new Ingredient("amethyst", 3),
+                        new Ingredient("voidshard", 5),
+                        new Ingredient("Gunpowder", 5),
+                        new Ingredient("Bullet_Casing", 100)
+                }
+        ).showBefore("handgun"));*/
 
         //FUEL
         Recipes.registerModRecipe(new Recipe(

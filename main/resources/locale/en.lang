@@ -43,6 +43,9 @@ Leach_Bullet=Leaching Bullet
 Quality_Bullet=Quality Bullet
 Freezing_Bullet=Freezing Bullet
 Hellfire_Bullet=Hellfire Bullet
+crystalbullet=Sapphire Bullet
+Ruby_Bullet=Ruby Bullet
+Amethyst_Bullet=Amethyst Bullet
 Grenade_Launcher_Shell=Frag Shell
 Grenade_Launcher_Mine_Shell=Breaching Shell
 Grenade_Launcher_Fire_Shell=Incendiary Shell
@@ -108,7 +111,7 @@ snipertipcrit=Fires slower but increases accuracy and crits while scoped
 awptip=[input=mouse2]Activate an §#EAAC00enhanced §#FFFFFFsniper scope
 
 FlamethrowerTip=Requires liquid fuel
-FlamethrowerTip2=Toasty!
+FlamethrowerTipammo=Has a <ammouse>% chance to not consume ammo
 
 RangeFlamethrowerTip=Weaker, but shoots farther
 
@@ -126,6 +129,12 @@ AmmoPouchPlusTip1=Does not store picked up ammo
 
 FlamethrowerAmmoTip=Flamethrower fuel
 
+shardcannontip=Crystallizes foes depending on crit chance and damage modifiers
+shardcannontipalt=[input=mouse2]Switch between firing modes
+shardcannontipammo=Has a <ammouse>% chance to not consume ammo
+
+sapphirerevolvertip=Charges up a projectile that will hit anything in an instant
+sapphirerevolvertip2=Charge level increases crit chance and pierce amount
 
 [bullettooltip]
 frozenbullettip=Slowdown on hit: §#00B71520%
@@ -171,6 +180,10 @@ MoltenSlimeTip2=15% increased range & flame speed
 seedbullettip=§#FF0000DEV ITEM ONLY
 seedbullettip2=§#FF0000UNUSEABLE IN-GAME
 
+crystalammotip=Sticks to targets, explodes after a delay\nDamage based on crit chance and crit damage
+
+rubyammotip=§#EAAC00Penetrates §#FFFFFFup to §#00B7153 §#FFFFFFtargets
+
 [text]
 
 
@@ -196,6 +209,7 @@ SniperZoomBuff=Sniper Zoom
 AWPZoomBuff=Sniper Zoom
 CryoBlasterCooldownDebuff=Cold Snap Cooldown
 FreezeNerfDebuff=Freezing
+ShardCannonCooldownDebuff=Shotgun Mode
 
 
 [deaths]

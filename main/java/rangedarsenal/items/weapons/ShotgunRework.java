@@ -30,7 +30,7 @@ public class ShotgunRework extends GunProjectileToolItem implements ItemInteract
         super(NORMAL_AMMO_TYPES, 700);
         this.rarity = Rarity.UNCOMMON;
         this.attackAnimTime.setBaseValue(1200);
-        this.attackDamage.setBaseValue(14.0F).setUpgradedValue(1.0F, 33.0F);
+        this.attackDamage.setBaseValue(14.0F).setUpgradedValue(1.0F, 22.0F);
         this.attackXOffset = 12;
         this.attackYOffset = 10;
         this.attackRange.setBaseValue(800);
@@ -43,7 +43,7 @@ public class ShotgunRework extends GunProjectileToolItem implements ItemInteract
 
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         super.addExtraGunTooltips(tooltips, item, perspective, blackboard);
-        tooltips.add(Localization.translate("itemtooltip", "Shotguntier","pellets",Math.round(this.getUpgradeTier(item) + 3)));
+        tooltips.add(Localization.translate("itemtooltip", "Shotguntier","pellets",Math.round(this.getUpgradeTier(item)/2 + 3)));
     }
 
     protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
@@ -59,7 +59,7 @@ public class ShotgunRework extends GunProjectileToolItem implements ItemInteract
             range = this.getAttackRange(item);
         }
 
-        for(int i = 0; i <= (3 + this.getUpgradeTier(item)); ++i) {
+        for(int i = 0; i <= (3 + Math.round(this.getUpgradeTier(item)/2)); ++i) {
             Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
             projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
             projectile.dropItem = consumeAmmo;

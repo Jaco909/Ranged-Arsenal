@@ -3,14 +3,10 @@ package rangedarsenal.patches;
 import necesse.engine.localization.Localization;
 import necesse.engine.modLoader.annotations.ModMethodPatch;
 import necesse.engine.util.GameBlackboard;
-import necesse.entity.mobs.GameDamage;
-import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.item.bulletItem.BouncingBulletItem;
-import necesse.inventory.lootTable.LootTable;
-import necesse.level.maps.LevelObjectHit;
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.asm.Advice.Argument;
 

@@ -1,9 +1,12 @@
 package rangedarsenal.patches;
 
 import necesse.engine.modLoader.annotations.ModMethodPatch;
+import necesse.engine.registries.BuffRegistry;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
+import necesse.entity.mobs.buffs.ActiveBuff;
+import necesse.entity.mobs.buffs.staticBuffs.Buff;
 import necesse.entity.projectile.Projectile;
 import net.bytebuddy.asm.Advice;
 
@@ -34,11 +37,14 @@ public class ProjectilePatch {
                         if (player.getSelectedItem().item.idData.getStringID().equalsIgnoreCase("handgun") && player.getSelectedItem().item.getUpgradeTier(player.getSelectedItem()) == 0) {
                             thiss.knockback = 16;
                         }
-                        if (player.getSelectedItem().item.idData.getStringID().equalsIgnoreCase("machinegun") && player.getSelectedItem().item.getUpgradeTier(player.getSelectedItem()) == 0) {
-                            thiss.knockback = 12;
-                        }
                         if (player.getSelectedItem().item.idData.getStringID().equalsIgnoreCase("deathripper") && player.getSelectedItem().item.getUpgradeTier(player.getSelectedItem()) == 0) {
                             thiss.setDamage( new GameDamage(thiss.getDamage().damage+3,thiss.getDamage().armorPen,thiss.getDamage().baseCritChance));
+                        }
+
+                        if (player.getSelectedItem().item.idData.getStringID().equalsIgnoreCase("shardcannon")) {
+                            Buff crystallizeBuff = BuffRegistry.Debuffs.CRYSTALLIZE_BUFF;
+                            ActiveBuff ab = new ActiveBuff(crystallizeBuff, mob, 10000, thiss.getAttackOwner());
+                            mob.buffManager.addBuff(ab, true);
                         }
 
                         //sniper crit via distance

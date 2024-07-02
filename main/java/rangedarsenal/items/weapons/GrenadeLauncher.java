@@ -34,12 +34,12 @@ public class GrenadeLauncher extends GunProjectileToolItem {
     public GrenadeLauncher() {
         super(new String[]{"Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell"}, 2000);
         this.rarity = Rarity.RARE;
-        this.attackAnimTime.setBaseValue(1500).setUpgradedValue(1.0F, 1400).setUpgradedValue(2.0F, 1300).setUpgradedValue(3.0F, 1200).setUpgradedValue(4.0F, 1000);
-        this.attackDamage.setBaseValue(100.0F).setUpgradedValue(1.0F, 150.0F).setUpgradedValue(4.0F, 175.0F);
+        this.attackAnimTime.setBaseValue(1500).setUpgradedValue(1.0F, 1400).setUpgradedValue(2.0F, 1300).setUpgradedValue(3.0F, 1200).setUpgradedValue(4.0F, 1000).setUpgradedValue(5.0F, 975);
+        this.attackDamage.setBaseValue(100.0F).setUpgradedValue(1.0F, 150.0F).setUpgradedValue(5.0F, 185.0F);
         this.attackXOffset = 12;
         this.attackYOffset = 14;
         this.attackRange.setBaseValue(350);
-        this.velocity.setBaseValue(110).setUpgradedValue(1.0F, 120).setUpgradedValue(2.0F, 130).setUpgradedValue(3.0F, 140).setUpgradedValue(4.0F, 150);
+        this.velocity.setBaseValue(110).setUpgradedValue(1.0F, 120).setUpgradedValue(2.0F, 130).setUpgradedValue(3.0F, 140).setUpgradedValue(5.0F, 150);
         this.knockback.setBaseValue(0);
         this.controlledRange = false;
     }

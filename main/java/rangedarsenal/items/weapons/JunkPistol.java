@@ -33,7 +33,7 @@ public class JunkPistol extends GunProjectileToolItem {
         this.attackRange.setBaseValue(655);
         this.velocity.setBaseValue(234);
         this.knockback.setBaseValue(0).setUpgradedValue(1.0F, 25);
-        this.resilienceGain.setBaseValue(0.0F).setUpgradedValue(1.0F, 1).setUpgradedValue(2.0F, 2).setUpgradedValue(3.0F, 3).setUpgradedValue(4.0F, 4);
+        this.resilienceGain.setBaseValue(0.0F).setUpgradedValue(1.0F, 0.01F).setUpgradedValue(5.0F, 0.1F);
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }
 

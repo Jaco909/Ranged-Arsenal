@@ -99,7 +99,7 @@ public class ShardCannonAttackHandlerFix extends MouseAngleAttackHandler {
     }
 
     public void onEndAttack(boolean bySelf) {
-        this.player.stopAttack();
+        this.player.stopAttack(false);
         if (this.player.isServer()) {
             ServerClient client = this.player.getServerClient();
             this.player.getLevel().getServer().network.sendToClientsAtExcept(new PacketPlayerStopAttack(client.slot), client, client);

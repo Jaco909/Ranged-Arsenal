@@ -105,7 +105,7 @@ public class BurstRevolverAttackHandler extends MouseAngleAttackHandler {
         }
         if (bullets*-1 != 6) {
             this.player.startItemCooldown(this.toolItem, (int) ((float) 530 * (bullets * -1) * this.getSpeedModifier()));
-            this.player.stopAttack();
+            this.player.stopAttack(false);
             if (this.player.isServer()) {
                 ServerClient client = this.player.getServerClient();
                 this.player.getLevel().getServer().network.sendToAllClientsExcept(new PacketPlayerStopAttack(client.slot), client);
@@ -113,7 +113,7 @@ public class BurstRevolverAttackHandler extends MouseAngleAttackHandler {
         } else {
             //System.out.println(this.timeBuffer);
             this.player.startItemCooldown(this.toolItem, (int) ((float) (3160-timeBuffer) * this.getSpeedModifier()));
-            this.player.stopAttack();
+            this.player.stopAttack(false);
             if (this.player.isServer()) {
                 ServerClient client = this.player.getServerClient();
                 this.player.getLevel().getServer().network.sendToAllClientsExcept(new PacketPlayerStopAttack(client.slot), client);

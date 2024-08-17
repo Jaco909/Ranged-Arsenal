@@ -1,6 +1,6 @@
 package rangedarsenal.events;
 
-import necesse.engine.Screen;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.sound.SoundEffect;
 import necesse.engine.util.GameRandom;
 import necesse.entity.levelEvent.explosionEvent.ExplosionEvent;
@@ -42,7 +42,7 @@ public class GrenadeLauncherExplosionEvent extends ExplosionEvent implements Att
     }
 
     protected void playExplosionEffects() {
-        Screen.playSound(GameResources.explosionHeavy, SoundEffect.effect(this.x, this.y).volume(2.0F).pitch(1.3F));
+        SoundManager.playSound(GameResources.explosionHeavy, SoundEffect.effect(this.x, this.y).volume(2.0F).pitch(1.3F));
         this.level.getClient().startCameraShake(this.x, this.y, 400, 50, 3.0F, 3.0F,true);
     }
 }

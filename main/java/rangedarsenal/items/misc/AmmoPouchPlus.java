@@ -1,6 +1,6 @@
 package rangedarsenal.items.misc;
 
-import necesse.engine.Screen;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.registries.ItemRegistry;
@@ -338,7 +338,7 @@ public class AmmoPouchPlus extends PouchItem {
         if (used) {
             this.saveInternalInventory(item, internalInventory);
         }
-        Screen.playSound(GameResources.cameraShutter, SoundEffect.effect(player)
+        SoundManager.playSound(GameResources.cameraShutter, SoundEffect.effect(player)
                 .volume(0.7f)
                 .pitch(GameRandom.globalRandom.getFloatBetween(1.3f, 1.4f)));
 

@@ -1,11 +1,11 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -46,7 +46,7 @@ public class DoubleBarrel extends GunProjectileToolItem implements ItemInteractA
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.shotgun, SoundEffect.effect(mob).volume(0.7f).pitch(GameRandom.globalRandom.getFloatBetween(0.65f, 0.7f)));
+        SoundManager.playSound(GameResources.shotgun, SoundEffect.effect(mob).volume(0.7f).pitch(GameRandom.globalRandom.getFloatBetween(0.65f, 0.7f)));
     }
 
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
@@ -125,8 +125,8 @@ public class DoubleBarrel extends GunProjectileToolItem implements ItemInteractA
                 }
             }
             player.getInv().removeItems(player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo"),1,true,true,true, true,"bulletammo");
-            Screen.playSound(GameResources.shotgun, SoundEffect.effect(player).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.8f, 0.85f)));
-            Screen.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.75F).pitch(1F));
+            SoundManager.playSound(GameResources.shotgun, SoundEffect.effect(player).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.8f, 0.85f)));
+            SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.75F).pitch(1F));
         }
         return item;
     }

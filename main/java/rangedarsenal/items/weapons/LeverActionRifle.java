@@ -5,6 +5,7 @@ import necesse.engine.network.gameNetworkData.GNDItem;
 import necesse.engine.network.gameNetworkData.GNDItemGameDamage;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketSpawnProjectile;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.*;
@@ -18,7 +19,6 @@ import necesse.inventory.item.ItemControllerInteract;
 import necesse.inventory.item.ItemInteractAction;
 import necesse.inventory.item.bulletItem.BulletItem;
 import necesse.inventory.item.toolItem.projectileToolItem.gunProjectileToolItem.GunProjectileToolItem;
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.sound.SoundEffect;
 import necesse.entity.mobs.AttackAnimMob;
@@ -70,7 +70,7 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(mob));
+        SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(mob));
     }
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         super.addExtraGunTooltips(tooltips, item, perspective, blackboard);
@@ -136,9 +136,9 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
             if (level.isServer()) {
                 level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
             }
-            Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.85f, 0.9f)));
-            Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(0.5f).pitch(GameRandom.globalRandom.getFloatBetween(0.4f, 0.45f)));
-            Screen.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.25F).pitch(1F));
+            SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.85f, 0.9f)));
+            SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(0.5f).pitch(GameRandom.globalRandom.getFloatBetween(0.4f, 0.45f)));
+            SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.25F).pitch(1F));
         }
         return item;
     }

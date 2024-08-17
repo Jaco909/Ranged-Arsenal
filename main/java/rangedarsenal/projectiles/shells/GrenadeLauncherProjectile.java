@@ -2,7 +2,7 @@ package rangedarsenal.projectiles.shells;
 
 import java.awt.Color;
 import java.util.List;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;

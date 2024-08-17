@@ -4,7 +4,7 @@ import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.entity.levelEvent.mobAbilityLevelEvent.CrystallizeShatterEvent;
 import java.util.function.Supplier;
-import necesse.engine.Screen;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.PacketWriter;
 import necesse.engine.sound.SoundEffect;
@@ -58,7 +58,7 @@ public class CrystalSplosionEvent extends MobAbilityLevelEvent {
     }
 
     public void shatterCrystallizeBuff() {
-        Screen.playSound(GameResources.shatter2, SoundEffect.effect(this.owner).volume(2.0F).pitch(1.0F));
+        SoundManager.playSound(GameResources.shatter2, SoundEffect.effect(this.owner).volume(2.0F).pitch(1.0F));
         this.spawnShatterParticles();
     }
 

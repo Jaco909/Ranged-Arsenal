@@ -2,7 +2,6 @@ package rangedarsenal.scripts;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
-import necesse.engine.Screen;
 import necesse.engine.network.Packet;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.PacketWriter;
@@ -12,6 +11,7 @@ import necesse.engine.network.packet.PacketShowAttack;
 import necesse.engine.network.server.Server;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
 import necesse.entity.ParticleTypeSwitcher;
@@ -76,8 +76,8 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
                 this.player.getLevel().getServer().network.sendToClientsAtExcept(new PacketShowAttack(this.player, this.item, attackX, attackY, this.seed, attackContent), client, client);
             } else if (this.getChargePercent() >= 3.0F && !this.charged3) {
                 this.charged3 = true;
-                Screen.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(2.0F));
-                Screen.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(1.0F));
+                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(2.0F));
+                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(1.0F));
                 ParticleTypeSwitcher typeSwitcher = new ParticleTypeSwitcher(new Particle.GType[]{GType.CRITICAL, GType.IMPORTANT_COSMETIC, GType.COSMETIC});
                 float anglePerParticle = 12.0F;
 
@@ -89,8 +89,8 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
                 }
             } else if (this.getChargePercent() >= 2.0F && !this.charged2) {
                 this.charged2 = true;
-                Screen.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(1.2F));
-                Screen.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(0.75F).pitch(1.0F));
+                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(1.2F));
+                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(0.75F).pitch(1.0F));
                 ParticleTypeSwitcher typeSwitcher = new ParticleTypeSwitcher(new Particle.GType[]{GType.CRITICAL, GType.IMPORTANT_COSMETIC, GType.COSMETIC});
                 float anglePerParticle = 24.0F;
 
@@ -102,8 +102,8 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
                 }
             } else if (this.getChargePercent() >= 1.0F && !this.charged) {
                 this.charged = true;
-                Screen.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(0.7F));
-                Screen.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(0.5F).pitch(1.0F));
+                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(0.7F));
+                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(0.5F).pitch(1.0F));
                 ParticleTypeSwitcher typeSwitcher = new ParticleTypeSwitcher(new Particle.GType[]{GType.CRITICAL, GType.IMPORTANT_COSMETIC, GType.COSMETIC});
                 float anglePerParticle = 36.0F;
 
@@ -127,17 +127,17 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
             this.toolItem.setupAttackContentPacket(new PacketWriter(attackContent), this.player.getLevel(), attackX, attackY, this.player, this.item);
             this.toolItem.onAttack(this.player.getLevel(), attackX, attackY, this.player, this.player.getCurrentAttackHeight(), this.item, this.slot, 0, this.seed, new PacketReader(attackContent),this.getChargePercent());
             if (this.player.isClient() && this.charged3) {
-                Screen.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
-                Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(1.1F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
-                Screen.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(2.2F).pitch(GameRandom.globalRandom.getFloatBetween(0.95F, 1.25F)));
+                SoundManager.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
+                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(1.1F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
+                SoundManager.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(2.2F).pitch(GameRandom.globalRandom.getFloatBetween(0.95F, 1.25F)));
             } else if (this.player.isClient() && this.charged2) {
-                Screen.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
-                Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(0.7F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
-                Screen.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(1.5F).pitch(GameRandom.globalRandom.getFloatBetween(0.75F, 0.9F)));
+                SoundManager.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
+                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(0.7F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
+                SoundManager.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(1.5F).pitch(GameRandom.globalRandom.getFloatBetween(0.75F, 0.9F)));
             } else if (this.player.isClient() && this.charged) {
-                Screen.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
-                Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(0.5F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
-                Screen.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.45F, 0.65F)));
+                SoundManager.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
+                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(0.5F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
+                SoundManager.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.45F, 0.65F)));
             } else if (this.player.isServer()) {
                 ServerClient client = this.player.getServerClient();
                 Server server = this.player.getLevel().getServer();

@@ -1,13 +1,13 @@
 package rangedarsenal.items.weapons;
 
 import necesse.engine.localization.Localization;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.item.ItemInteractAction;
 import necesse.inventory.item.toolItem.projectileToolItem.gunProjectileToolItem.GunProjectileToolItem;
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import necesse.engine.Screen;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
@@ -113,6 +113,6 @@ public class ShotgunRework extends GunProjectileToolItem implements ItemInteract
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.shotgun, SoundEffect.effect(mob));
+        SoundManager.playSound(GameResources.shotgun, SoundEffect.effect(mob));
     }
 }

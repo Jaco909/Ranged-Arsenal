@@ -1,11 +1,11 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
@@ -44,7 +44,7 @@ public class Flamethrower extends GunProjectileToolItem {
         this.controlledMinRange = 5;
     }
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.firespell1, SoundEffect.effect(mob).volume(0.32f).pitch(GameRandom.globalRandom.getFloatBetween(0.3f, 0.5f)));
+        SoundManager.playSound(GameResources.firespell1, SoundEffect.effect(mob).volume(0.32f).pitch(GameRandom.globalRandom.getFloatBetween(0.3f, 0.5f)));
     }
     public float getAttackMovementMod(InventoryItem item) {
         return 0.25F;

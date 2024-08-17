@@ -1,7 +1,7 @@
 package rangedarsenal.projectiles.food;
 
 import necesse.engine.network.packet.PacketLevelEvent;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
 import necesse.engine.util.GameRandom;
 import necesse.entity.levelEvent.LevelEvent;
 import necesse.entity.mobs.GameDamage;

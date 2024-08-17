@@ -1,11 +1,11 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.ItemRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
@@ -170,12 +170,12 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
     public InventoryItem onLevelInteract(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int seed, PacketReader contentReader) {
         if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
             player.buffManager.removeBuff("ShardCannonCooldownDebuff",true);
-            Screen.playSound(GameResources.crystalHit3, SoundEffect.effect(player).volume(1.6f).pitch(1f));
+            SoundManager.playSound(GameResources.crystalHit3, SoundEffect.effect(player).volume(1.6f).pitch(1f));
             return item;
         } else {
             ActiveBuff ab = new ActiveBuff("ShardCannonCooldownDebuff", player, 999999F, player);
             player.buffManager.addBuff(ab, true);
-            Screen.playSound(GameResources.crystalHit3, SoundEffect.effect(player).volume(1.6f).pitch(0.5f));
+            SoundManager.playSound(GameResources.crystalHit3, SoundEffect.effect(player).volume(1.6f).pitch(0.5f));
             return item;
         }
     }

@@ -1,10 +1,10 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -46,6 +46,6 @@ public class MachinegunRework extends GunProjectileToolItem implements ItemInter
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.handgun, SoundEffect.effect(mob));
+        SoundManager.playSound(GameResources.handgun, SoundEffect.effect(mob));
     }
 }

@@ -1,7 +1,7 @@
 package rangedarsenal.projectiles.bullets;
 
-import necesse.engine.Screen;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.ComputedObjectValue;
 import necesse.engine.util.GameUtils;
 import necesse.entity.Entity;
@@ -14,7 +14,7 @@ import necesse.gfx.GameResources;
 import necesse.gfx.gameTexture.GameSprite;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.PacketWriter;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
 import necesse.gfx.camera.GameCamera;
 import necesse.gfx.drawables.LevelSortedDrawable;
 import necesse.gfx.drawables.OrderableDrawables;
@@ -229,7 +229,7 @@ public class NewVoidBulletProjectile extends FollowingProjectile {
     }
 
     public void playHitSound(float x, float y) {
-        Screen.playSound(GameResources.gunhit, SoundEffect.effect(x, y));
+        SoundManager.playSound(GameResources.gunhit, SoundEffect.effect(x, y));
     }
 
 }

@@ -1,13 +1,13 @@
 package rangedarsenal.items.weapons;
 
 import necesse.engine.GameLog;
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.registries.ItemRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -49,8 +49,8 @@ public class SeedGun extends GunProjectileToolItem {
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.37f).pitch(1f));
-        Screen.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.3f, 1.8f)));;
+        SoundManager.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.37f).pitch(1f));
+        SoundManager.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.3f, 1.8f)));;
     }
 
     public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {

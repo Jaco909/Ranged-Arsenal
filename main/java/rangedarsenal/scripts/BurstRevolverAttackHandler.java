@@ -1,6 +1,5 @@
 package rangedarsenal.scripts;
 
-import necesse.engine.Screen;
 import necesse.engine.network.Packet;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.PacketWriter;
@@ -8,6 +7,7 @@ import necesse.engine.network.packet.PacketPlayerStopAttack;
 import necesse.engine.network.packet.PacketShowAttack;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.PlayerMob;
@@ -74,7 +74,7 @@ public class BurstRevolverAttackHandler extends MouseAngleAttackHandler {
                 this.toolItem.getAvailableAmmoNR(player,bullets);
                 this.toolItem.superOnAttack(this.player.getLevel(), attackX, attackY, this.player, this.player.getCurrentAttackHeight(), this.item, this.slot, 0, seed, new PacketReader(attackContent));
                 if (this.player.isClient()) {
-                    Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player)
+                    SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player)
                             .volume(0.65f)
                             .pitch(GameRandom.globalRandom.getFloatBetween(0.7f, 0.8f)));
                 }

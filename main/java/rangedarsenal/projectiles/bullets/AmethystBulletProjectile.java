@@ -1,9 +1,9 @@
 package rangedarsenal.projectiles.bullets;
 
-import necesse.engine.Screen;
 import necesse.engine.registries.BuffRegistry.Debuffs;
 import necesse.engine.sound.SoundEffect;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
 import necesse.entity.levelEvent.mobAbilityLevelEvent.CrystallizeShatterEvent;
@@ -147,6 +147,6 @@ public class AmethystBulletProjectile extends BulletProjectile {
     }
 
     public void playHitSound(float x, float y) {
-        Screen.playSound(GameResources.crystalHit1, SoundEffect.effect(this).volume(2.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.9F, 1.1F)));
+        SoundManager.playSound(GameResources.crystalHit1, SoundEffect.effect(this).volume(2.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.9F, 1.1F)));
     }
 }

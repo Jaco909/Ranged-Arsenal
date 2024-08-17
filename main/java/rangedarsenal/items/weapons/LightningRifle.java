@@ -1,6 +1,5 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.gameNetworkData.GNDItem;
@@ -9,6 +8,7 @@ import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketLevelEvent;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.levelEvent.LevelEvent;
@@ -72,7 +72,7 @@ public class LightningRifle extends GunProjectileToolItem implements ItemInterac
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.jinglehit, SoundEffect.effect(mob).pitch(GameRandom.globalRandom.getFloatBetween(1.2F, 1.3F)));
+        SoundManager.playSound(GameResources.jinglehit, SoundEffect.effect(mob).pitch(GameRandom.globalRandom.getFloatBetween(1.2F, 1.3F)));
     }
 
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
@@ -113,9 +113,9 @@ public class LightningRifle extends GunProjectileToolItem implements ItemInterac
                 }
             });
         }
-        Screen.playSound(GameResources.swoosh, SoundEffect.effect(player).volume(0.52F).pitch(3F));
-        Screen.playSound(GameResources.shatter2, SoundEffect.effect(player).volume(0.6F).pitch(2F));
-        Screen.playSound(GameResources.magicbolt1, SoundEffect.effect(player).volume(0.85F).pitch(3F));
+        SoundManager.playSound(GameResources.swoosh, SoundEffect.effect(player).volume(0.52F).pitch(3F));
+        SoundManager.playSound(GameResources.shatter2, SoundEffect.effect(player).volume(0.6F).pitch(2F));
+        SoundManager.playSound(GameResources.magicbolt1, SoundEffect.effect(player).volume(0.85F).pitch(3F));
 
         return item;
     }

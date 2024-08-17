@@ -1,6 +1,5 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.gameNetworkData.GNDItem;
@@ -8,6 +7,7 @@ import necesse.engine.network.gameNetworkData.GNDItemGameDamage;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketLevelEvent;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.levelEvent.LevelEvent;
@@ -68,9 +68,9 @@ public class BeamRifle extends GunProjectileToolItem implements ItemInteractActi
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.magicroar, SoundEffect.effect(mob).pitch(1.3F).volume(0.39F));
+        SoundManager.playSound(GameResources.magicroar, SoundEffect.effect(mob).pitch(1.3F).volume(0.39F));
         //Screen.playSound(GameResources.swoosh2, SoundEffect.effect(mob).pitch(1.3F).volume(0.2F));
-        Screen.playSound(GameResources.magicroar, SoundEffect.effect(mob).pitch(0.5F).volume(0.1F));
+        SoundManager.playSound(GameResources.magicroar, SoundEffect.effect(mob).pitch(0.5F).volume(0.1F));
     }
 
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
@@ -111,9 +111,9 @@ public class BeamRifle extends GunProjectileToolItem implements ItemInteractActi
                 }
             });
         }
-        Screen.playSound(GameResources.swoosh, SoundEffect.effect(player).volume(0.52F).pitch(3F));
-        Screen.playSound(GameResources.shatter2, SoundEffect.effect(player).volume(0.6F).pitch(2F));
-        Screen.playSound(GameResources.magicbolt1, SoundEffect.effect(player).volume(0.85F).pitch(3F));
+        SoundManager.playSound(GameResources.swoosh, SoundEffect.effect(player).volume(0.52F).pitch(3F));
+        SoundManager.playSound(GameResources.shatter2, SoundEffect.effect(player).volume(0.6F).pitch(2F));
+        SoundManager.playSound(GameResources.magicbolt1, SoundEffect.effect(player).volume(0.85F).pitch(3F));
 
         return item;
     }

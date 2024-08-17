@@ -1,13 +1,13 @@
 package rangedarsenal.items.weapons;
 
 import necesse.engine.GameLog;
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.registries.ItemRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
 import necesse.entity.mobs.GameDamage;
@@ -51,10 +51,10 @@ public class SeedGunShotgun extends GunProjectileToolItem {
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.61f).pitch(0.87f));
-        Screen.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.35f, 1.85f)));
-        Screen.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.35f, 1.85f)));
-        Screen.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.35f, 1.85f)));
+        SoundManager.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.61f).pitch(0.87f));
+        SoundManager.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.35f, 1.85f)));
+        SoundManager.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.35f, 1.85f)));
+        SoundManager.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.35f, 1.85f)));
     }
 
     public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {

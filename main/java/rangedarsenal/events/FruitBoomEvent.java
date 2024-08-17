@@ -1,6 +1,6 @@
 package rangedarsenal.events;
 
-import necesse.engine.Screen;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.sound.SoundEffect;
 import necesse.engine.util.GameRandom;
 import necesse.entity.ParticleTypeSwitcher;
@@ -42,9 +42,9 @@ public class FruitBoomEvent extends ExplosionEvent implements Attacker {
     protected void playExplosionEffects() {
         if (foodtype != null) {
             if (foodtype.equals("corn")) {
-                Screen.playSound(GameResources.fireworkCrack, SoundEffect.effect(this.x, this.y).volume(2F).pitch(1F));
+                SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(this.x, this.y).volume(2F).pitch(1F));
             } else if (foodtype.equals("tomato")) {
-                Screen.playSound(GameResources.npcdeath, SoundEffect.effect(this.x, this.y).volume(0.8F).pitch(1.8F));
+                SoundManager.playSound(GameResources.npcdeath, SoundEffect.effect(this.x, this.y).volume(0.8F).pitch(1.8F));
             }
         }
     }

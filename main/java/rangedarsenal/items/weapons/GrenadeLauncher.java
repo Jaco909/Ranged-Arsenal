@@ -1,7 +1,6 @@
 package rangedarsenal.items.weapons;
 
 import necesse.engine.GameLog;
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.localization.message.GameMessage;
 import necesse.engine.localization.message.LocalMessage;
@@ -10,6 +9,7 @@ import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.registries.ItemRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
 import necesse.entity.mobs.GameDamage;
@@ -44,7 +44,7 @@ public class GrenadeLauncher extends GunProjectileToolItem {
         this.controlledRange = false;
     }
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.7f).pitch(GameRandom.globalRandom.getFloatBetween(1.15f, 1.15f)));
+        SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.7f).pitch(GameRandom.globalRandom.getFloatBetween(1.15f, 1.15f)));
     }
     protected void addAmmoTooltips(ListGameTooltips tooltips, InventoryItem item) {
         tooltips.add(Localization.translate("itemtooltip", "GrenadeLauncherTip"));

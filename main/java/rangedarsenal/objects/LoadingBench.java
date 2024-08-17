@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
 import necesse.engine.registries.RecipeTechRegistry;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
 import necesse.entity.mobs.PlayerMob;
 import necesse.gfx.camera.GameCamera;
 import necesse.gfx.drawOptions.texture.TextureDrawOptions;

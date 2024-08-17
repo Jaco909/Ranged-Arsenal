@@ -1,11 +1,11 @@
 package rangedarsenal.projectiles.bullets;
 
-import necesse.engine.Screen;
 import necesse.engine.network.client.ClientClient;
 import necesse.engine.network.packet.PacketLevelEvent;
 import necesse.engine.network.packet.PacketProjectileHit;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameRandom;
 import necesse.entity.levelEvent.LevelEvent;
 import necesse.entity.mobs.GameDamage;
@@ -65,8 +65,8 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                 boolean canHit = this.checkHitCooldown(mob, !this.isServer() || packetSubmitter == null && this.handlingClient == null && (!this.clientHandlesHit || !mob.isPlayer) ? 0 : 100);
                 if (canHit && (this.amountHit() <= this.piercing || this.returningToOwner)) {
                     boolean addHit = true;
-                    Screen.playSound(GameResources.fireworkCrack, SoundEffect.effect(player).volume(0.9f).pitch(GameRandom.globalRandom.getFloatBetween(2f, 4f)));
-                    Screen.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob).volume(4f).pitch(GameRandom.globalRandom.getFloatBetween(2f, 4f)));
+                    SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(player).volume(0.9f).pitch(GameRandom.globalRandom.getFloatBetween(2f, 4f)));
+                    SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob).volume(4f).pitch(GameRandom.globalRandom.getFloatBetween(2f, 4f)));
 
 
                     for(int i = 0; i <= 7; ++i) {

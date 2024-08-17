@@ -1,7 +1,7 @@
 package rangedarsenal.events;
 
 import java.awt.Color;
-import necesse.engine.Screen;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.sound.SoundEffect;
 import necesse.engine.util.GameRandom;
 import necesse.entity.ParticleTypeSwitcher;
@@ -31,10 +31,10 @@ public class SlimeSplosionEvent extends ExplosionEvent implements Attacker {
     }
 
     protected void playExplosionEffects() {
-        Screen.playSound(GameResources.splash, SoundEffect.effect(this.x, this.y).volume(0.9F).pitch(0.5F));
-        Screen.playSound(GameResources.fireworkCrack, SoundEffect.effect(this.x, this.y).volume(0.7F).pitch(2.5F));
-        Screen.playSound(GameResources.explosionHeavy, SoundEffect.effect(this.x, this.y).volume(0.6F).pitch(3.6F));
-        Screen.playSound(GameResources.pop, SoundEffect.effect(this.x, this.y).volume(1.0F).pitch(2.9F));
+        SoundManager.playSound(GameResources.splash, SoundEffect.effect(this.x, this.y).volume(0.9F).pitch(0.5F));
+        SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(this.x, this.y).volume(0.7F).pitch(2.5F));
+        SoundManager.playSound(GameResources.explosionHeavy, SoundEffect.effect(this.x, this.y).volume(0.6F).pitch(3.6F));
+        SoundManager.playSound(GameResources.pop, SoundEffect.effect(this.x, this.y).volume(1.0F).pitch(2.9F));
         this.level.getClient().startCameraShake(this.x, this.y, 220, 14, 4F, 4F,true);
     }
 

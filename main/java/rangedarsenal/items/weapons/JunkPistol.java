@@ -1,9 +1,9 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -46,7 +46,7 @@ public class JunkPistol extends GunProjectileToolItem {
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.68f).pitch(GameRandom.globalRandom.getFloatBetween(0.5f, 0.78f)));
+        SoundManager.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.68f).pitch(GameRandom.globalRandom.getFloatBetween(0.5f, 0.78f)));
     }
 
     protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {

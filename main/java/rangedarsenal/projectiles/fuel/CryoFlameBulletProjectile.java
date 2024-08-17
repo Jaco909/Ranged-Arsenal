@@ -2,11 +2,11 @@ package rangedarsenal.projectiles.fuel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import necesse.engine.Screen;
 import necesse.engine.network.client.ClientClient;
 import necesse.engine.network.packet.PacketProjectileHit;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.GameDamage;
@@ -58,7 +58,7 @@ public class CryoFlameBulletProjectile extends BulletProjectile {
                     ActiveBuff ab4 = new ActiveBuff("CryoFreezeDebuff", mob, 5f, this.getOwner());
                     mob.buffManager.addBuff(ab4, true);
                     mob.buffManager.removeBuff("CryoBuildupDebuff",true);
-                    Screen.playSound(GameResources.shatter1, SoundEffect.effect(mob)
+                    SoundManager.playSound(GameResources.shatter1, SoundEffect.effect(mob)
                             .volume(1f)
                             .pitch(GameRandom.globalRandom.getFloatBetween(0.5f, 0.6f)));
                     /*for(int i = 0; i < 4; ++i) {

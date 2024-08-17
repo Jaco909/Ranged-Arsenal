@@ -1,11 +1,11 @@
 package rangedarsenal.projectiles.bullets;
 
-import necesse.engine.Screen;
 import necesse.engine.network.client.ClientClient;
 import necesse.engine.network.packet.PacketLevelEvent;
 import necesse.engine.network.packet.PacketProjectileHit;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameRandom;
 import necesse.entity.levelEvent.LevelEvent;
 import necesse.entity.mobs.GameDamage;
@@ -69,11 +69,11 @@ public class LightningBulletProjectile extends BulletProjectile {
                 if (canHit && (this.amountHit() <= this.piercing || this.returningToOwner)) {
                     boolean addHit = true;
                     //if (!mob.buffManager.hasBuff("LightningDebuff")) {
-                    Screen.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.3f).pitch(GameRandom.globalRandom.getFloatBetween(1f, 2f)));
-                    Screen.playSound(GameResources.fireworkCrack, SoundEffect.effect(player).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
+                    SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.3f).pitch(GameRandom.globalRandom.getFloatBetween(1f, 2f)));
+                    SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(player).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
 
-                    Screen.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.6f).pitch(GameRandom.globalRandom.getFloatBetween(1f, 2f)));
-                    Screen.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob).volume(4f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
+                    SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.6f).pitch(GameRandom.globalRandom.getFloatBetween(1f, 2f)));
+                    SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob).volume(4f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
 
 
                     if (mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(),70) != null) {

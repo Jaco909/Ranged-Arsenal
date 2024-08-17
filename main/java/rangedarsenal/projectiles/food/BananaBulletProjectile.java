@@ -1,8 +1,8 @@
 package rangedarsenal.projectiles.food;
 
-import necesse.engine.Screen;
 import necesse.engine.sound.SoundEffect;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
+import necesse.engine.sound.SoundManager;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
@@ -47,7 +47,7 @@ public class BananaBulletProjectile extends Projectile {
         }
     }
     public void playMoveSound() {
-        Screen.playSound(GameResources.swing2, SoundEffect.effect(this));
+        SoundManager.playSound(GameResources.swing2, SoundEffect.effect(this));
     }
     public BananaBulletProjectile(float x, float y, float targetX, float targetY, float speed, int distance, GameDamage damage, int knockback, Mob owner) {
         this();

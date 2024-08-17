@@ -2,12 +2,13 @@ package rangedarsenal.patches;
 
 import java.awt.geom.Point2D;
 
-import necesse.engine.Screen;
-import necesse.engine.control.ControllerInput;
-import necesse.engine.control.Input;
+import necesse.engine.input.controller.ControllerInput;
+import necesse.engine.input.Input;
 import necesse.engine.network.client.Client;
 import necesse.engine.state.MainGame;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
+import necesse.engine.window.GameWindow;
+import necesse.engine.window.WindowManager;
 import necesse.entity.mobs.PlayerMob;
 import necesse.gfx.camera.MainGameFollowCamera;
 import net.bytebuddy.asm.Advice;
@@ -45,8 +46,9 @@ public class MainGameFollowCameraPatch {
                         xDir = ControllerInput.getAimX();
                         yDir = ControllerInput.getAimY();
                     } else {
-                        xDir = (float)Screen.mousePos().sceneX / (float)Screen.getSceneWidth() * 2.0F - 1.0F;
-                        yDir = (float)Screen.mousePos().sceneY / (float)Screen.getSceneHeight() * 2.0F - 1.0F;
+                        GameWindow window = WindowManager.getWindow();
+                        xDir = (float)window.mousePos().sceneX / (float)window.getSceneWidth() * 2.0F - 1.0F;
+                        yDir = (float)window.mousePos().sceneY / (float)window.getSceneHeight() * 2.0F - 1.0F;
                     }
                     mainGame.getCamera().setPosition(mainGame.getCamera().getX() + (int)(xDir * zoomAmount), mainGame.getCamera().getY() + (int)(yDir * zoomAmount));
                 }

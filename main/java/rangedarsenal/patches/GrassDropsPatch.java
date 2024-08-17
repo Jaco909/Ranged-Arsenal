@@ -25,9 +25,12 @@ public class GrassDropsPatch {
     @Advice.OnMethodExit()
     static void onExit(@Advice.This SurfaceGrassObject grassObject, @Advice.Argument(0) Level level, @Advice.Argument(1) int x, @Advice.Argument(2) int y, @Advice.Return(readOnly = false) LootTable lootTable){
         float baitChance = 35.0F;
-        if (level.rainingLayer.isRaining()) {
+        if (level.weatherLayer.isRaining()) {
             baitChance = 15.0F;
         }
         lootTable = new LootTable(new LootItemInterface[]{new ChanceLootItem(1.0F / baitChance, "wormbait"), new ChanceLootItem(0.077f, "grassseed")});
+    }
+    static void onExit(@Advice.This SurfaceGrassObject grassObject, @Advice.Argument(0) Level level, @Advice.Return(readOnly = false) LootTable lootTable) {
+
     }
 }

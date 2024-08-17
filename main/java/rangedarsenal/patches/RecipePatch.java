@@ -22,22 +22,22 @@ public class RecipePatch {
         Iterator recipes = Recipes.getRecipes().iterator();
         while(recipes.hasNext()) {
             Recipe recipe = (Recipe)recipes.next();
-            if (recipe.resultID.equalsIgnoreCase("simplebullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
+            if (recipe.resultStringID.equalsIgnoreCase("simplebullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
                 recipes.remove();
             }
-            if (recipe.resultID.equalsIgnoreCase("frostbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
+            if (recipe.resultStringID.equalsIgnoreCase("frostbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
                 recipes.remove();
             }
-            if (recipe.resultID.equalsIgnoreCase("bouncingbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
+            if (recipe.resultStringID.equalsIgnoreCase("bouncingbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
                 recipes.remove();
             }
-            if (recipe.resultID.equalsIgnoreCase("voidbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
+            if (recipe.resultStringID.equalsIgnoreCase("voidbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
                 recipes.remove();
             }
-            if (recipe.resultID.equalsIgnoreCase("crystalbullet") && recipe.tech.getStringID().equalsIgnoreCase("fallen")) {
+            if (recipe.resultStringID.equalsIgnoreCase("crystalbullet") && recipe.tech.getStringID().equalsIgnoreCase("fallen")) {
                 recipes.remove();
             }
-            if (recipe.resultID.equalsIgnoreCase("sapphirerevolver") && recipe.tech.getStringID().equalsIgnoreCase("demonic")) {
+            if (recipe.resultStringID.equalsIgnoreCase("sapphirerevolver") && recipe.tech.getStringID().equalsIgnoreCase("demonic")) {
                 recipes.remove();
             }
         }

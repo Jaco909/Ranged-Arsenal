@@ -1,7 +1,6 @@
 package rangedarsenal.scripts;
 
 import java.awt.geom.Point2D;
-import necesse.engine.Screen;
 import necesse.engine.network.Packet;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.PacketWriter;
@@ -11,12 +10,13 @@ import necesse.engine.network.packet.PacketShowAttack;
 import necesse.engine.network.server.Server;
 import necesse.engine.network.server.ServerClient;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.attackHandler.MouseAngleAttackHandler;
 import necesse.gfx.GameResources;
-import necesse.gfx.gameSound.GameSound;
+import necesse.engine.sound.gameSound.GameSound;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.PlayerInventorySlot;
 import necesse.inventory.item.Item;
@@ -68,14 +68,14 @@ public class ShardCannonAttackHandlerFix extends MouseAngleAttackHandler {
                 this.toolItem.superOnAttack(this.player.getLevel(), attackX, attackY, this.player, this.player.getCurrentAttackHeight(), this.item, this.slot, 0, seed, new PacketReader(attackContent));
                 if (this.player.isClient()) {
                     if (this.player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-                        Screen.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.5F, 1.75F)));
-                        Screen.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1F, 1.5F)));
-                        Screen.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.7F, 1F)));
+                        SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.5F, 1.75F)));
+                        SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1F, 1.5F)));
+                        SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.7F, 1F)));
                         //Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(0.4F).pitch(GameRandom.globalRandom.getFloatBetween(0.7F, 1F)));
-                        Screen.playSound((GameSound)GameRandom.globalRandom.getOneOf(new GameSound[]{GameResources.crystalHit2, GameResources.crystalHit3}), SoundEffect.effect(this.player).volume(1.2F).pitch(GameRandom.globalRandom.getFloatBetween(0.9F, 1.1F)));
+                        SoundManager.playSound((GameSound)GameRandom.globalRandom.getOneOf(new GameSound[]{GameResources.crystalHit2, GameResources.crystalHit3}), SoundEffect.effect(this.player).volume(1.2F).pitch(GameRandom.globalRandom.getFloatBetween(0.9F, 1.1F)));
                     } else {
-                        Screen.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(3.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.5F, 1.75F)));
-                        Screen.playSound((GameSound)GameRandom.globalRandom.getOneOf(new GameSound[]{GameResources.crystalHit2, GameResources.crystalHit3}), SoundEffect.effect(this.player).volume(2.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.9F, 1.1F)));
+                        SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(3.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.5F, 1.75F)));
+                        SoundManager.playSound((GameSound)GameRandom.globalRandom.getOneOf(new GameSound[]{GameResources.crystalHit2, GameResources.crystalHit3}), SoundEffect.effect(this.player).volume(2.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.9F, 1.1F)));
                     }
                 } else if (this.player.isServer()) {
                     ServerClient client = this.player.getServerClient();

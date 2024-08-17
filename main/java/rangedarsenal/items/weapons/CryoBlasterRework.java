@@ -1,10 +1,10 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -44,7 +44,7 @@ public class CryoBlasterRework extends GunProjectileToolItem implements ItemInte
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.jinglehit, SoundEffect.effect(mob).pitch(GameRandom.globalRandom.getFloatBetween(1.2F, 1.3F)));
+        SoundManager.playSound(GameResources.jinglehit, SoundEffect.effect(mob).pitch(GameRandom.globalRandom.getFloatBetween(1.2F, 1.3F)));
     }
     public float getAttackMovementMod(InventoryItem item) {
         return 0.50F + (this.getUpgradeTier(item)/4)/10;
@@ -79,9 +79,9 @@ public class CryoBlasterRework extends GunProjectileToolItem implements ItemInte
                 }
             });
         }
-        Screen.playSound(GameResources.swoosh, SoundEffect.effect(player).volume(0.52F).pitch(3F));
-        Screen.playSound(GameResources.shatter2, SoundEffect.effect(player).volume(0.6F).pitch(2F));
-        Screen.playSound(GameResources.magicbolt1, SoundEffect.effect(player).volume(0.85F).pitch(3F));
+        SoundManager.playSound(GameResources.swoosh, SoundEffect.effect(player).volume(0.52F).pitch(3F));
+        SoundManager.playSound(GameResources.shatter2, SoundEffect.effect(player).volume(0.6F).pitch(2F));
+        SoundManager.playSound(GameResources.magicbolt1, SoundEffect.effect(player).volume(0.85F).pitch(3F));
 
         return item;
     }

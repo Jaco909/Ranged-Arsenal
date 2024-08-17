@@ -1,6 +1,5 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.gameNetworkData.GNDItem;
@@ -9,6 +8,7 @@ import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -93,8 +93,8 @@ public class AWP extends GunProjectileToolItem implements ItemInteractAction {
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(mob).pitch(0.8f));
-        Screen.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.5f).pitch(0.8f));
+        SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(mob).pitch(0.8f));
+        SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.5f).pitch(0.8f));
     }
     float zoom = 0f;
     public float zoomAmount() {

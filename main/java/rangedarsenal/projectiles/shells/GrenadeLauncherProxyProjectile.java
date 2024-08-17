@@ -1,23 +1,26 @@
 package rangedarsenal.projectiles.shells;
 
-import necesse.engine.Screen;
 import necesse.engine.sound.SoundEffect;
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
+import necesse.engine.sound.SoundManager;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.entity.trails.Trail;
+import necesse.gfx.GameResources;
 import necesse.gfx.camera.GameCamera;
 import necesse.gfx.drawOptions.texture.TextureDrawOptions;
 import necesse.gfx.drawables.EntityDrawable;
 import necesse.gfx.drawables.LevelSortedDrawable;
 import necesse.gfx.drawables.OrderableDrawables;
-import necesse.gfx.gameSound.GameSound;
+import necesse.engine.sound.gameSound.GameSound;
 import necesse.gfx.gameTexture.GameTexture;
 import necesse.level.maps.Level;
 import necesse.level.maps.light.GameLight;
 import rangedarsenal.events.GrenadeLauncherProxyExplosionEvent;
+import rangedarsenal.rangedarsenal;
+import static rangedarsenal.rangedarsenal.proxyarm;
 
 import java.awt.*;
 import java.util.List;
@@ -149,7 +152,7 @@ public class GrenadeLauncherProxyProjectile extends Projectile {
             if (!active) {
                 active = true;
                 this.texture = GameTexture.fromFile("projectiles/Grenade_Launcher_Proxy_Projectile_armed");
-                Screen.playSound(GameSound.fromFile("activate_single_mono"), SoundEffect.effect(this).volume(1.5f));
+                SoundManager.playSound(proxyarm, SoundEffect.effect(this).volume(1.5f));
             }
             /*this.getLevel().entityManager.streamAreaMobsAndPlayersTileRange(this.getX(),this.getY(), 2).forEach((m) -> {
                 if (((m.x <= (this.x+33)) && (m.x >= (this.x-33))) && ((m.y <= (this.y+33)) && (m.y >= (this.y-33)))) {

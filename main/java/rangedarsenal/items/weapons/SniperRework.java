@@ -1,11 +1,11 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -73,7 +73,7 @@ public class SniperRework extends GunProjectileToolItem implements ItemInteractA
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.sniperrifle, SoundEffect.effect(mob));
+        SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(mob));
     }
     public boolean canLevelInteract(Level level, int x, int y, PlayerMob player, InventoryItem item) {
         return true;

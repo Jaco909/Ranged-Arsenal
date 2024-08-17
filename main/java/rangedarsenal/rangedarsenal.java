@@ -13,6 +13,7 @@ import necesse.entity.mobs.hostile.EnchantedZombieMob;
 import necesse.entity.mobs.hostile.EnchantedZombieArcherMob;
 import necesse.entity.mobs.hostile.SwampZombieMob;
 import necesse.entity.mobs.hostile.bosses.PestWardenHead;
+import necesse.engine.sound.gameSound.GameSound;
 import necesse.gfx.gameTexture.GameTexture;
 import necesse.inventory.lootTable.LootTable;
 import necesse.inventory.lootTable.lootItem.ChanceLootItem;
@@ -67,6 +68,7 @@ public class rangedarsenal {
     public static String[] SEED_AMMO_TYPES= new String[]{"grassseed","swampgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"};
     public static String[] FOOD_AMMO_TYPES= new String[]{"apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans"};
 
+    public static GameSound proxyarm;
     public rangedarsenal(){
     }
 
@@ -80,7 +82,7 @@ public class rangedarsenal {
         System.out.println("Ranged Arsenal loaded!");
 
         //OBJECTS
-        RecipeTechRegistry.registerTech("GUNCRAFTING", new StaticMessage("Loading Bench"));
+        RecipeTechRegistry.registerTech("GUNCRAFTING", "Loading Bench");
         ObjectRegistry.registerObject("LoadingBench", new LoadingBench(), 10f, true);
 
         //ITEMS
@@ -279,9 +281,8 @@ public class rangedarsenal {
     }
     public void initResources() {
         GameTexture LoadingBench = GameTexture.fromFile("objects/LoadingBench");
-
+        proxyarm = GameSound.fromFile("activate_single_mono");
     }
-
     public void postInit() {
 
         //Add Niter

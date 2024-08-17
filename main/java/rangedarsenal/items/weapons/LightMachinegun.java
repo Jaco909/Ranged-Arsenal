@@ -1,11 +1,11 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
 import necesse.entity.mobs.GameDamage;
@@ -46,7 +46,7 @@ public class LightMachinegun extends GunProjectileToolItem {
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.handgun, SoundEffect.effect(mob)
+        SoundManager.playSound(GameResources.handgun, SoundEffect.effect(mob)
                 .volume(0.7f)
                 .pitch(GameRandom.globalRandom.getFloatBetween(1.5f, 1.7f)));;
     }

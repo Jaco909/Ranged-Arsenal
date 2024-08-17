@@ -1,11 +1,11 @@
 package rangedarsenal.items.weapons;
 
-import necesse.engine.Screen;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
+import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
@@ -39,7 +39,7 @@ public class RangeFlamethrower extends GunProjectileToolItem {
         this.ammoConsumeChance = 0.8F;
     }
     public void playFireSound(AttackAnimMob mob) {
-        Screen.playSound(GameResources.firespell1, SoundEffect.effect(mob)
+        SoundManager.playSound(GameResources.firespell1, SoundEffect.effect(mob)
                 .volume(0.36f)
                 .pitch(GameRandom.globalRandom.getFloatBetween(0.4f, 0.6f)));
     }

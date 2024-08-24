@@ -23,21 +23,8 @@ public class RecipePatchDedicatedServer {
         Iterator recipes = Recipes.getRecipes().iterator();
         while(recipes.hasNext()) {
             Recipe recipe = (Recipe)recipes.next();
-            if (recipe.resultStringID.equalsIgnoreCase("simplebullet")) {
-                if (!recipe.tech.getStringID().equalsIgnoreCase("none")) {
-                    recipes.remove();
-                } else {
-                    Iterator ingredients = Arrays.stream(recipe.ingredients).iterator();
-                    while (ingredients.hasNext()) {
-                        Ingredient ingredient = (Ingredient)ingredients.next();
-                        //System.out.println("wack");
-                        //System.out.println(ingredient.ingredientStringID);
-                        //System.out.println(ingredient.getIngredientAmount());
-                        if (ingredient.ingredientStringID.equalsIgnoreCase("ironbar") && ingredient.getIngredientAmount() == 1) {
-                            recipes.remove();
-                        }
-                    }
-                }
+            if (recipe.resultStringID.equalsIgnoreCase("simplebullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
+                recipes.remove();
             }
             if (recipe.resultStringID.equalsIgnoreCase("frostbullet") && recipe.tech.getStringID().equalsIgnoreCase("none")) {
                 recipes.remove();

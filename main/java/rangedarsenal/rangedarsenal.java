@@ -394,14 +394,6 @@ public class rangedarsenal {
                         new Ingredient("Bullet_Casing", 100)
                 }
         ).showAfter("Bullet_Casing").showBefore("cannonball"));
-        Recipes.registerModRecipe(new Recipe(
-                "simplebullet",
-                100,
-                RecipeTechRegistry.NONE,
-                new Ingredient[]{
-                        new Ingredient("ironbar", 2)
-                }
-        ));
 
         //GUNS
         Recipes.registerModRecipe(new Recipe(

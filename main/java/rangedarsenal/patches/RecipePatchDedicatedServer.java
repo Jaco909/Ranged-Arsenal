@@ -1,23 +1,22 @@
 package rangedarsenal.patches;
 
+import necesse.engine.events.ServerClientConnectedEvent;
+import necesse.engine.loading.ServerLoader;
 import necesse.engine.modLoader.annotations.ModMethodPatch;
-import necesse.engine.registries.ItemRegistry;
-import necesse.engine.state.MainMenu;
-import necesse.engine.util.GameRandom;
-import necesse.entity.mobs.hostile.bosses.PestWardenHead;
-import necesse.inventory.InventoryItem;
+import necesse.engine.network.networkInfo.NetworkInfo;
+import necesse.engine.network.server.Server;
+import necesse.engine.network.server.ServerClient;
 import necesse.inventory.recipe.Ingredient;
 import necesse.inventory.recipe.Recipe;
 import necesse.inventory.recipe.Recipes;
 import net.bytebuddy.asm.Advice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
 //Unload vanilla recipes on Main Menu load
-@ModMethodPatch(target = MainMenu.class, name = "init", arguments = {})
-public class RecipePatch {
+@ModMethodPatch(target = Server.class, name = "addClient", arguments = {NetworkInfo.class, long.class, String.class, boolean.class})
+public class RecipePatchDedicatedServer {
     @Advice.OnMethodExit()
     static void onExit() {
 
@@ -31,6 +30,7 @@ public class RecipePatch {
                     Iterator ingredients = Arrays.stream(recipe.ingredients).iterator();
                     while (ingredients.hasNext()) {
                         Ingredient ingredient = (Ingredient)ingredients.next();
+                        //System.out.println("wack");
                         //System.out.println(ingredient.ingredientStringID);
                         //System.out.println(ingredient.getIngredientAmount());
                         if (ingredient.ingredientStringID.equalsIgnoreCase("ironbar") && ingredient.getIngredientAmount() == 1) {

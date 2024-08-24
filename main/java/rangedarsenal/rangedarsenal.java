@@ -1,9 +1,11 @@
 package rangedarsenal;
 
+import necesse.engine.localization.message.GameMessage;
 import necesse.engine.localization.message.StaticMessage;
 import necesse.engine.modLoader.annotations.ModEntry;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.registries.*;
+import necesse.engine.sound.GameMusic;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.hostile.ZombieMob;
 import necesse.entity.mobs.hostile.ZombieArcherMob;
@@ -41,6 +43,7 @@ import rangedarsenal.projectiles.fuel.*;
 import rangedarsenal.projectiles.seed.*;
 import rangedarsenal.projectiles.shells.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -76,6 +79,8 @@ public class rangedarsenal {
         ArrayList vanilla = new ArrayList(Arrays.asList(GunProjectileToolItem.NORMAL_AMMO_TYPES));
         vanilla.addAll(Arrays.asList("Standard_Bullet","Frozen_Bullet","Flame_Bullet","Blunt_Bullet","Leach_Bullet","Lightning_Bullet","Splintering_Bullet","Ruby_Bullet","Amethyst_Bullet","Sapphire_Bullet"));
         GunProjectileToolItem.NORMAL_AMMO_TYPES = (String[])vanilla.toArray(new String[0]);
+        float oldMusicVolumeModifier = 0.6F;
+        GameMusic HUBMUSICVN = MusicRegistry.registerMusic("hubmusic", "music/hubmusic", (GameMessage) null, new StaticMessage("Hubmusic"), new Color(125, 164, 45), new Color(47, 105, 12)).setVolumeModifier(oldMusicVolumeModifier);
     }
 
     public void init() {
@@ -389,6 +394,14 @@ public class rangedarsenal {
                         new Ingredient("Bullet_Casing", 100)
                 }
         ).showAfter("Bullet_Casing").showBefore("cannonball"));
+        Recipes.registerModRecipe(new Recipe(
+                "simplebullet",
+                100,
+                RecipeTechRegistry.NONE,
+                new Ingredient[]{
+                        new Ingredient("ironbar", 2)
+                }
+        ));
 
         //GUNS
         Recipes.registerModRecipe(new Recipe(

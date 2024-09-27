@@ -6,6 +6,7 @@ public class MechanicalPartsGreat extends MatItem {
 
     public MechanicalPartsGreat() {
         super(100, Rarity.UNCOMMON);
+        this.setItemCategory(new String[]{"materials"});
     }
 
 }

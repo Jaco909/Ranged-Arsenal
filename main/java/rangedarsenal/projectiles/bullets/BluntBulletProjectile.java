@@ -2,6 +2,7 @@ package rangedarsenal.projectiles.bullets;
 
 import necesse.engine.network.client.ClientClient;
 import necesse.engine.network.packet.PacketProjectileHit;
+import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.network.server.ServerClient;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
@@ -71,9 +72,9 @@ public class BluntBulletProjectile extends BulletProjectile {
 
                             this.doHitLogic(mob, object, x, y);
                             if (packetSubmitter != null) {
-                                this.getLevel().getServer().network.sendToClientsAtExcept(new PacketProjectileHit(this, x, y, mob), packetSubmitter, packetSubmitter);
+                                this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketProjectileHit(this, x, y, mob), this, packetSubmitter);
                             } else {
-                                this.getLevel().getServer().network.sendToClientsAt(new PacketProjectileHit(this, x, y, mob), this.getLevel());
+                                this.getLevel().getServer().network.sendToClientsWithEntity(new PacketProjectileHit(this, x, y, mob), this);
                             }
                         }
                     } else if (this.isClient()) {

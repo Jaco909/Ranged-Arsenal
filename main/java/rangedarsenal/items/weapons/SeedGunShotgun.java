@@ -131,7 +131,7 @@ public class SeedGunShotgun extends GunProjectileToolItem {
 
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * (14.5F - this.getUpgradeTier(item)/2f));
             if (level.isServer()) {
-                level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
+                level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
             }
         }
     }

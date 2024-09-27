@@ -1,11 +1,8 @@
 package rangedarsenal;
 
-import necesse.engine.localization.message.GameMessage;
-import necesse.engine.localization.message.StaticMessage;
 import necesse.engine.modLoader.annotations.ModEntry;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.registries.*;
-import necesse.engine.sound.GameMusic;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.hostile.ZombieMob;
 import necesse.entity.mobs.hostile.ZombieArcherMob;
@@ -43,7 +40,6 @@ import rangedarsenal.projectiles.fuel.*;
 import rangedarsenal.projectiles.seed.*;
 import rangedarsenal.projectiles.shells.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,8 +56,6 @@ public class rangedarsenal {
     CONTENT
     -draw sniper crit chance under mouse?
     -web gun? Forgot that was a thing.
-    -seed bag?
-    -other mod compatibility (what mods?)
     -laser weps
     -incursion drop pools
     -range flamethrower rework
@@ -70,17 +64,17 @@ public class rangedarsenal {
 
     public static String[] SEED_AMMO_TYPES= new String[]{"grassseed","swampgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"};
     public static String[] FOOD_AMMO_TYPES= new String[]{"apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans"};
-
     public static GameSound proxyarm;
+
     public rangedarsenal(){
     }
 
     public void preInit() {
+        //append all custom bullets to vanilla list
+        //this prevents overriding bullets from other mods
         ArrayList vanilla = new ArrayList(Arrays.asList(GunProjectileToolItem.NORMAL_AMMO_TYPES));
-        vanilla.addAll(Arrays.asList("Standard_Bullet","Frozen_Bullet","Flame_Bullet","Blunt_Bullet","Leach_Bullet","Lightning_Bullet","Splintering_Bullet","Ruby_Bullet","Amethyst_Bullet","Sapphire_Bullet"));
+        vanilla.addAll(Arrays.asList("Standard_Bullet","Frozen_Bullet","Flame_Bullet","Blunt_Bullet","Leach_Bullet","Lightning_Bullet","Splintering_Bullet","Ruby_Bullet","Sapphire_Bullet"));
         GunProjectileToolItem.NORMAL_AMMO_TYPES = (String[])vanilla.toArray(new String[0]);
-        float oldMusicVolumeModifier = 0.6F;
-        GameMusic HUBMUSICVN = MusicRegistry.registerMusic("hubmusic", "music/hubmusic", (GameMessage) null, new StaticMessage("Hubmusic"), new Color(125, 164, 45), new Color(47, 105, 12)).setVolumeModifier(oldMusicVolumeModifier);
     }
 
     public void init() {
@@ -93,10 +87,6 @@ public class rangedarsenal {
         //ITEMS
         ItemRegistry.registerItem("AmmoPouchPlus", new AmmoPouchPlus(), 100f, true);
         ItemRegistry.registerItem("AmmoBagPlus", new AmmoBagPlus(), 100f, true);
-        ItemRegistry.replaceItem("ammopouch", new AmmoPouchFix(), 100f, true);
-        ItemRegistry.replaceItem("potionpouch", new PotionPouchFix(), 100f, true);
-        ItemRegistry.replaceItem("ammobag", new AmmoBagFix(), 100f, true);
-        ItemRegistry.replaceItem("potionbag", new PotionBagFix(), 100f, true);
 
         //MATERIALS
         ItemRegistry.registerItem("Niter", new Niter(), 0.05f, true);
@@ -190,6 +180,8 @@ public class rangedarsenal {
         ItemRegistry.replaceItem("sapphirerevolver", new SapphireRevolverRework(),1500f,true,true);
         ItemRegistry.registerItem("shardcannonRED", new ShardCannonRED(),1f,false,false);
         ItemRegistry.replaceItem("machinegun", new MachinegunRework(),65f,true,true);
+        ItemRegistry.registerItem("morter", new MorterCannon(),1f,false,false);
+        ItemRegistry.registerItem("morterrange", new MorterCannonRanged(),1f,false,false);
 
 
         //PROJECTILES
@@ -203,7 +195,6 @@ public class rangedarsenal {
         ProjectileRegistry.registerProjectile("LightningRifle_Bullet_Projectile", LightningRifleBulletProjectile.class,"","");
         ProjectileRegistry.registerProjectile("Sapphire_Bullet_Projectile", SapphireBulletProjectile.class,"crystalbullet","crystalbullet_shadow");
         ProjectileRegistry.registerProjectile("Ruby_Bullet_Projectile", RubyBulletProjectile.class,"rubybullet","crystalbullet_shadow");
-        //ProjectileRegistry.registerProjectile("Amethyst_Bullet_Projectile", AmethystBulletProjectile.class,"amethystbullet","crystalbullet_shadow");
         ProjectileRegistry.registerProjectile("SapphireSplosion_Bullet_Projectile", SapphireSplosionBulletProjectile.class,"crystalbullet","crystalbullet_shadow");
 
 
@@ -290,7 +281,7 @@ public class rangedarsenal {
     }
     public void postInit() {
 
-        //Add Niter
+        //Add Niter to zombie loot pool
         ZombieMob.lootTable = new LootTable(ZombieMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
         ZombieArcherMob.lootTable = new LootTable(ZombieMob.lootTable, new ChanceLootItem(0.5f, "Niter"));
         CrawlingZombieMob.lootTable = new LootTable(CrawlingZombieMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
@@ -299,29 +290,11 @@ public class rangedarsenal {
         EnchantedCrawlingZombieMob.lootTable = new LootTable(EnchantedCrawlingZombieMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
         SwampZombieMob.lootTable = new LootTable(SwampZombieMob.lootTable, new ChanceLootItem(0.45f, "Niter"));
 
-        //Replace livingshotty
+        //Replace livingshotty with produce cannon
         PestWardenHead.uniqueDrops.items.remove(2);
         PestWardenHead.uniqueDrops.items.add(2,(new LootItem("ProduceCannonMega")));
 
-        //boss gun parts
-        /*GameEvents.addListener(MobLootTableDropsEvent.class, new GameEventListener<MobLootTableDropsEvent>() {
-            @Override
-            public void onEvent(MobLootTableDropsEvent event) {
-                if (event.mob.isBoss()) {
-                    //Gamerandomchance isn't working for some reason
-                    if (GameRandom.globalRandom.getIntBetween(0,100) >= 50) {
-                        if (event.mob.getArmorFlat() < 39) {
-                            event.drops.add(new InventoryItem("Gun_Parts", 5));
-                        } else if (event.mob.getArmorFlat() > 20 && event.mob.getArmorFlat() < 39) {
-                            event.drops.add(new InventoryItem("Gun_Parts", 3));
-                        } else {
-                            event.drops.add(new InventoryItem("Gun_Parts", 1));
-                        }
-                    }
-                }
-            }
-        });*/
-
+        //add simple bullets to crate loot pool
         CrateLootTable.basicCrate.items.add(new ChanceLootItem(0.20f, "simplebullet", GameRandom.globalRandom.getIntBetween(5, 8)));
         
         //Add recipes
@@ -828,6 +801,7 @@ public class rangedarsenal {
                 return item.invItem.item.getStringID().equals("ammopouch");
             }).findFirst().ifPresent((previousPouch) -> {
                 event.resultItem.setGndData(previousPouch.invItem.getGndData());
+                event.resultItem.setGndData(event.resultItem.getGndData().setBoolean("pickupDisabled",true));
             });
         }).showAfter("chainshirt"));
         Recipes.registerModRecipe(new Recipe(

@@ -53,7 +53,7 @@ public class ShardCannonAttackHandlerFix extends MouseAngleAttackHandler {
             this.player.showAttack(this.item, attackX, attackY, seed, attackContent);
             if (this.player.isServer()) {
                 ServerClient client = this.player.getServerClient();
-                this.player.getLevel().getServer().network.sendToClientsAtExcept(new PacketShowAttack(this.player, this.item, attackX, attackY, seed, attackContent), client, client);
+                this.player.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketShowAttack(this.player, this.item, attackX, attackY, seed, attackContent), this.player, client);
             }
 
             while(true) {
@@ -80,7 +80,7 @@ public class ShardCannonAttackHandlerFix extends MouseAngleAttackHandler {
                 } else if (this.player.isServer()) {
                     ServerClient client = this.player.getServerClient();
                     Server server = this.player.getLevel().getServer();
-                    server.network.sendToClientsAtExcept(new PacketFireShardCannon(client.slot), client, client);
+                    server.network.sendToClientsWithEntityExcept(new PacketFireShardCannon(client.slot), this.player, client);
                 }
             }
         }
@@ -102,7 +102,7 @@ public class ShardCannonAttackHandlerFix extends MouseAngleAttackHandler {
         this.player.stopAttack(false);
         if (this.player.isServer()) {
             ServerClient client = this.player.getServerClient();
-            this.player.getLevel().getServer().network.sendToClientsAtExcept(new PacketPlayerStopAttack(client.slot), client, client);
+            this.player.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketPlayerStopAttack(client.slot), this.player, client);
         }
 
     }

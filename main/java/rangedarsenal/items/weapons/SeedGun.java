@@ -128,7 +128,7 @@ public class SeedGun extends GunProjectileToolItem {
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 3.5F);
         }
         if (level.isServer()) {
-            level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
+            level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
         }
     }
     public Projectile getProjectile(InventoryItem item, BulletItem bulletItem, float x, float y, float targetX, float targetY, int range, Mob owner) {

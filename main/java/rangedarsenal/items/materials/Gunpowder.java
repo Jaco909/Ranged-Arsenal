@@ -6,6 +6,7 @@ public class Gunpowder extends MatItem {
 
     public Gunpowder() {
         super(100, Rarity.NORMAL);
+        this.setItemCategory(new String[]{"materials"});
     }
 
 }

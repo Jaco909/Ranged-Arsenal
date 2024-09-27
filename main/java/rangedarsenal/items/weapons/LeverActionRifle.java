@@ -107,7 +107,7 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
 
         projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 1.0F);
         if (level.isServer()) {
-            level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
+            level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
         }
     }
     public InventoryItem onLevelInteract(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int seed, PacketReader contentReader) {
@@ -134,7 +134,7 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
 
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 1.0F);
             if (level.isServer()) {
-                level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
+                level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
             }
             SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.85f, 0.9f)));
             SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(0.5f).pitch(GameRandom.globalRandom.getFloatBetween(0.4f, 0.45f)));

@@ -132,7 +132,7 @@ public class SniperRework extends GunProjectileToolItem implements ItemInteractA
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 8F);
         }
         if (level.isServer()) {
-            level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
+            level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
         }
     }
 }

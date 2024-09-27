@@ -29,7 +29,6 @@ public class LoadingBench extends CraftingStationObject {
         this.objectHealth = 50;
         this.drawDamage = false;
         this.isLightTransparent = true;
-        //this.roomProperties.add("gunwork");
     }
     public void loadTextures() {
         super.loadTextures();

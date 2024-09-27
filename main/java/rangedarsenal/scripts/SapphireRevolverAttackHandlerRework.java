@@ -73,7 +73,7 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
             this.player.showAttack(this.item, attackX, attackY, this.seed, attackContent);
             if (this.player.isServer()) {
                 ServerClient client = this.player.getServerClient();
-                this.player.getLevel().getServer().network.sendToClientsAtExcept(new PacketShowAttack(this.player, this.item, attackX, attackY, this.seed, attackContent), client, client);
+                this.player.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketShowAttack(this.player, this.item, attackX, attackY, this.seed, attackContent), this.player, client);
             } else if (this.getChargePercent() >= 3.0F && !this.charged3) {
                 this.charged3 = true;
                 SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(2.0F));
@@ -141,14 +141,14 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
             } else if (this.player.isServer()) {
                 ServerClient client = this.player.getServerClient();
                 Server server = this.player.getLevel().getServer();
-                server.network.sendToClientsAtExcept(new PacketFireDeathRipper(client.slot), client, client);
+                server.network.sendToClientsWithEntityExcept(new PacketFireDeathRipper(client.slot), this.player, client);
             }
         }
 
         this.player.stopAttack(false);
         if (this.player.isServer()) {
             ServerClient client = this.player.getServerClient();
-            this.player.getLevel().getServer().network.sendToClientsAtExcept(new PacketPlayerStopAttack(client.slot), client, client);
+            this.player.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketPlayerStopAttack(client.slot), this.player, client);
         }
 
     }

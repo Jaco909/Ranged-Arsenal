@@ -115,7 +115,7 @@ public class GrenadeLauncher extends GunProjectileToolItem {
             projectile.moveDist((double)this.moveDist);
         }
         if (level.isServer()) {
-            level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
+            level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
         }
 
     }

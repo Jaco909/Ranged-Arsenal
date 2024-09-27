@@ -71,7 +71,7 @@ public class ShotgunRework extends GunProjectileToolItem implements ItemInteract
 
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * (20.0F - this.getUpgradeTier(item)));
             if (level.isServer()) {
-                level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
+                level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
             }
        }
 

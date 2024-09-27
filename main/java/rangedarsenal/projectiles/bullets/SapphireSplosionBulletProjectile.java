@@ -110,9 +110,9 @@ public class SapphireSplosionBulletProjectile extends BulletProjectile {
 
                                 this.doHitLogic(mob, object, x, y);
                                 if (packetSubmitter != null) {
-                                    this.getLevel().getServer().network.sendToClientsAtExcept(new PacketProjectileHit(this, x, y, mob), packetSubmitter, packetSubmitter);
+                                    this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketProjectileHit(this, x, y, mob), this, packetSubmitter);
                                 } else {
-                                    this.getLevel().getServer().network.sendToClientsAt(new PacketProjectileHit(this, x, y, mob), this.getLevel());
+                                    this.getLevel().getServer().network.sendToClientsWithEntity(new PacketProjectileHit(this, x, y, mob), this);
                                 }
                             }
                         } else if (this.isClient()) {

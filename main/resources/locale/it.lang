@@ -1,0 +1,220 @@
+[object]
+LoadingBench=Banco di Ricarica
+
+
+[item]
+Niter=Nitro
+Gunpowder=Polvere da Sparo
+Bullet_Casing=Bossolo di Proiettile
+Canister=Contenitore
+Mechanical_Parts=Parti Meccaniche di Base
+Mechanical_Parts_Good=Parti Meccaniche Avanzate
+Mechanical_Parts_Great=Parti Meccaniche Superiori
+Gun_Parts=Parti di Arma
+
+AmmoPouchPlus=Custodia Intelligente per Munizioni
+AmmoBagPlus=Borsa Intelligente per Munizioni
+
+SeedGun=Spara Semi
+SeedGunShotgun=Spargitore di Semi
+SeedGunMega=Spruzzatore di Semi
+ProduceCannon=Cannone Prodotto
+ProduceCannonMega=Blaster Prodotto
+Junk_Pistol=Pistola Spazzatura
+Normal_Revolver=Rivoltella
+Double_Barrel=Fucile a Doppia Canna
+Lever_Action_Rifle=Fucile a Leva
+AWP=AWE
+Light_Machinegun=Mitragliatrice Tascabile
+Flamethrower=Lanciafiamme
+Range_Flamethrower=Lanciafiamme Pressurrizzato
+Grenade_Launcher=Lanciagranate
+
+Gasoline=Benzina
+CryoFlame=Polvere Criogenica
+Napalm=Napalm
+MoltenSlime_Bullet=Slime Fuso
+Standard_Bullet=Proiettile Rinforzato
+Blunt_Bullet=Proiettile Contundente
+Frozen_Bullet=Proiettile Congelato
+Flame_Bullet=Proiettile Infuocato
+Lightning_Bullet=Proiettile Elettrico
+Leach_Bullet=Proiettile Liscivante
+Quality_Bullet=Proiettile di Qualità
+Freezing_Bullet=Proiettile Congelante
+Hellfire_Bullet=Proiettile di Fuoco Infernale
+crystalbullet=Proiettile di Zaffiro
+Ruby_Bullet=Proiettile di Rubino
+Amethyst_Bullet=Proiettile d'Ametista
+Grenade_Launcher_Shell=Granata a Frammentazione
+Grenade_Launcher_Mine_Shell=Granata da Breccia
+Grenade_Launcher_Fire_Shell=Granata Incendiaria
+Splintering_Bullet=Proiettile Scheggiato
+Grenade_Launcher_Proxy_Shell=Granata di Prossimità
+
+Seed_Bullet=Seed_Bullet_Basic
+Grass_Seed_Bullet=Seed_Bullet_Grass
+Cold_Seed_Bullet=Seed_Bullet_Cold
+Fire_Seed_Bullet=Seed_Bullet_Fire
+Light_Seed_Bullet=Seed_Bullet_Light
+Pierce_Seed_Bullet=Seed_Bullet_Pierce
+Metal_Seed_Bullet=Seed_Bullet_Metal
+Essence_Seed_Bullet=Seed_Bullet_Essence
+
+Apple_Food_Bullet=Apple_Food_Bullet
+Banana_Food_Bullet=Banana_Food_Bullet
+Blackberry_Food_Bullet=Blackberry_Food_Bullet
+Blueberry_Food_Bullet=Blueberry_Food_Bullet
+Cabbage_Food_Bullet=Cabbage_Food_Bullet
+Carrot_Food_Bullet=Carrot_Food_Bullet
+Chilipepper_Food_Bullet=Chilipepper_Food_Bullet
+Coconut_Food_Bullet=Coconut_Food_Bullet
+Corn_Food_Bullet=Corn_Food_Bullet
+Coffee_Food_Bullet=Coffee_Food_Bullet
+Eggplant_Food_Bullet=Eggplant_Food_Bullet
+Lemon_Food_Bullet=Lemon_Food_Bullet
+Onion_Food_Bullet=Onion_Food_Bullet
+Potato_Food_Bullet=Potato_Food_Bullet
+Pumpkin_Food_Bullet=Pumpkin_Food_Bullet
+Rice_Food_Bullet=Rice_Food_Bullet
+Strawberry_Food_Bullet=Strawberry_Food_Bullet
+Sugarbeet_Food_Bullet=Sugarbeet_Food_Bullet
+Tomato_Food_Bullet=Tomato_Food_Bullet
+Wheat_Food_Bullet=Wheat_Food_Bullet
+
+
+[itemtooltip]
+Shotguntier=Pallini per colpo: <pellets>
+
+bouncingammotipnew=§#00B715+10%§#FFFFFF danno e §#00B715+2%§#FFFFFF probabilità di critico per rimbalzo
+
+SeedgunTip=Utilizza i semi come munizioni
+SeedgunTip2=Alcuni semi possono avere effetti diversi
+
+FoodgunTip=Utilizza i prodotti agricoli come munizioni
+FoodgunTip2=Alcuni cibi possono avere effetti diversi
+
+JunkPistolTip=I proiettili cadono in modo irregolare
+
+RevolverTip=È necessario ricaricare dopo 6 colpi
+RevolverTip2=Le ricariche parziali richiedono meno tempo
+
+DoubleBarrelPrimaryTip=[input=mouse1]Colpo a canna singola
+DoubleBarrelSecondaryTip=[input=mouse2]Colpo a doppia canna
+
+CryoBlasterSecondaryTip=[input=mouse2]Colpo Criogenico
+
+Lever_Action_RifleSecondaryTip=[input=mouse2]Colpo Perforante
+
+snipertip=[input=mouse2]Attiva il mirino da cecchino
+snipertipcrit=Spara più lentamente ma aumenta la precisione e i colpi critici quando si mira
+awptip=[input=mouse2]Attiva un mirino da cecchino §#EAAC00potenziato §#FFFFFF
+
+FlamethrowerTip=Richiede carburante liquido
+FlamethrowerTipammo=Ha una probabilità del <ammouse>% di non consumare munizioni
+
+RangeFlamethrowerTip=Più debole, ma spara più lontano
+
+GrenadeLauncherTip=Lancia cartucce esplosive
+GrenadeLauncherTip2=La portata non può essere controllata
+
+LightMachinegunTip=Ti muovi più velocemente mentre spari
+LightMachinegunTip2=Difficile da controllare
+LightMachinegunTip3=Ha una probabilità del 25% di non consumare munizioni
+
+AmmoPouchPlusTip=Visualizza le munizioni attive
+AmmoBagPlusTip=Visualizza le munizioni attive
+AmmoPouchPlusTipPrimary=[input=mouse1]Passare alle munizioni correnti
+AmmoPouchPlusTip1=Non immagazzinare le munizioni raccolte
+
+FlamethrowerAmmoTip=Carburante per Lanciafiamme
+
+shardcannontip=Cristallizza i nemici in base alla probabilità di critico e ai modificatori di danno
+shardcannontipalt=[input=mouse2]Passa da una modalità di fuoco all'altra
+shardcannontipammo=Ha una probabilità del <ammouse>% di non consumare munizioni
+
+sapphirerevolvertip=Carica un proiettile che colpirà qualsiasi cosa in un istante
+sapphirerevolvertip2=Il livello di carica aumenta la probabilità di critico e la perforazione
+
+[bullettooltip]
+frozenbullettip=Rallentamento per colpo: §#00B71520%
+frozenbullettip2=Danni da §#00B6FFcongelamento§#FFFFFF al secondo: §#00B7153
+frozenbullettip3=§#00B715+50%§#FFFFFF danni contro slime e vermi
+
+bluntbullettip=Penetrazione §#EAAC00armatura§#FFFFFF: §#00B7152
+bluntbullettip2=Aumenta il contraccolpo
+bluntbullettip3=§#00B715+50%§#FFFFFF danni contro scheletri
+
+flamebullettip=Danni da §#FF6100fuoco§#FFFFFF al secondo: §#00B71512
+flamebullettip2=§#00B715+50%§#FFFFFF danni contro zombi, mummie e vampiri
+
+standardbullettip=Penetrazione §#EAAC00armatura§#FFFFFF: §#00B7152
+
+lightningbullettip=Un fulmine colpisce il mob più vicino al bersaglio
+
+leachbullettip=Restituisce una piccola quantità di vita al colpo
+leachbullettip2=Fornisce una grande quantità di resilienza al colpo
+leachbullettip3=§#00B7150.3§#FFFFFFs tempo di ricarica a effetto
+
+splinteringbullettip=Esplode in schegge all'impatto
+
+GrenadeLauncherBullettip=Una granata classica
+GrenadeLauncherMineBullettip=Distrugge gli oggetti
+GrenadeLauncherProxyBullettip=Esplode quando viene calpestata, o dopo 15 secondi
+GrenadeLauncherProxyBullettip2=I colpi diretti infliggono danni minimi
+GrenadeLauncherProxyBullettip3=Può essere impostata a qualsiasi distanza
+GrenadeLauncherFireBullettip=Crea una pozza di fuoco
+
+GasolineTip=Penetrazione §#EAAC00armatura§#FFFFFF: §#00B7153
+
+CryoFlameTip1=I bersagli si congelano dopo aver subito abbastanza danni
+CryoFlameTip2=I nemici congelati perdono la loro armatura
+
+NapalmTip=Penetrazione §#EAAC00armatura§#FFFFFF: §#00B7152
+NapalmTip2=Le fiamme rimangono attaccate al suolo
+NapalmTip3=30% portata e velocità della fiamma ridotte
+
+MoltenSlimeTip=I bersagli esplodono dopo aver subito abbastanza danni
+MoltenSlimeTip2=15% portata e velocità della fiamma aumentate
+
+seedbullettip=§#FF0000OGGETTO SOLO SVILUPPATORI
+seedbullettip2=§#FF0000NON USABILE IN GIOCO
+
+crystalammotip=Si attacca ai bersagli, esplode dopo qualche secondo\nDanno basato sulla probabilità di critico e sul danno critico
+
+rubyammotip=§#EAAC00Perfora §#FFFFFFfino a §#00B7153 §#FFFFFFbersagli
+
+[text]
+
+
+[tech]
+GUNCRAFTING=Banco di Ricarica
+
+
+[mob]
+
+
+[buff]
+CryoFreezeDebuff=Congelato
+FrostyDebuff=Congelamento
+NapalmDebuff=Ustione
+HellfireBuff=Ustione
+GasolineDebuff=Ustione
+LightningDebuff=Folgorato
+MoltenSlimeDebuff=Ricoperto di Slime
+DoubleBarrelCooldownDebuff=Colpo a Doppia Canna in Ricarica
+LeverActionRifleCooldownDebuff=Colpo Perforante in Ricarica
+BouncyDebuff=Rimbalzante
+SniperZoomBuff=Zoom da Cecchino
+AWPZoomBuff=Zoom da Cecchino
+CryoBlasterCooldownDebuff=Colpo Criogenico in Ricarica
+FreezeNerfDebuff=Congelamento
+ShardCannonCooldownDebuff=Modalità Fucile a Pompa
+
+
+[deaths]
+grenadename=granata
+shrapnel=schegge
+beamrifle1=<victim> è stato disintegrato da <attacker>
+beamrifle2=<attacker> ha incrociato i flussi su <victim>
+beamcharged=<victim> ha lasciato che si sovraccaricasse

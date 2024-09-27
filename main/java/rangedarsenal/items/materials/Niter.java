@@ -10,11 +10,6 @@ public class Niter extends MatItem {
 
     public Niter() {
         super(100, Rarity.NORMAL);
-        //this.keyWords.add(0,"!wack!");
+        this.setItemCategory(new String[]{"materials"});
     }
-    /*public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
-        ListGameTooltips tooltips = super.getTooltips(item, perspective, blackboard);
-        tooltips.add(this.keyWords.get(0));
-        return tooltips;
-    }*/
 }

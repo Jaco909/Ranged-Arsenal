@@ -347,34 +347,49 @@ public class AmmoPouchPlus extends PouchItem {
             if (internalInventory.getAmount(i) > 0) {
                 if (!level.isServer()) {
                     if (internalInventory.getItem(i).item.getClass().toString().toLowerCase().contains("ball")) {
+                        //cannon ball exclusive
                         Color avg = new Color(161, 161, 161);
                         level.hudManager.addElement((new ItemPickupTextSpecial(player, internalInventory.getItem(i), avg)));
                         break;
                     } else if (internalInventory.getItem(i).item.getClass().toString().toLowerCase().contains("arrow")) {
-                        int red = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(12, 11) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(14, 11) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(16, 9)) / 3);
-                        int green = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(12, 11) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(14, 11) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(16, 9)) / 3);
-                        int blue = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(12, 11) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(14, 11) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(16, 9)) / 3);
-                        Color avg = new Color(red, green, blue);
-                        level.hudManager.addElement((new ItemPickupTextSpecial(player, internalInventory.getItem(i), avg)));
+                        //arrow exclusive
+                        if (this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getAlpha(4,6) != 0) {
+                            //vanilla textures
+                            int red = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(4, 6) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(6, 8) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(8, 10)) / 3);
+                            int green = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(4, 6) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(6, 8) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(8, 10)) / 3);
+                            int blue = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(4, 6) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(6, 8) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(8, 10)) / 3);
+                            Color avg = new Color(red, green, blue);
+                            level.hudManager.addElement((new ItemPickupTextSpecial(player, internalInventory.getItem(i), avg)));
+                        } else {
+                            //OG textures
+                            int red = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(14, 7) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(14, 9) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(12, 11)) / 3);
+                            int green = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(14, 7) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(14, 9) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getGreen(12, 11)) / 3);
+                            int blue = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(14, 7) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(14, 9) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getBlue(12, 11)) / 3);
+                            Color avg = new Color(red, green, blue);
+                            level.hudManager.addElement((new ItemPickupTextSpecial(player, internalInventory.getItem(i), avg)));
+                        }
                         break;
                     } else {
-                        int red = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(13, 16) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(16, 16) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(18, 16)) / 3);
-                        int green = Math.toIntExact((internalInventory.getItem(i).item.getItemSprite(item, player).texture.getGreen(13, 16) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getGreen(16, 16) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getGreen(18, 16)) / 3);
-                        int blue = Math.toIntExact((internalInventory.getItem(i).item.getItemSprite(item, player).texture.getBlue(13, 16) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getBlue(16, 16) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getBlue(18, 16)) / 3);
+                        //bullets, fuel, shells
+                        int red = Math.toIntExact((this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(13, 15) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(16, 15) + this.getInternalInventory(item).getItem(i).item.getItemSprite(item, player).texture.getRed(18, 15)) / 3);
+                        int green = Math.toIntExact((internalInventory.getItem(i).item.getItemSprite(item, player).texture.getGreen(13, 15) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getGreen(16, 15) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getGreen(18, 15)) / 3);
+                        int blue = Math.toIntExact((internalInventory.getItem(i).item.getItemSprite(item, player).texture.getBlue(13, 15) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getBlue(16, 15) + internalInventory.getItem(i).item.getItemSprite(item, player).texture.getBlue(18, 15)) / 3);
+                        if (red + 50 < 255 && blue + 50 < 255 && green + 50 < 255) {
+                            //brighten colors of bullets, typically very dark
+                            red = red + 50;
+                            blue = blue + 50;
+                            green = green + 50;
+                        }
                         Color avg = new Color(red, green, blue);
                         level.hudManager.addElement((new ItemPickupTextSpecial(player, internalInventory.getItem(i), avg)));
                         break;
                     }
                 } else {
-                    //level.hudManager.addElement((new ItemPickupTextSpecial(player, internalInventory.getItem(i), new Color(161, 161, 161))));
                     break;
                 }
             }
         }
 
         return item;
-    }
-    public boolean inventoryAddItem(Level level, PlayerMob player, Inventory myInventory, int mySlot, InventoryItem me, InventoryItem input, String purpose, boolean isValid, int stackLimit, boolean combineIsNew, InventoryAddConsumer addConsumer) {
-        return false;
     }
 }

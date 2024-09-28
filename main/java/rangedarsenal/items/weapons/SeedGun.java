@@ -54,6 +54,7 @@ public class SeedGun extends GunProjectileToolItem {
     }
 
     public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
+        System.out.println(this.type);
         int bulletID = contentReader.getNextShortUnsigned();
         if (bulletID != 65535) {
             Item bullet = ItemRegistry.getItem(bulletID);
@@ -89,7 +90,7 @@ public class SeedGun extends GunProjectileToolItem {
                     } else if (bullet.idData.getStringID().equalsIgnoreCase("kew_tier_2_seed")) {
                         bullet = ItemRegistry.getItem("Essence_Seed_Bullet");
                         this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("grassseed") || bullet.idData.getStringID().equalsIgnoreCase("swampgrassseed")) {
+                    } else if (bullet.idData.getStringID().equalsIgnoreCase("grassseed") || bullet.idData.getStringID().equalsIgnoreCase("swampgrassseed") || bullet.idData.getStringID().equalsIgnoreCase("plainsgrassseed") || bullet.idData.getStringID().equalsIgnoreCase("overgrownplainsgrassseed")) {
                         bullet = ItemRegistry.getItem("Grass_Seed_Bullet");
                         this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
                     } else {

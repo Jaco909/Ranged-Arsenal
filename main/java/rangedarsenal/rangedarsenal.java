@@ -62,7 +62,7 @@ public class rangedarsenal {
     -better ammo bag?
      */
 
-    public static String[] SEED_AMMO_TYPES= new String[]{"grassseed","swampgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"};
+    public static String[] SEED_AMMO_TYPES= new String[]{"grassseed","swampgrassseed","plainsgrassseed","overgrownplainsgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"};
     public static String[] FOOD_AMMO_TYPES= new String[]{"apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans"};
     public static GameSound proxyarm;
 

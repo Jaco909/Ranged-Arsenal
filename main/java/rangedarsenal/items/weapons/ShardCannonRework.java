@@ -42,17 +42,16 @@ import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
+import static rangedarsenal.rangedarsenal.ShardCannonREDInvTex;
+import static rangedarsenal.rangedarsenal.ShardCannonREDtex;
+
 public class ShardCannonRework extends GunProjectileToolItem implements ItemInteractAction {
     public ShardCannonRework() {
         super(NORMAL_AMMO_TYPES, 500);
         this.rarity = Rarity.RARE;
         this.attackAnimTime.setBaseValue(160);
         this.ammoConsumeChance = 1.00F;
-        if (ItemRegistry.itemExists("novafragment")) {
-            this.attackDamage.setBaseValue(28.0F).setUpgradedValue(1.0F, 28.0F);
-        } else {
-            this.attackDamage.setBaseValue(28.0F).setUpgradedValue(1.0F, 28.0F);
-        }
+        this.attackDamage.setBaseValue(28.0F).setUpgradedValue(1.0F, 28.0F);
         this.attackXOffset = 12;
         this.attackYOffset = 14;
         this.resilienceGain.setBaseValue(0.3F);
@@ -64,22 +63,14 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
     }
     public GameSprite getAttackSprite(InventoryItem item, PlayerMob player) {
         if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-            try {
-                return new GameSprite(GameTexture.fromFileRaw("player/weapons/shardcannonRED"));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            return new GameSprite(ShardCannonREDtex,this.attackTexture.getWidth(),this.attackTexture.getHeight());
         } else {
             return this.attackTexture != null ? new GameSprite(this.attackTexture) : new GameSprite(this.getItemSprite(item, player), 24);
         }
     }
     public GameSprite getItemSprite(InventoryItem item, PlayerMob perspective) {
         if (perspective.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-            try {
-                return new GameSprite(GameTexture.fromFileRaw("items/shardcannonRED"));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            return new GameSprite(ShardCannonREDInvTex,32);
         } else {
             return new GameSprite(this.itemTexture, 32);
         }
@@ -91,7 +82,7 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
     public ListGameTooltips getPreEnchantmentTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         ListGameTooltips tooltips = super.getPreEnchantmentTooltips(item, perspective, blackboard);
         tooltips.add(Localization.translate("itemtooltip", "shardcannontipalt"));
-        //doing this dynamicly looks gross, I have to make another if pyramid
+        //doing this dynamically looks gross, I have to make another if pyramid
         //I'm also lazy
         if (this.getUpgradeTier(item) == 1.0f) {
             tooltips.add(Localization.translate("itemtooltip", "shardcannontipammo","ammouse",10));

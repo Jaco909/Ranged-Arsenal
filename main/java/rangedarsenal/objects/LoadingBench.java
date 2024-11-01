@@ -38,11 +38,11 @@ public class LoadingBench extends CraftingStationObject {
         return rotation % 2 == 0 ? new Rectangle(x * 32 + 2, y * 32 + 6, 28, 20) : new Rectangle(x * 32 + 4, y * 32 + 2, 24, 28);
     }
 
-    public List<ObjectHoverHitbox> getHoverHitboxes(Level level, int tileX, int tileY) {
+    /*public List<ObjectHoverHitbox> getHoverHitboxes(Level level, int tileX, int tileY) {
         List<ObjectHoverHitbox> list = super.getHoverHitboxes(level, tileX, tileY);
         list.add(new ObjectHoverHitbox(tileX, tileY, 0, -16, 32, 16));
         return list;
-    }
+    }*/
 
     public void addDrawables(List<LevelSortedDrawable> list, OrderableDrawables tileList, Level level, int tileX, int tileY, TickManager tickManager, GameCamera camera, PlayerMob perspective) {
         GameLight light = level.getLightLevel(tileX, tileY);

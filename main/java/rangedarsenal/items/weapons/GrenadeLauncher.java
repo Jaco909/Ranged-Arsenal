@@ -6,7 +6,6 @@ import necesse.engine.localization.message.GameMessage;
 import necesse.engine.localization.message.LocalMessage;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
-import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.registries.ItemRegistry;
 import necesse.engine.sound.SoundEffect;
 import necesse.engine.sound.SoundManager;
@@ -19,7 +18,6 @@ import necesse.entity.mobs.friendly.human.HumanMob;
 import necesse.entity.projectile.Projectile;
 import necesse.entity.projectile.modifiers.ResilienceOnHitProjectileModifier;
 import necesse.gfx.GameResources;
-import necesse.gfx.drawOptions.itemAttack.ItemAttackDrawOptions;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.PlayerInventorySlot;
@@ -30,9 +28,11 @@ import necesse.level.maps.Level;
 
 import java.awt.*;
 
+import static rangedarsenal.rangedarsenal.SHELL_AMMO_TYPES;
+
 public class GrenadeLauncher extends GunProjectileToolItem {
     public GrenadeLauncher() {
-        super(new String[]{"Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell"}, 2000);
+        super(SHELL_AMMO_TYPES, 2000);
         this.rarity = Rarity.RARE;
         this.attackAnimTime.setBaseValue(1500).setUpgradedValue(1.0F, 1400).setUpgradedValue(2.0F, 1300).setUpgradedValue(3.0F, 1200).setUpgradedValue(4.0F, 1000).setUpgradedValue(5.0F, 975);
         this.attackDamage.setBaseValue(100.0F).setUpgradedValue(1.0F, 150.0F).setUpgradedValue(5.0F, 185.0F);

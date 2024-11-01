@@ -1,6 +1,7 @@
 package rangedarsenal;
 
 import necesse.engine.modLoader.annotations.ModEntry;
+import necesse.engine.network.PacketReader;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.registries.*;
 import necesse.engine.util.GameRandom;
@@ -13,7 +14,12 @@ import necesse.entity.mobs.hostile.EnchantedZombieArcherMob;
 import necesse.entity.mobs.hostile.SwampZombieMob;
 import necesse.entity.mobs.hostile.bosses.PestWardenHead;
 import necesse.engine.sound.gameSound.GameSound;
+import necesse.gfx.GameResources;
+import necesse.gfx.forms.presets.containerComponent.object.CraftingStationContainerForm;
+import necesse.gfx.gameTexture.GameSprite;
 import necesse.gfx.gameTexture.GameTexture;
+import necesse.gfx.gameTexture.GameTextureSection;
+import necesse.inventory.container.object.CraftingStationContainer;
 import necesse.inventory.lootTable.LootTable;
 import necesse.inventory.lootTable.lootItem.ChanceLootItem;
 import necesse.inventory.lootTable.lootItem.LootItem;
@@ -23,6 +29,7 @@ import necesse.inventory.recipe.Recipe;
 import necesse.inventory.recipe.Recipes;
 import necesse.inventory.item.toolItem.projectileToolItem.gunProjectileToolItem.GunProjectileToolItem;
 
+import necesse.level.gameObject.GameObject;
 import rangedarsenal.buffs.*;
 import rangedarsenal.events.*;
 import rangedarsenal.items.bullets.food.*;
@@ -40,8 +47,11 @@ import rangedarsenal.projectiles.fuel.*;
 import rangedarsenal.projectiles.seed.*;
 import rangedarsenal.projectiles.shells.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 
 @ModEntry
 public class rangedarsenal {
@@ -62,19 +72,34 @@ public class rangedarsenal {
     -better ammo bag?
      */
 
-    public static String[] SEED_AMMO_TYPES= new String[]{"grassseed","swampgrassseed","plainsgrassseed","overgrownplainsgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"};
-    public static String[] FOOD_AMMO_TYPES= new String[]{"apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans"};
+    //LOAD CONSTANTS
+    //public static HashSet<String> SEED_AMMO_TYPES = new HashSet(Arrays.asList("grassseed","swampgrassseed","plainsgrassseed","overgrownplainsgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"));
+    public static HashSet<String> FOOD_AMMO_TYPES = new HashSet(Arrays.asList("apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans"));
+    public static HashSet<String> FLAME_AMMO_TYPES = new HashSet(Arrays.asList("Gasoline", "CryoFlame", "Napalm", "MoltenSlime_Bullet"));
+    public static HashSet<String> SHELL_AMMO_TYPES = new HashSet(Arrays.asList("Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell"));
+
     public static GameSound proxyarm;
+    public static GameSprite ShardCannonREDtex;
+    public static GameSprite ShardCannonREDInvTex;
+    public static GameTexture LoadingBenchtex;
+    public static GameTexture GlProxyArmingTex;
+    public static GameTexture GlProxyArmedTex;
+
 
     public rangedarsenal(){
     }
-
     public void preInit() {
         //append all custom bullets to vanilla list
         //this prevents overriding bullets from other mods
-        ArrayList vanilla = new ArrayList(Arrays.asList(GunProjectileToolItem.NORMAL_AMMO_TYPES));
-        vanilla.addAll(Arrays.asList("Standard_Bullet","Frozen_Bullet","Flame_Bullet","Blunt_Bullet","Leach_Bullet","Lightning_Bullet","Splintering_Bullet","Ruby_Bullet","Sapphire_Bullet"));
-        GunProjectileToolItem.NORMAL_AMMO_TYPES = (String[])vanilla.toArray(new String[0]);
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Standard_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Frozen_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Flame_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Blunt_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Leach_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Lightning_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Splintering_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Ruby_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Sapphire_Bullet");
     }
 
     public void init() {
@@ -157,13 +182,12 @@ public class rangedarsenal {
         //ItemRegistry.registerItem("Grenade_Launcher_Fire_Shell", new GrenadeLauncherFireBullet(), 0.5f, false,false);
 
         //WEAPONS
-        ItemRegistry.registerItem("Junk_Pistol", new JunkPistol(), 90f, true);
-        ItemRegistry.registerItem("Lever_Action_Rifle", new LeverActionRifle(), 100f, true);
-        ItemRegistry.registerItem("Double_Barrel", new DoubleBarrel(), 200f, true);
-        ItemRegistry.registerItem("Light_Machinegun", new LightMachinegun(), 300f, true);
-        ItemRegistry.registerItem("Normal_Revolver", new NormalRevolver(), 300f, true);
-        ItemRegistry.registerItem("Flamethrower", new Flamethrower(), 300f, true);
-        ItemRegistry.registerItem("Range_Flamethrower", new RangeFlamethrower(), 300f, false,false);
+        ItemRegistry.registerItem("Junk_Pistol", new JunkPistol(), 90f, true,true);
+        ItemRegistry.registerItem("Lever_Action_Rifle", new LeverActionRifle(), 100f, true,true);
+        ItemRegistry.registerItem("Double_Barrel", new DoubleBarrel(), 200f, true,true);
+        ItemRegistry.registerItem("Light_Machinegun", new LightMachinegun(), 300f, true,true);
+        ItemRegistry.registerItem("Normal_Revolver", new NormalRevolver(), 300f, true,true);
+        ItemRegistry.registerItem("Flamethrower", new Flamethrower(), 300f, true,true);
         ItemRegistry.registerItem("Grenade_Launcher", new GrenadeLauncher(), 400f, true,true);
         ItemRegistry.replaceItem("sniperrifle", new SniperRework(),100f,true,true);
         ItemRegistry.replaceItem("shotgun", new ShotgunRework(),100f,true,true);
@@ -174,12 +198,14 @@ public class rangedarsenal {
         ItemRegistry.registerItem("SeedGunMega", new SeedGunMega(),300f,true,true);
         ItemRegistry.registerItem("ProduceCannon", new ProduceCannon(),200f,true,true);
         ItemRegistry.registerItem("ProduceCannonMega", new ProduceCannonMega(),300f,true,true);
-        ItemRegistry.registerItem("LightningRifle", new LightningRifle(),1f,false,false);
-        ItemRegistry.registerItem("BeamRifle", new BeamRifle(),1f,false,false);
         ItemRegistry.replaceItem("shardcannon", new ShardCannonRework(),1500f,true,true);
         ItemRegistry.replaceItem("sapphirerevolver", new SapphireRevolverRework(),1500f,true,true);
-        ItemRegistry.registerItem("shardcannonRED", new ShardCannonRED(),1f,false,false);
         ItemRegistry.replaceItem("machinegun", new MachinegunRework(),65f,true,true);
+
+        //unused weapons
+        ItemRegistry.registerItem("Range_Flamethrower", new RangeFlamethrower(), 300f, false,false);
+        ItemRegistry.registerItem("LightningRifle", new LightningRifle(),1f,false,false);
+        ItemRegistry.registerItem("BeamRifle", new BeamRifle(),1f,false,false);
         ItemRegistry.registerItem("morter", new MorterCannon(),1f,false,false);
         ItemRegistry.registerItem("morterrange", new MorterCannonRanged(),1f,false,false);
 
@@ -261,6 +287,8 @@ public class rangedarsenal {
         BuffRegistry.registerBuff("HealDelayBuff", new HealDelayBuff());
         BuffRegistry.registerBuff("FreezeNerfDebuff", new FreezeNerfDebuff());
         BuffRegistry.registerBuff("ShardCannonCooldownDebuff", new ShardCannonCooldownDebuff());
+        BuffRegistry.registerBuff("MorterPlacementBuff", new MorterPlacementBuff());
+        BuffRegistry.registerBuff("MorterMegaPlacementBuff", new MorterPlacementBuff());
 
         //EVENTS
         LevelEventRegistry.registerEvent("SlimeSplosionEvent", SlimeSplosionEvent.class);
@@ -276,7 +304,25 @@ public class rangedarsenal {
 
     }
     public void initResources() {
-        GameTexture LoadingBench = GameTexture.fromFile("objects/LoadingBench");
+
+        //TEXTURES
+        LoadingBenchtex = GameTexture.fromFile("objects/LoadingBench");
+        GlProxyArmingTex = GameTexture.fromFile("projectiles/Grenade_Launcher_Proxy_Projectile_arming");
+        GlProxyArmedTex = GameTexture.fromFile("projectiles/Grenade_Launcher_Proxy_Projectile_armed");
+
+        //SPRITES
+        try {
+            ShardCannonREDtex = new GameSprite(GameTexture.fromFileRaw("player/weapons/shardcannonRED"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            ShardCannonREDInvTex = new GameSprite(GameTexture.fromFileRaw("items/shardcannonRED"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        //SOUNDS
         proxyarm = GameSound.fromFile("activate_single_mono");
     }
     public void postInit() {
@@ -330,7 +376,7 @@ public class rangedarsenal {
                         new Ingredient("ironbar", 10),
                         new Ingredient("anylog", 10)
                 }
-        ).showAfter("advancedworkstation"));
+        ).showAfter("ironanvil"));
         Recipes.registerModRecipe(new Recipe(
                 "Gunpowder",
                 10,

@@ -36,6 +36,7 @@ public class AmmoPouchPlus extends PouchItem {
     //3 cannon
     //4 flamer
     //5 GL
+    //6 seed debug
     int count;
     int slot;
     int slot2;
@@ -92,6 +93,8 @@ public class AmmoPouchPlus extends PouchItem {
                 } else if (perspective.getSelectedItem().item.getClass().toString().toLowerCase().contains("launcher")) {
                     //System.out.println("Launcher!");
                     heldwep = 5;
+                } else if (perspective.getSelectedItem().item.getClass().toString().toLowerCase().contains("seed")) {
+                    heldwep = 6;
                 } else {
                     //System.out.println("GUN!");
                     heldwep = 2;

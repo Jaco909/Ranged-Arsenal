@@ -22,11 +22,13 @@ import necesse.level.maps.Level;
 
 import java.awt.*;
 
+import static rangedarsenal.rangedarsenal.FLAME_AMMO_TYPES;
+
 public class RangeFlamethrower extends GunProjectileToolItem {
     //superseded by upgraded flamethrower
     //will probably turn this into something else
     public RangeFlamethrower() {
-        super(new String[]{"Gasoline", "CryoFlame", "Napalm", "MoltenSlime_Bullet"}, 500);
+        super(FLAME_AMMO_TYPES, 500);
         this.rarity = Rarity.LEGENDARY;
         this.attackAnimTime.setBaseValue(20);
         this.attackDamage.setBaseValue(5F);

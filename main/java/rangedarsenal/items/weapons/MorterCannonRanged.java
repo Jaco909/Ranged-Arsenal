@@ -11,9 +11,11 @@ import necesse.gfx.GameResources;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.item.toolItem.projectileToolItem.gunProjectileToolItem.GunProjectileToolItem;
 
+import static rangedarsenal.rangedarsenal.SHELL_AMMO_TYPES;
+
 public class MorterCannonRanged extends GunProjectileToolItem {
     public MorterCannonRanged() {
-        super(new String[]{"Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell"}, 2000);
+        super(SHELL_AMMO_TYPES, 2000);
         this.rarity = Rarity.LEGENDARY;
         this.attackAnimTime.setBaseValue(20);
         this.attackDamage.setBaseValue(5F);

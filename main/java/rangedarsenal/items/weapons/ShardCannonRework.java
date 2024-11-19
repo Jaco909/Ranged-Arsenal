@@ -62,17 +62,27 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }
     public GameSprite getAttackSprite(InventoryItem item, PlayerMob player) {
-        if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-            return new GameSprite(ShardCannonREDtex,this.attackTexture.getWidth(),this.attackTexture.getHeight());
+        if (player == null) {
+            //prevent crash when drawing in stat menu
+            return new GameSprite(this.itemTexture, 32);
         } else {
-            return this.attackTexture != null ? new GameSprite(this.attackTexture) : new GameSprite(this.getItemSprite(item, player), 24);
+            if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
+                return new GameSprite(ShardCannonREDtex, this.attackTexture.getWidth(), this.attackTexture.getHeight());
+            } else {
+                return this.attackTexture != null ? new GameSprite(this.attackTexture) : new GameSprite(this.getItemSprite(item, player), 24);
+            }
         }
     }
     public GameSprite getItemSprite(InventoryItem item, PlayerMob perspective) {
-        if (perspective.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-            return new GameSprite(ShardCannonREDInvTex,32);
-        } else {
+        if (perspective == null) {
+            //prevent crash when drawing in stat menu
             return new GameSprite(this.itemTexture, 32);
+        } else {
+            if (perspective.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
+                return new GameSprite(ShardCannonREDInvTex, 32);
+            } else {
+                return new GameSprite(this.itemTexture, 32);
+            }
         }
     }
     protected float getAmmoConsumeChance(PlayerMob player, InventoryItem item) {

@@ -40,6 +40,10 @@ import rangedarsenal.events.CrystalSplosionEvent;
 public class SapphireBulletProjectile extends BulletProjectile {
     int StartX;
     int StartY;
+    PlayerMob player;
+    float crystallizeMod;
+    int stackThreshold;
+    float thresholdMod;
     public SapphireBulletProjectile() {
     }
 
@@ -66,9 +70,21 @@ public class SapphireBulletProjectile extends BulletProjectile {
         if (this.isServer() && mob != null) {
             BuffManager attackerBM = this.getAttackOwner().buffManager;
             if (attackerBM != null) {
-                float thresholdMod = (Float)attackerBM.getModifier(BuffModifiers.CRIT_CHANCE) + (Float)attackerBM.getModifier(BuffModifiers.MELEE_CRIT_CHANCE);
-                float crystallizeMod = (Float)attackerBM.getModifier(BuffModifiers.CRIT_DAMAGE) + (Float)attackerBM.getModifier(BuffModifiers.MELEE_CRIT_DAMAGE);
-                int stackThreshold = (int)GameMath.limit(10.0F - (7.0F * thresholdMod), 5.0F, 10.0F);
+                if (this.getOwner().isPlayer) {
+                    player = (PlayerMob)this.getOwner();
+                    thresholdMod = (Float)attackerBM.getModifier(BuffModifiers.CRIT_CHANCE) + (Float)attackerBM.getModifier(BuffModifiers.MELEE_CRIT_CHANCE);
+                    crystallizeMod = (Float)attackerBM.getModifier(BuffModifiers.CRIT_DAMAGE) + (Float)attackerBM.getModifier(BuffModifiers.MELEE_CRIT_DAMAGE);
+                    if (player.getSelectedItem().item.getStringID().equalsIgnoreCase("deathripper")) {
+                        stackThreshold = (int)GameMath.limit((10.0F - (7.0F * thresholdMod)), 5.0F, 6.0F);
+                    } else {
+                        stackThreshold = (int)GameMath.limit((10.0F - (7.0F * thresholdMod)), 5.0F, Math.ceil(10.0F/(Math.ceil((float)player.getSelectedItem().item.getAttackAnimTime(player.getSelectedItem(), player) /160))));
+                    }
+                    //System.out.println(stackThreshold);
+                } else {
+                    thresholdMod = (Float)attackerBM.getModifier(BuffModifiers.CRIT_CHANCE) + (Float)attackerBM.getModifier(BuffModifiers.MELEE_CRIT_CHANCE);
+                    crystallizeMod = (Float)attackerBM.getModifier(BuffModifiers.CRIT_DAMAGE) + (Float)attackerBM.getModifier(BuffModifiers.MELEE_CRIT_DAMAGE);
+                    stackThreshold = (int)GameMath.limit((10.0F - (7.0F * thresholdMod)), 5.0F, 10.0F);
+                }
                 float crystallizeDamageMultiplier = GameMath.limit(0.5F + ((crystallizeMod-2)/2) + (thresholdMod/2), 0.5F, 2.0F);
 
                 Buff crystallizeBuff = Debuffs.CRYSTALLIZE_BUFF;
@@ -81,7 +97,7 @@ public class SapphireBulletProjectile extends BulletProjectile {
                     mob.isServerHit(finalDamage, 0.0F, 0.0F, 0.0F, this);
 
                     int shotCount = Math.round(GameMath.limit(this.getDamage().damage/15,1f,15f));
-                    System.out.println(shotCount);
+                    //System.out.println(shotCount);
 
                     for(int i = 0; i <= shotCount; ++i) {
                         GameRandom random = GameRandom.globalRandom;

@@ -36,6 +36,8 @@ public class NapalmBulletProjectile extends BulletProjectile {
         super.init();
         this.particleSpeedMod = 0.5F;
         this.piercing = 6;
+        this.canBounce = true;
+        this.bouncing = 1;
     }
     public Color getParticleColor() {
         return new Color(250, 70, 0);
@@ -55,7 +57,7 @@ public class NapalmBulletProjectile extends BulletProjectile {
         super.doHitLogic(mob, object, x, y);
         if (this.isServer()) {
             if (mob != null) {
-                ActiveBuff ab = new ActiveBuff("FlamerSuperSlow", mob, 0.15F, this.getOwner());
+                ActiveBuff ab = new ActiveBuff("FlamerSuperSlow", mob, 0.2F, this.getOwner());
                 ActiveBuff ab2 = new ActiveBuff("NapalmDebuff", mob, 5.0F, this.getOwner());
                 mob.addBuff(ab, true);
                 mob.addBuff(ab2, true);
@@ -77,7 +79,17 @@ public class NapalmBulletProjectile extends BulletProjectile {
             this.clearHits();
             this.checkHitCollision(new Line2D.Float(this.x, this.y, this.x + 3, this.y + 3));
         }
+        if (this.bounced >= 1) {
+            this.setDistance(32);
+        }
     }
+    /*public int bounceddistnew() {
+        if (!bouncepast) {
+            this.bouncedist = GameRandom.globalRandom.getIntBetween(20, 80);
+            bouncepast = true;
+        }
+        return this.bouncedist;
+    }*/
     public void clientTick() {
         if (this.sendPositionUpdate) {
             if (this.isClient() && this.handlingClient == this.getLevel().getClient().getClient()) {
@@ -110,6 +122,9 @@ public class NapalmBulletProjectile extends BulletProjectile {
             }
             this.clearHits();
             this.checkHitCollision(new Line2D.Float(this.x, this.y, this.x + 3, this.y + 3));
+        }
+        if (this.bounced >= 1) {
+            this.setDistance(32);
         }
     }
     protected void spawnDeathParticles() {

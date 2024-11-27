@@ -8,13 +8,15 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.shells.GrenadeLauncherMineProjectile;
 
 public class GrenadeLauncherMineShell extends BulletItem {
     public GrenadeLauncherMineShell() {
         super(100);
-        this.damage = 25;
+        this.damage = 50;
+        this.stackSize = 5000;
     }
 
     public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {

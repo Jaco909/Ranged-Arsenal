@@ -9,15 +9,17 @@ import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.item.Item;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.fuel.NapalmBulletProjectile;
 
 public class NapalmBullet extends BulletItem {
     public NapalmBullet() {
         super(1000);
-        this.damage = 5;
+        this.damage = 3;
         this.armorPen = 2;
         this.rarity = Item.Rarity.COMMON;
+        this.stackSize = 5000;
     }
 
     public boolean overrideProjectile() {

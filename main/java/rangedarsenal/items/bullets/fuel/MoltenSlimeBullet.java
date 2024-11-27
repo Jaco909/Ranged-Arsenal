@@ -8,6 +8,7 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.fuel.MoltenSlimeBulletProjectile;
 
@@ -17,6 +18,7 @@ public class MoltenSlimeBullet extends BulletItem {
         this.damage = 1;
         this.armorPen = 0;
         this.rarity = Rarity.RARE;
+        this.stackSize = 5000;
     }
 
     public boolean overrideProjectile() {

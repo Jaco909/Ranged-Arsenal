@@ -16,10 +16,7 @@ import necesse.engine.util.GameRandom;
 import necesse.engine.util.LineHitbox;
 import necesse.entity.levelEvent.mobAbilityLevelEvent.LightningTrailEvent;
 import necesse.entity.levelEvent.mobAbilityLevelEvent.MobAbilityLevelEvent;
-import necesse.entity.mobs.Attacker;
-import necesse.entity.mobs.DeathMessageTable;
-import necesse.entity.mobs.GameDamage;
-import necesse.entity.mobs.Mob;
+import necesse.entity.mobs.*;
 import necesse.entity.mobs.buffs.ActiveBuff;
 import necesse.entity.particle.Particle.GType;
 import necesse.entity.trails.LightningTrail;
@@ -49,7 +46,8 @@ public class LightningJumperEvent extends LightningTrailEvent implements Attacke
     public LightningJumperEvent() {
     }
     public Mob source;
-    public LightningJumperEvent(Mob owner, GameDamage damage, float resilienceGain, int startX, int startY, int targetX, int targetY, int seed, Mob mob) {
+    public PlayerMob owner;
+    public LightningJumperEvent(PlayerMob owner, GameDamage damage, float resilienceGain, int startX, int startY, int targetX, int targetY, int seed, Mob mob) {
         this.startX = startX;
         this.startY = startY;
         this.targetX = targetX;
@@ -57,11 +55,12 @@ public class LightningJumperEvent extends LightningTrailEvent implements Attacke
         if (damage.damage == 0f) {
             this.damage = new GameDamage(30F,0F);
         } else {
-            this.damage = new GameDamage(damage.damage/6,damage.armorPen,0f);
+            this.damage = new GameDamage(damage.damage/6f,damage.armorPen,0f);
         }
         this.resilienceGain = resilienceGain;
         this.seed = seed;
         this.source = mob;
+        this.owner = owner;
     }
     public void applySpawnPacket(PacketReader reader) {
         super.applySpawnPacket(reader);
@@ -132,16 +131,22 @@ public class LightningJumperEvent extends LightningTrailEvent implements Attacke
                     source.getLevel().entityManager.mobs.streamArea(point.x,point.y,1).forEach((m) -> {
                         if (m != source) {
                             if (((m.x <= (point.x+33)) && (m.x >= (point.x-33))) && ((m.y <= (point.y+33)) && (m.y >= (point.y-33)))) {
-                                if (!hasHit(m)) {
-                                    int damage = Math.round(this.damage.damage);
-                                    if (damage > 100) {
-                                        damage = 100;
-                                    } else if (damage <= 0) {
-                                        damage = 1;
+                                if (!m.isSameTeam(owner)) {
+                                    //not team member
+                                    if ((!m.isPlayer && m.canBeHit(owner) && m.canBeTargeted(owner, owner.getNetworkClient())) || (m.isPlayer && this.owner.getServerClient().pvpEnabled)) {
+                                        //not friendly npc or player w/o pvp
+                                        if (!hasHit(m)) {
+                                            int damage = Math.round(this.damage.damage);
+                                            if (damage > 50) {
+                                                damage = 50;
+                                            } else if (damage <= 0) {
+                                                damage = 1;
+                                            }
+                                            m.setHealth(m.getHealth() - damage, this);
+                                            m.spawnDamageText(damage, 12, false);
+                                            this.hits.add(m.getUniqueID());
+                                        }
                                     }
-                                    m.setHealth(m.getHealth() - damage, this);
-                                    m.spawnDamageText(damage, 12, false);
-                                    this.hits.add(m.getUniqueID());
                                 }
                             }
                         }
@@ -168,18 +173,26 @@ public class LightningJumperEvent extends LightningTrailEvent implements Attacke
                 if (source.getLevel().entityManager.mobs.streamArea((float) point.getX(),(float) point.getY(),1) != null) {
                     source.getLevel().entityManager.mobs.streamArea((float) point.getX(),(float) point.getY(),1).forEach((m) -> {
                         if (m != source) {
+                            //not source
                             if (((m.x <= (point.getX()+33)) && (m.x >= (point.getX()-33))) && ((m.y <= (point.getY()+33)) && (m.y >= (point.getY()-33)))) {
-                                if (!hasHit(m)) {
-                                    int damage = Math.round(this.damage.damage);
-                                    if (damage > 40) {
-                                        damage = 40;
-                                    } else if (damage <= 0) {
-                                        damage = 1;
+                                //in range
+                                if (!m.isSameTeam(owner)) {
+                                    //not team member
+                                    if ((!m.isPlayer && m.canBeHit(owner) && m.canBeTargeted(owner, owner.getNetworkClient())) || (m.isPlayer && this.owner.getServerClient().pvpEnabled)) {
+                                        //not friendly npc or player w/o pvp
+                                        if (!hasHit(m)) {
+                                            int damage = Math.round(this.damage.damage);
+                                            if (damage > 50) {
+                                                damage = 50;
+                                            } else if (damage <= 0) {
+                                                damage = 1;
+                                            }
+                                            m.setHealth(m.getHealth() - damage, this);
+                                            ActiveBuff ab = new ActiveBuff("LightningDebuff", m, 3F, this);
+                                            m.addBuff(ab, true);
+                                            this.hits.add(m.getUniqueID());
+                                        }
                                     }
-                                    m.setHealth(m.getHealth() - damage, this);
-                                    ActiveBuff ab = new ActiveBuff("LightningDebuff", m, 3F, this);
-                                    m.addBuff(ab, true);
-                                    this.hits.add(m.getUniqueID());
                                 }
                             }
                         }

@@ -35,7 +35,7 @@ public class NewVoidBulletProjectile extends FollowingProjectile {
     private float currentAngle;
     private float highBound;
     private float lowBound;
-    private float maxDeviation = 81f;
+    private float maxDeviation = 116f;
     private int flipped = 0;
     private int passes = 0;
     private boolean failed = false;

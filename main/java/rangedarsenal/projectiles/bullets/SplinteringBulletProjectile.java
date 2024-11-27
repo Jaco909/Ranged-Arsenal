@@ -82,15 +82,37 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                         mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
                             if (m != mob) {
                                 count++;
-                                if (((m.x <= (mob.x+47)) && (m.x >= (mob.x-47))) && ((m.y <= (mob.y+47)) && (m.y >= (mob.y-47)))) {
-                                    int damage = Math.round(this.getDamage().damage/4f);
-                                    if (damage > 100) {
-                                        damage = 100;
-                                    } else if (damage <= 0) {
-                                        damage = 1;
+                                if (!m.isSameTeam(player) || (!m.isPlayer && m.canBeHit(player) && m.canBeTargeted(player, player.getNetworkClient())) || (m.isPlayer && player.getServerClient().pvpEnabled)) {
+                                    if (((m.x <= (mob.x + 16)) && (m.x >= (mob.x - 16))) && ((m.y <= (mob.y + 16)) && (m.y >= (mob.y - 16)))) {
+                                        int damage = Math.round(this.getDamage().damage / 2.9f);
+                                        if (damage > 120) {
+                                            damage = 120;
+                                        } else if (damage <= 0) {
+                                            damage = 1;
+                                        }
+                                        m.setHealth(m.getHealth() - damage, player);
+                                        m.spawnDamageText(damage, 12, false);
                                     }
-                                    m.setHealth(m.getHealth() - damage, player);
-                                    m.spawnDamageText(damage, 12, false);
+                                    if (((m.x <= (mob.x + 33)) && (m.x >= (mob.x - 33))) && ((m.y <= (mob.y + 33)) && (m.y >= (mob.y - 33)))) {
+                                        int damage = Math.round(this.getDamage().damage / 3.61f);
+                                        if (damage > 70) {
+                                            damage = 70;
+                                        } else if (damage <= 0) {
+                                            damage = 1;
+                                        }
+                                        m.setHealth(m.getHealth() - damage, player);
+                                        m.spawnDamageText(damage, 12, false);
+                                    }
+                                    if (((m.x <= (mob.x + 47)) && (m.x >= (mob.x - 47))) && ((m.y <= (mob.y + 47)) && (m.y >= (mob.y - 47)))) {
+                                        int damage = Math.round(this.getDamage().damage / 4f);
+                                        if (damage > 40) {
+                                            damage = 40;
+                                        } else if (damage <= 0) {
+                                            damage = 1;
+                                        }
+                                        m.setHealth(m.getHealth() - damage, player);
+                                        m.spawnDamageText(damage, 12, false);
+                                    }
                                 }
                             }
                         });

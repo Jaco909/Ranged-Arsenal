@@ -21,7 +21,7 @@ public class CabbageFoodBullet extends BulletItem {
         return true;
     }
     public Projectile getProjectile(float x, float y, float targetX, float targetY, float velocity, int range, GameDamage damage, int knockback, Mob owner) {
-        return new CabbageBulletProjectile(x, y, targetX, targetY, velocity, range, damage, 100, owner);
+        return new CabbageBulletProjectile(x, y, targetX, targetY, velocity, range, damage, knockback+100, owner);
     }
     public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         ListGameTooltips tooltips = super.getTooltips(item, perspective, blackboard);

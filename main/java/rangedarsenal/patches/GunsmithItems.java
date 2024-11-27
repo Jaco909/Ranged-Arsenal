@@ -64,9 +64,9 @@ public class GunsmithItems {
             list.add(ShopItem.item(new InventoryItem("Frozen_Bullet", 100), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
         }*/
 
-            if (client.characterStats().mob_kills.getKills("evilsprotector") > 0 && client.characterStats().mob_kills.getKills("queenspider") > 0) {
+            /*if (client.characterStats().mob_kills.getKills("evilsprotector") > 0 && client.characterStats().mob_kills.getKills("queenspider") > 0) {
                 list.add(ShopItem.item(new InventoryItem("ammopouch", 1), gunsmith.getRandomHappinessPrice(random, 400, 800, 100)));
-            }
+            }*/
             if (client.characterStats().mob_kills.getKills("piratecaptain") > 0) {
                 list.add(ShopItem.item(new InventoryItem("Gunpowder", 1), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
                 list.add(ShopItem.item(new InventoryItem("Mechanical_Parts", 1), gunsmith.getRandomHappinessPrice(random, 100, 300, 50)));

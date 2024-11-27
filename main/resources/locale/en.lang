@@ -33,7 +33,7 @@ Grenade_Launcher=Grenade Launcher
 Gasoline=Gasoline
 CryoFlame=Cryo Powder
 Napalm=Napalm
-MoltenSlime_Bullet=Boiling Slime
+MoltenSlime=Boiling Slime
 Standard_Bullet=Hardened Bullet
 Blunt_Bullet=Blunt Bullet
 Frozen_Bullet=Frozen Bullet
@@ -86,7 +86,7 @@ Wheat_Food_Bullet=Wheat_Food_Bullet
 [itemtooltip]
 Shotguntier=Pellets per shot: <pellets>
 
-bouncingammotipnew=§#00B715+10%§#FFFFFF damage and §#00B715+2%§#FFFFFF crit chance per bounce
+bouncingammotipnew=§#00B715+15%§#FFFFFF damage and §#00B715+4%§#FFFFFF crit chance per bounce
 
 SeedgunTip=Uses seeds as ammo
 SeedgunTip2=Some seeds may have different effects
@@ -136,6 +136,28 @@ shardcannontipammo=Has a <ammouse>% chance to not consume ammo
 sapphirerevolvertip=Charges up a projectile that will hit anything in an instant
 sapphirerevolvertip2=Charge level increases crit chance and pierce amount
 
+appleammotip=Produce Weaponry: §#00B715+20§#F2800D damage, §#00B715+25§#F2800D knockback
+bananaammotip=Produce Weaponry: §#EAAC00Boomerang§#F2800D projectile
+blackberryammotip=Produce Weaponry: §#00B715x2§#F2800D projectile speed
+blueberryammotip=Produce Weaponry: §#00B715x2§#F2800D projectile speed
+cabbageammotip=Produce Weaponry: §#00B715+5§#F2800D damage, §#00B715+100§#F2800D knockback
+carrotammotip=Produce Weaponry: §#00B715+10§#F2800D damage, §#00B715+4§#F2800D armor penetration, §#00B715+35%§#F2800D projectile speed
+chilipepperammotip=Produce Weaponry: §#00B715+10§#F2800D damage, §#FF6100Fire§#F2800D damage per second: §#00B71514
+coconutammotip=Produce Weaponry: §#00B715+40§#F2800D damage, §#00B715+15§#F2800D knockback, §#FF0000-25%§#F2800D projectile speed
+coffeebeansammotip=Produce Weaponry: §#00B715+2§#F2800D projectiles, §#FF0000-62%§#F2800D damage, §#FF0000-15%§#F2800D projectile speed
+cornammotip=Produce Weaponry:  §#00B715+5§#F2800D damage, §#00B715+2§#F2800D armor penetration, small explosion on hit
+eggplantammotip=Produce Weaponry: §#00B715+10§#F2800D damage, §#00B715+30§#F2800D knockback, §#00B71510s§#F2800D Bouncy debuff
+lemonammotip=Produce Weaponry: §#00B715+20§#F2800D damage, projectile bounces
+onionammotip=Produce Weaponry: §#00B715+5§#F2800D damage, §#00B715+200§#F2800D knockback
+potatoammotip=Produce Weaponry: §#00B715+20§#F2800D damage, §#00B715+25§#F2800D knockback
+pumpkinammotip=Produce Weaponry: §#00B715+60§#F2800D damage, §#00B715+20§#F2800D knockback, §#FF0000-300%§#F2800D projectile speed
+riceammotip=Produce Weaponry: §#00B715+7§#F2800D projectiles, §#FF0000-82%§#F2800D damage
+strawberryammotip=Produce Weaponry: §#00B715+20§#F2800D damage, §#00B715+25%§#F2800D projectile speed
+sugarbeetammotip=Produce Weaponry: §#00B715+10§#F2800D damage, §#00B715+4§#F2800D armor penetration, §#00B715+35%§#F2800D projectile speed
+tomatoammotip=Produce Weaponry:  §#00B715+5§#F2800D damage, §#FF0000-18%§#F2800D projectile speed, small explosion on hit
+wheatammotip=Produce Weaponry: §#00B715+5§#F2800D projectiles, §#FF0000-76%§#F2800D damage, §#00B715+15%§#F2800D projectile speed
+raspberryammotip=Produce Weaponry: §#00B715x2§#F2800D projectile speed
+
 [bullettooltip]
 frozenbullettip=Slowdown on hit: §#00B71520%
 frozenbullettip2=§#00B6FFFrost§#FFFFFF damage per second: §#00B7153
@@ -163,7 +185,7 @@ GrenadeLauncherMineBullettip=Destroys objects
 GrenadeLauncherProxyBullettip=Explodes when stepped on, or after 15 seconds
 GrenadeLauncherProxyBullettip2=Does minimal damage on direct hits
 GrenadeLauncherProxyBullettip3=Can be set at any range
-GrenadeLauncherFireBullettip=Creates a pool of fire
+GrenadeLauncherFireBullettip=Creates a pool of fire on impact
 
 GasolineTip=§#EAAC00Armor§#FFFFFF penetration: §#00B7153
 
@@ -192,6 +214,16 @@ GUNCRAFTING=Loading Bench
 
 
 [mob]
+
+[itemcategory]
+bullets=Bullets
+fuel=Fuel
+shells=Explosives
+ballistic=Ballistic Weapons
+explosive=Explosive Weapons
+flame=Flame Weapons
+farm=Natural Weapons
+ammo=Arrows
 
 
 [buff]

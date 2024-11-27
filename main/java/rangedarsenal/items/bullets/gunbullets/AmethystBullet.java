@@ -8,6 +8,7 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.bullets.AmethystBulletProjectile;
 

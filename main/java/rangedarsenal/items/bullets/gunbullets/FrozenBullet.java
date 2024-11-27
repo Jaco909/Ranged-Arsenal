@@ -9,6 +9,7 @@ import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.item.Item;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.bullets.FrozenBulletProjectile;
 
@@ -17,6 +18,7 @@ public class FrozenBullet extends BulletItem {
         super(1000);
         this.damage = 6;
         this.rarity = Item.Rarity.COMMON;
+        this.stackSize = 5000;
     }
 
     public boolean overrideProjectile() {

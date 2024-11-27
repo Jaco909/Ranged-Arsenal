@@ -8,6 +8,7 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.bullets.BluntBulletProjectile;
 
@@ -17,6 +18,7 @@ public class BluntBullet extends BulletItem {
         this.damage = 6;
         this.armorPen = 2;
         this.rarity = Rarity.COMMON;
+        this.stackSize = 5000;
     }
 
     public boolean overrideProjectile() {

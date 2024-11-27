@@ -8,6 +8,7 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.bullets.NewVoidBulletProjectile;
 
@@ -16,6 +17,7 @@ public class NewVoidBullet extends BulletItem {
         super(1000);
         this.damage = 6;
         this.rarity = Rarity.UNCOMMON;
+        this.stackSize = 5000;
     }
 
     public boolean overrideProjectile() {

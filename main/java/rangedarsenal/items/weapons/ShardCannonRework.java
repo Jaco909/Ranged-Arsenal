@@ -62,15 +62,10 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }
     public GameSprite getAttackSprite(InventoryItem item, PlayerMob player) {
-        if (player == null) {
-            //prevent crash when drawing in stat menu
-            return new GameSprite(this.itemTexture, 32);
+        if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
+            return new GameSprite(ShardCannonREDtex,this.attackTexture.getWidth(),this.attackTexture.getHeight());
         } else {
-            if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-                return new GameSprite(ShardCannonREDtex, this.attackTexture.getWidth(), this.attackTexture.getHeight());
-            } else {
-                return this.attackTexture != null ? new GameSprite(this.attackTexture) : new GameSprite(this.getItemSprite(item, player), 24);
-            }
+            return this.attackTexture != null ? new GameSprite(this.attackTexture) : new GameSprite(this.getItemSprite(item, player), 24);
         }
     }
     public GameSprite getItemSprite(InventoryItem item, PlayerMob perspective) {

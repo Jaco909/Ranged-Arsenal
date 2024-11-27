@@ -66,25 +66,6 @@ public class MorterCannon extends GunProjectileToolItem implements ItemInteractA
         return new LocalMessage("ui", "settlercantuseitem");
     }
 
-    //cancel buff on weapon switch
-    public void draw(InventoryItem item, PlayerMob perspective, int x, int y, boolean inInventory) {
-        if (perspective.getSelectedItem() == null) {
-            perspective.buffManager.removeBuff("MorterPlacementBuff",true);
-        } else if (perspective.getSelectedItem() != null && !perspective.getSelectedItem().item.idData.getStringID().toLowerCase().equals("morter")) {
-            perspective.buffManager.removeBuff("MorterPlacementBuff",true);
-        }
-        super.draw(item, perspective, x, y, inInventory);
-        if (inInventory) {
-            int ammoAmount = this.getAvailableAmmo(perspective);
-            if (ammoAmount > 999) {
-                ammoAmount = 999;
-            }
-            String amountString = String.valueOf(ammoAmount);
-            int width = FontManager.bit.getWidthCeil(amountString, tipFontOptions);
-            FontManager.bit.drawString((float)(x + 28 - width), (float)(y + 16), amountString, tipFontOptions);
-        }
-    }
-
     public CrimsonSkyArrowProjectile getTheCrimsonSkyProjectile(Level level, int x, int y, Mob owner, GameDamage damage, float velocity, int knockback, float resilienceGain) {
         Point2D.Float targetPoints = new Point2D.Float((float)x, (float)y);
         Point2D.Float normalizedVector = GameMath.normalize(targetPoints.x - owner.x, targetPoints.y - owner.y);
@@ -140,7 +121,6 @@ public class MorterCannon extends GunProjectileToolItem implements ItemInteractA
 
         GameDamage specialAttackDmg = this.getAttackDamage(item).modFinalMultiplier(1.25F);
         Projectile projectile = new CrimsonSkyArrowProjectile(level, player, player.x, player.y, player.x, player.y - 1.0F, (float)this.getProjectileVelocity(item, player), this.projectileMaxHeight, specialAttackDmg, this.getResilienceGain(item), this.getKnockback(item, player), targetPoints, false);
-        //Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
         projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
         projectile.dropItem = consumeAmmo;
         projectile.getUniqueID(new GameRandom((long)seed));

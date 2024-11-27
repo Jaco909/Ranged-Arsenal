@@ -58,66 +58,8 @@ public class ProduceCannonMega extends GunProjectileToolItem {
                 GameRandom random = new GameRandom((long)(seed + 5));
                 boolean consumeAmmo = true;
                 if (!consumeAmmo || player.getInv().main.removeItems(level, player, bullet, 1, "bulletammo") >= 1) {
-                    //player.getInv().removeItems(bullet,1,true,true,true,"bulletammo");
-                    if (bullet.idData.getStringID().equalsIgnoreCase("apple")) {
-                        bullet = ItemRegistry.getItem("Apple_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("banana")) {
-                        bullet = ItemRegistry.getItem("Banana_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("tomato")) {
-                        bullet = ItemRegistry.getItem("Tomato_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("coconut")) {
-                        bullet = ItemRegistry.getItem("Coconut_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("blueberry")) {
-                        bullet = ItemRegistry.getItem("Blueberry_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("blackberry")) {
-                        bullet = ItemRegistry.getItem("Blackberry_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("cabbage")) {
-                        bullet = ItemRegistry.getItem("Cabbage_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("carrot")) {
-                        bullet = ItemRegistry.getItem("Carrot_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("chilipepper")) {
-                        bullet = ItemRegistry.getItem("Chilipepper_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("corn")) {
-                        bullet = ItemRegistry.getItem("Corn_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("coffeebeans")) {
-                        bullet = ItemRegistry.getItem("Coffee_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    }  else if (bullet.idData.getStringID().equalsIgnoreCase("rice")) {
-                        bullet = ItemRegistry.getItem("Rice_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("eggplant")) {
-                        bullet = ItemRegistry.getItem("Eggplant_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("lemon")) {
-                        bullet = ItemRegistry.getItem("Lemon_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("onion")) {
-                        bullet = ItemRegistry.getItem("Onion_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("potato")) {
-                        bullet = ItemRegistry.getItem("Potato_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("pumpkin")) {
-                        bullet = ItemRegistry.getItem("Pumpkin_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("strawberry")) {
-                        bullet = ItemRegistry.getItem("Strawberry_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("sugarbeet")) {
-                        bullet = ItemRegistry.getItem("Sugarbeet_Food_Bullet");
-                        this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
-                    } else if (bullet.idData.getStringID().equalsIgnoreCase("wheat")) {
-                        bullet = ItemRegistry.getItem("Wheat_Food_Bullet");
+                    if (ItemRegistry.itemExists(bullet.idData.getStringID().replaceFirst(Character.toString(bullet.idData.getStringID().charAt(0)),Character.toString(bullet.idData.getStringID().charAt(0)).toUpperCase()) + "_Food_Bullet")) {
+                        bullet = ItemRegistry.getItem(bullet.idData.getStringID().replaceFirst(Character.toString(bullet.idData.getStringID().charAt(0)),Character.toString(bullet.idData.getStringID().charAt(0)).toUpperCase()) + "_Food_Bullet");
                         this.fireProjectiles(level, x, y, player, item, seed, (BulletItem)bullet, consumeAmmo, contentReader);
                     } else {
                         bullet = ItemRegistry.getItem("Apple_Food_Bullet");

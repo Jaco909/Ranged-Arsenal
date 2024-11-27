@@ -1,4 +1,4 @@
-package rangedarsenal.items.bullets.seeds;
+package rangedarsenal.items.bullets.food;
 
 import necesse.engine.localization.Localization;
 import necesse.engine.util.GameBlackboard;
@@ -9,10 +9,10 @@ import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.item.bulletItem.BulletItem;
-import rangedarsenal.projectiles.seed.SeedBulletProjectile;
+import rangedarsenal.projectiles.food.RaspberryBulletProjectile;
 
-public class SeedBullet extends BulletItem {
-    public SeedBullet() {
+public class RaspberryFoodBullet extends BulletItem {
+    public RaspberryFoodBullet() {
         super(1000);
         this.damage = 0;
         this.rarity = Rarity.NORMAL;
@@ -21,7 +21,7 @@ public class SeedBullet extends BulletItem {
         return true;
     }
     public Projectile getProjectile(float x, float y, float targetX, float targetY, float velocity, int range, GameDamage damage, int knockback, Mob owner) {
-        return new SeedBulletProjectile(x, y, targetX, targetY, velocity, range, damage, knockback, owner);
+        return new RaspberryBulletProjectile(x, y, targetX, targetY, velocity * 2, range, damage, knockback, owner);
     }
     public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         ListGameTooltips tooltips = super.getTooltips(item, perspective, blackboard);

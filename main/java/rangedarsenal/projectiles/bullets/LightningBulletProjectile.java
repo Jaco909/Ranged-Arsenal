@@ -26,6 +26,12 @@ public class LightningBulletProjectile extends BulletProjectile {
     float closest;
     int targetingX;
     int targetingY;
+    int counter;
+    int players;
+    int hostiles;
+    int critters;
+    boolean done;
+    int hostilescheck = 1;
     public LightningBulletProjectile() {
     }
     public LightningBulletProjectile(float x, float y, float targetX, float targetY, float speed, int distance, GameDamage damage, int knockback, Mob owner) {
@@ -76,39 +82,114 @@ public class LightningBulletProjectile extends BulletProjectile {
                     SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob).volume(4f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
 
 
-                    if (mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(),70) != null) {
-                        float counter = mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(),70).count();
-                        //System.out.println(counter);
-                        mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 70).forEach((m) -> {
-                            if (m != mob) {
-                                float distancemob = m.getDistance(mob);
-                                //if (!m.idData.getStringID().equalsIgnoreCase("trainingdummy")) {
-                                //fuck you, run the first time
-                                if (closest == 0){
-                                    closest = distancemob;
-                                    targetingX = Math.round(m.x);
-                                    targetingY = Math.round(m.y);
+                    if (mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(),1) != null) {
+                        done = false;
+                        counter = 0;
+                        mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
+                            if (((m.x <= (mob.x + 260)) && (m.x >= (mob.x - 260))) && ((m.y <= (mob.y + 260)) && (m.y >= (mob.y - 260)))) {
+                                counter++;
+                            }});
+                        //System.out.println("count: "+ counter);
+                        players = 0;
+                        mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
+                            if (m.isPlayer && !m.isSameTeam(player) && player.getServerClient().pvpEnabled && (((m.x <= (mob.x + 260)) && (m.x >= (mob.x - 260))) && ((m.y <= (mob.y + 260)) && (m.y >= (mob.y - 260))))) {
+                                players++;
+                            }});
+                        //System.out.println("players: "+ players);
+                        hostiles = 0;
+                        mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
+                            if (m.isHostile && (((m.x <= (mob.x + 260)) && (m.x >= (mob.x - 260))) && ((m.y <= (mob.y + 260)) && (m.y >= (mob.y - 260))))) {
+                                hostiles++;
+                            }});
+                        //System.out.println("hostiles: "+ hostiles);
+                        critters = 0;
+                        mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
+                            if (m.isCritter && (((m.x <= (mob.x + 260)) && (m.x >= (mob.x - 260))) && ((m.y <= (mob.y + 260)) && (m.y >= (mob.y - 260))))) {
+                                critters++;
+                            }});
+                        //System.out.println("critters: "+ critters);
+                        hostilescheck = 1;
+                        mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
+                            if (((m.x <= (mob.x + 260)) && (m.x >= (mob.x - 260))) && ((m.y <= (mob.y + 260)) && (m.y >= (mob.y - 260)))) {
+                                //found something in range
+                                //System.out.println("found in range: "+ m.getStringID().toLowerCase());
+                                if ((m != mob) && (m != this.getOwner())) {
+                                    //found something not the target or owner
+                                    //System.out.println("wack2");
+                                    if (m.isPlayer && !m.isSameTeam(player) && player.getServerClient().pvpEnabled) {
+                                        //System.out.println("PvP");
+                                        float distancemob = m.getDistance(mob);
+                                        if (closest == 0) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        } else if (distancemob < closest) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        }
+                                        done = true;
+                                    } else if (m.isHostile && players == 0) {
+                                        //System.out.println("NPC");
+                                        float distancemob = m.getDistance(mob);
+                                        if (closest == 0) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        } else if (distancemob < closest) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        }
+                                        done = true;
+                                    } else if (m.isCritter && hostiles == 0 && players == 0) {
+                                        //System.out.println("Critter");
+                                        float distancemob = m.getDistance(mob);
+                                        if (closest == 0) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        } else if (distancemob < closest) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        }
+                                        done = true;
+                                    } else if (m.canBeHit(player) && m.canBeTargeted(player, player.getNetworkClient()) && hostiles == 0 && players == 0 && critters == 0) {
+                                        //System.out.println("Misc");
+                                        float distancemob = m.getDistance(mob);
+                                        if (closest == 0) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        } else if (distancemob < closest) {
+                                            closest = distancemob;
+                                            targetingX = Math.round(m.x);
+                                            targetingY = Math.round(m.y);
+                                        }
+                                        done = true;
+                                    }
                                 }
-                                else if (distancemob < closest) {
-                                    closest = distancemob;
-                                    //System.out.println(m.idData.getStringID());
-                                    targetingX = Math.round(m.x);
-                                    targetingY = Math.round(m.y);
+                                if ((counter <= hostilescheck) && !done) {
+                                    //end of list, ents are non-valid
+                                    //System.out.println("forced rando");
+                                    //System.out.println("random");
+                                    targetingX = mob.getX() + GameRandom.globalRandom.getIntBetween(-30, 30);
+                                    targetingY = mob.getY() + GameRandom.globalRandom.getIntBetween(-30, 30);
                                 }
-                            } else if ((counter == 1) && (m == mob)) {
-                                //System.out.println("random");
-                                targetingX = mob.getX()+GameRandom.globalRandom.getIntBetween(-30, 30);
-                                targetingY = mob.getY()+GameRandom.globalRandom.getIntBetween(-30, 30);
+                                //System.out.println("ignored");
+                                //System.out.println(hostilescheck++);
                             }
                         });
                     } else {
-                        //System.out.println("random");
+                        //found nothing
+                        //System.out.println("true rando");
                         targetingX = mob.getX()+GameRandom.globalRandom.getIntBetween(-30, 30);
                         targetingY = mob.getY()+GameRandom.globalRandom.getIntBetween(-30, 30);
                     }
 
                         for(int i = 0; i <= 2; ++i) {
-                            LevelEvent event = new LightningJumperEvent(this.getOwner(), this.getDamage(), 0, mob.getX(), mob.getY(), targetingX, targetingY, GameRandom.globalRandom.getIntBetween(-50, 50), mob);
+                            LevelEvent event = new LightningJumperEvent(player, this.getDamage(), 0, mob.getX(), mob.getY(), targetingX, targetingY, GameRandom.globalRandom.getIntBetween(-50, 50), mob);
                             this.getOwner().getLevel().entityManager.addLevelEventHidden(event);
                             if (this.getLevel().isServer()) {
                                 this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketLevelEvent(event), event, player.getServerClient());

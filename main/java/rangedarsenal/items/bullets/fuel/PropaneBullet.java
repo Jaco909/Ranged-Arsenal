@@ -8,6 +8,7 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.fuel.GasolineBulletProjectile;
 import rangedarsenal.projectiles.fuel.NapalmBulletProjectile;
@@ -18,6 +19,7 @@ public class PropaneBullet extends BulletItem {
         this.damage = 7;
         this.armorPen = 15;
         this.rarity = Rarity.COMMON;
+        this.stackSize = 5000;
     }
 
     public boolean overrideProjectile() {

@@ -1,16 +1,25 @@
 package rangedarsenal.patches;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.List;
 
 import necesse.engine.input.controller.ControllerInput;
 import necesse.engine.input.Input;
 import necesse.engine.network.client.Client;
 import necesse.engine.state.MainGame;
 import necesse.engine.gameLoop.tickManager.TickManager;
+import necesse.engine.util.GameRandom;
 import necesse.engine.window.GameWindow;
 import necesse.engine.window.WindowManager;
 import necesse.entity.mobs.PlayerMob;
+import necesse.gfx.camera.GameCamera;
 import necesse.gfx.camera.MainGameFollowCamera;
+import necesse.gfx.drawables.SortedDrawable;
+import necesse.gfx.gameFont.FontOptions;
+import necesse.level.maps.hudManager.floatText.DamageText;
+import necesse.level.maps.hudManager.floatText.FloatText;
+import necesse.level.maps.hudManager.floatText.FloatTextFade;
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.asm.Advice.Argument;
 import necesse.engine.modLoader.annotations.ModMethodPatch;

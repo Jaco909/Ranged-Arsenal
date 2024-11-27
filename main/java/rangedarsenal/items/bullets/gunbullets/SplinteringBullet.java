@@ -8,6 +8,7 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
+import necesse.inventory.item.ItemCategory;
 import necesse.inventory.item.bulletItem.BulletItem;
 import rangedarsenal.projectiles.bullets.SplinteringBulletProjectile;
 
@@ -16,6 +17,7 @@ public class SplinteringBullet extends BulletItem {
         super(1000);
         this.damage = 5;
         this.rarity = Rarity.NORMAL;
+        this.stackSize = 5000;
     }
     public boolean overrideProjectile() {
         return true;

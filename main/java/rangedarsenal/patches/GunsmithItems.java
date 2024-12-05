@@ -46,27 +46,9 @@ public class GunsmithItems {
                 }
             }
 
-
             //add new items
             GameRandom random = new GameRandom(gunsmith.getShopSeed() + 5L);
 
-
-        /*if (client.characterStats().items_obtained.isItemObtained("simplebullet") ) {
-            list.add(ShopItem.item(new InventoryItem("simplebullet", 100), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
-        }
-        if (client.characterStats().items_obtained.isItemObtained("bouncingbullet") ) {
-            list.add(ShopItem.item(new InventoryItem("bouncingbullet", 100), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
-        }
-        if (client.characterStats().items_obtained.isItemObtained("Standard_Bullet") ) {
-            list.add(ShopItem.item(new InventoryItem("Standard_Bullet", 100), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
-        }
-        if (client.characterStats().items_obtained.isItemObtained("Frozen_Bullet") ) {
-            list.add(ShopItem.item(new InventoryItem("Frozen_Bullet", 100), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
-        }*/
-
-            /*if (client.characterStats().mob_kills.getKills("evilsprotector") > 0 && client.characterStats().mob_kills.getKills("queenspider") > 0) {
-                list.add(ShopItem.item(new InventoryItem("ammopouch", 1), gunsmith.getRandomHappinessPrice(random, 400, 800, 100)));
-            }*/
             if (client.characterStats().mob_kills.getKills("piratecaptain") > 0) {
                 list.add(ShopItem.item(new InventoryItem("Gunpowder", 1), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
                 list.add(ShopItem.item(new InventoryItem("Mechanical_Parts", 1), gunsmith.getRandomHappinessPrice(random, 100, 300, 50)));
@@ -75,10 +57,6 @@ public class GunsmithItems {
                 list.add(ShopItem.item(new InventoryItem("Mechanical_Parts_Good", 1), gunsmith.getRandomHappinessPrice(random, 200, 500, 50)));
                 list.add(ShopItem.item(new InventoryItem("obsidian", 1), gunsmith.getRandomHappinessPrice(random, 100, 200, 20)));
             }
-        /*list.add(ShopItem.item(new InventoryItem("simplebullet", 100), gunsmith.getRandomHappinessPrice(random, 50, 100, 10)));
-        if (client.characterStats().mob_kills.getKills("evilsprotector") > 0 || client.characterStats().mob_kills.getKills("queenspider") > 0) {
-            list.add(ShopItem.item(new InventoryItem("LoadingBench", 1), gunsmith.getRandomHappinessPrice(random, 250, 500, 50)));
-        }*/
         }
-   }
+    }
 }

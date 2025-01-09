@@ -48,6 +48,7 @@ public class GrenadeLauncherProxyProjectile extends Projectile {
         //this.spawnTime = this.getWorldEntity().getTime();
         this.doesImpactDamage = true;
         this.trailOffset = 4.0F;
+        this.canBounce = false;
     }
 
     public Trail getTrail() {

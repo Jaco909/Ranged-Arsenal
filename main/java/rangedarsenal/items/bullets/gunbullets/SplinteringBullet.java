@@ -15,7 +15,7 @@ import rangedarsenal.projectiles.bullets.SplinteringBulletProjectile;
 public class SplinteringBullet extends BulletItem {
     public SplinteringBullet() {
         super(1000);
-        this.damage = 5;
+        this.damage = 7;
         this.rarity = Rarity.NORMAL;
         this.stackSize = 5000;
     }

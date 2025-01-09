@@ -45,6 +45,7 @@ public class GrenadeLauncherFireProjectile extends Projectile {
         this.spawnTime = this.getWorldEntity().getTime();
         this.doesImpactDamage = false;
         this.trailOffset = 4.0F;
+        this.canBounce = false;
     }
 
     public Trail getTrail() {

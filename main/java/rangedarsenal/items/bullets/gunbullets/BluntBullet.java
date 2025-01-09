@@ -15,7 +15,7 @@ import rangedarsenal.projectiles.bullets.BluntBulletProjectile;
 public class BluntBullet extends BulletItem {
     public BluntBullet() {
         super(1000);
-        this.damage = 6;
+        this.damage = 7;
         this.armorPen = 2;
         this.rarity = Rarity.COMMON;
         this.stackSize = 5000;

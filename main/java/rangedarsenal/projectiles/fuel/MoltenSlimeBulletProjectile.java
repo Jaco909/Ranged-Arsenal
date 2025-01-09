@@ -32,6 +32,7 @@ public class MoltenSlimeBulletProjectile extends BulletProjectile {
         super.init();
         this.particleSpeedMod = 0.5F;
         this.piercing = 5;
+        this.canBounce = false;
     }
     public Color getParticleColor() {
         return new Color(60, 180, 70);

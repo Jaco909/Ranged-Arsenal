@@ -9,7 +9,6 @@ import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
-import necesse.entity.levelEvent.toolItemEvent.ToolItemEvent;
 import necesse.entity.mobs.AttackAnimMob;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
@@ -41,7 +40,7 @@ public class Flamethrower extends GunProjectileToolItem {
         this.knockback.setBaseValue(0);
         this.keyWords.add("flamethrower");
         this.resilienceGain.setBaseValue(0.15F);
-        this.ammoConsumeChance = 0.65F;
+        this.ammoConsumeChance = 0.75F;
         this.controlledRange = false;
         this.controlledMinRange = 5;
     }
@@ -57,7 +56,7 @@ public class Flamethrower extends GunProjectileToolItem {
     }
     protected float getAmmoConsumeChance(PlayerMob player, InventoryItem item) {
         float playerMod = player == null ? 1.0F : (Float)player.buffManager.getModifier(BuffModifiers.BULLET_USAGE);
-        return GameMath.limit((this.ammoConsumeChance-(this.getUpgradeTier(item)/20)) * playerMod,0.40f,0.65f);
+        return GameMath.limit((this.ammoConsumeChance-(this.getUpgradeTier(item)*5/100)) * playerMod,0.50f,0.75f);
     }
     public ListGameTooltips getPreEnchantmentTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         ListGameTooltips tooltips = super.getPreEnchantmentTooltips(item, perspective, blackboard);
@@ -65,17 +64,17 @@ public class Flamethrower extends GunProjectileToolItem {
         //doing this dynamicly looks gross, I have to make another if pyramid
         //I'm also lazy
         if (this.getUpgradeTier(item) == 1.0f) {
-            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",40));
+            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",30));
         } else if (this.getUpgradeTier(item) == 2.0f) {
-            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",45));
-        } else if (this.getUpgradeTier(item) == 3.0f) {
-            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",50));
-        } else if (this.getUpgradeTier(item) == 4.0f) {
-            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",55));
-        } else if (this.getUpgradeTier(item) >= 5.0f) {
-            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",60));
-        } else {
             tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",35));
+        } else if (this.getUpgradeTier(item) == 3.0f) {
+            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",40));
+        } else if (this.getUpgradeTier(item) == 4.0f) {
+            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",45));
+        } else if (this.getUpgradeTier(item) >= 5.0f) {
+            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",50));
+        } else {
+            tooltips.add(Localization.translate("itemtooltip", "FlamethrowerTipammo","ammouse",25));
         }
 
         return tooltips;

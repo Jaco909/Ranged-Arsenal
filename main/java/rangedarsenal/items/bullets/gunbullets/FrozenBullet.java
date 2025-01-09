@@ -16,7 +16,7 @@ import rangedarsenal.projectiles.bullets.FrozenBulletProjectile;
 public class FrozenBullet extends BulletItem {
     public FrozenBullet() {
         super(1000);
-        this.damage = 6;
+        this.damage = 7;
         this.rarity = Item.Rarity.COMMON;
         this.stackSize = 5000;
     }

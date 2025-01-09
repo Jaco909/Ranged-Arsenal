@@ -33,6 +33,7 @@ public class CryoFlameBulletProjectile extends BulletProjectile {
         super.init();
         this.particleSpeedMod = 0.5F;
         this.piercing = 100;
+        this.canBounce = false;
     }
     public Color getParticleColor() {
         return new Color(90, 150, 250);

@@ -15,7 +15,7 @@ import rangedarsenal.projectiles.bullets.FlameBulletProjectile;
 public class FlameBullet extends BulletItem {
     public FlameBullet() {
         super(1000);
-        this.damage = 6;
+        this.damage = 7;
         this.rarity = Rarity.COMMON;
         this.stackSize = 5000;
     }

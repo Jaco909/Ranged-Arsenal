@@ -40,7 +40,7 @@ public class LightningBulletProjectile extends BulletProjectile {
     public void init() {
         super.init();
     }
-    PlayerMob player = ((PlayerMob)this.getOwner());
+    PlayerMob player = (PlayerMob)this.getOwner();
 
     public void onHit(Mob mob, LevelObjectHit object, float x, float y, boolean fromPacket, ServerClient packetSubmitter) {
         if (this.modifier == null || !this.modifier.onHit(mob, object, x, y, fromPacket, packetSubmitter)) {
@@ -74,9 +74,8 @@ public class LightningBulletProjectile extends BulletProjectile {
                 boolean canHit = this.checkHitCooldown(mob, !this.isServer() || packetSubmitter == null && this.handlingClient == null && (!this.clientHandlesHit || !mob.isPlayer) ? 0 : 100);
                 if (canHit && (this.amountHit() <= this.piercing || this.returningToOwner)) {
                     boolean addHit = true;
-                    //if (!mob.buffManager.hasBuff("LightningDebuff")) {
-                    SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.3f).pitch(GameRandom.globalRandom.getFloatBetween(1f, 2f)));
-                    SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(player).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
+                    //SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(mob.getAttackOwner()).volume(0.3f).pitch(GameRandom.globalRandom.getFloatBetween(1f, 2f)));
+                    //SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob.getAttackOwner()).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
 
                     SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(mob).volume(0.6f).pitch(GameRandom.globalRandom.getFloatBetween(1f, 2f)));
                     SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob).volume(4f).pitch(GameRandom.globalRandom.getFloatBetween(4f, 4f))); //4, 3f
@@ -116,6 +115,7 @@ public class LightningBulletProjectile extends BulletProjectile {
                                 if ((m != mob) && (m != this.getOwner())) {
                                     //found something not the target or owner
                                     //System.out.println("wack2");
+                                    //this.player = this.getOwner().getFollowingPlayer();
                                     if (m.isPlayer && !m.isSameTeam(player) && player.getServerClient().pvpEnabled) {
                                         //System.out.println("PvP");
                                         float distancemob = m.getDistance(mob);
@@ -155,7 +155,7 @@ public class LightningBulletProjectile extends BulletProjectile {
                                             targetingY = Math.round(m.y);
                                         }
                                         done = true;
-                                    } else if (m.canBeHit(player) && m.canBeTargeted(player, player.getNetworkClient()) && hostiles == 0 && players == 0 && critters == 0) {
+                                    } else if (m.canBeHit(player) && hostiles == 0 && players == 0 && critters == 0) {
                                         //System.out.println("Misc");
                                         float distancemob = m.getDistance(mob);
                                         if (closest == 0) {
@@ -188,13 +188,13 @@ public class LightningBulletProjectile extends BulletProjectile {
                         targetingY = mob.getY()+GameRandom.globalRandom.getIntBetween(-30, 30);
                     }
 
-                        for(int i = 0; i <= 2; ++i) {
-                            LevelEvent event = new LightningJumperEvent(player, this.getDamage(), 0, mob.getX(), mob.getY(), targetingX, targetingY, GameRandom.globalRandom.getIntBetween(-50, 50), mob);
-                            this.getOwner().getLevel().entityManager.addLevelEventHidden(event);
-                            if (this.getLevel().isServer()) {
-                                this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketLevelEvent(event), event, player.getServerClient());
-                            }
+                    for(int i = 0; i <= 2; ++i) {
+                        LevelEvent event = new LightningJumperEvent(player, this.getDamage(), 0, mob.getX(), mob.getY(), targetingX, targetingY, GameRandom.globalRandom.getIntBetween(-50, 50), mob);
+                        this.getOwner().getLevel().entityManager.addLevelEventHidden(event);
+                        if (this.getLevel().isServer()) {
+                            this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketLevelEvent(event), event, player.getServerClient());
                         }
+                    }
                     if (this.isServer()) {
                         boolean isClientProjectile = this.handlingClient != null || this.clientHandlesHit && mob.isPlayer;
                         if (packetSubmitter == null && isClientProjectile) {

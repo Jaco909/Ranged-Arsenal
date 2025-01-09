@@ -16,7 +16,7 @@ import rangedarsenal.projectiles.bullets.NewBouncingBulletProjectile;
 public class NewBouncingBullet extends BulletItem {
     public NewBouncingBullet() {
         super(1000);
-        this.damage = 7;
+        this.damage = 6;
         this.rarity = Rarity.COMMON;
         this.stackSize = 5000;
     }
@@ -26,7 +26,7 @@ public class NewBouncingBullet extends BulletItem {
     }
 
     public Projectile getProjectile(float x, float y, float targetX, float targetY, float velocity, int range, GameDamage damage, int knockback, Mob owner) {
-        return new NewBouncingBulletProjectile(x, y, targetX, targetY, velocity, range * 4, damage, knockback, owner);
+        return new NewBouncingBulletProjectile(x, y, targetX, targetY, velocity, range * 6, damage, knockback, owner);
     }
 
     public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {

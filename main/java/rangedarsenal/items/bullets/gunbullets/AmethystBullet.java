@@ -15,7 +15,7 @@ import rangedarsenal.projectiles.bullets.AmethystBulletProjectile;
 public class AmethystBullet extends BulletItem {
     public AmethystBullet() {
         super(1000);
-        this.damage = 8;
+        this.damage = 9;
         this.rarity = Rarity.RARE;
     }
 

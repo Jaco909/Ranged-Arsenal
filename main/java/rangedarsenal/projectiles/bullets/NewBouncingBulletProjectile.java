@@ -57,7 +57,7 @@ public class NewBouncingBulletProjectile extends BulletProjectile {
         if (mob == null) {
             int offset = (new GameRandom((long)(this.getUniqueID() + this.bounced * 1337))).getIntBetween(-5, 5);
             this.setAngle(this.getAngle() + (float)offset);
-            this.setDamage(new GameDamage(this.getDamage().damage*1.15f,this.getDamage().armorPen*1f,this.getDamage().baseCritChance+0.04f));
+            this.setDamage(new GameDamage(this.getDamage().damage*1.08f,this.getDamage().armorPen*1f,this.getDamage().baseCritChance+0.02f));
             this.bounced++;
             this.replaceTrail();
         }

@@ -63,7 +63,7 @@ public class rangedarsenal {
     //LOAD CONSTANTS
     //public static HashSet<String> SEED_AMMO_TYPES = new HashSet(Arrays.asList("grassseed","swampgrassseed","plainsgrassseed","overgrownplainsgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"));
     public static HashSet<String> FOOD_AMMO_TYPES = new HashSet(Arrays.asList("apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans","raspberry"));
-    public static HashSet<String> FLAME_AMMO_TYPES = new HashSet(Arrays.asList("Gasoline", "CryoFlame", "Napalm", "MoltenSlime_Bullet"));
+    public static HashSet<String> FLAME_AMMO_TYPES = new HashSet(Arrays.asList("Gasoline", "CryoFlame", "Napalm", "MoltenSlime"));
     public static HashSet<String> SHELL_AMMO_TYPES = new HashSet(Arrays.asList("Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell","Grenade_Launcher_Fire_Shell"));
 
     public static GameSound proxyarm;
@@ -276,6 +276,7 @@ public class rangedarsenal {
         BuffRegistry.registerBuff("HealDelayBuff", new HealDelayBuff());
         BuffRegistry.registerBuff("FreezeNerfDebuff", new FreezeNerfDebuff());
         BuffRegistry.registerBuff("ShardCannonCooldownDebuff", new ShardCannonCooldownDebuff());
+        BuffRegistry.registerBuff("LightningBlockerDebuff", new LightningBlockerDebuff());
         //BuffRegistry.registerBuff("MorterPlacementBuff", new MorterPlacementBuff());
         //BuffRegistry.registerBuff("MorterMegaPlacementBuff", new MorterPlacementBuff());
 
@@ -671,7 +672,7 @@ public class rangedarsenal {
         //FUEL
         Recipes.registerModRecipe(new Recipe(
                 "Gasoline",
-                100,
+                200,
                 RecipeTechRegistry.VOID_ALCHEMY,
                 new Ingredient[]{
                         new Ingredient("lavatile", 1),
@@ -681,7 +682,7 @@ public class rangedarsenal {
         ).setCraftingCategory("fuel"));
         Recipes.registerModRecipe(new Recipe(
                 "CryoFlame",
-                100,
+                200,
                 RecipeTechRegistry.CAVEGLOW_ALCHEMY,
                 new Ingredient[]{
                         new Ingredient("glacialshard", 2),
@@ -691,7 +692,7 @@ public class rangedarsenal {
         ).showBefore("Gasoline").setCraftingCategory("fuel"));
         Recipes.registerModRecipe(new Recipe(
                 "Napalm",
-                100,
+                200,
                 RecipeTechRegistry.FALLEN_ALCHEMY,
                 new Ingredient[]{
                         new Ingredient("lavatile", 1),
@@ -700,7 +701,7 @@ public class rangedarsenal {
         ).showBefore("CryoFlame").setCraftingCategory("fuel"));
         Recipes.registerModRecipe(new Recipe(
                 "MoltenSlime",
-                100,
+                200,
                 RecipeTechRegistry.FALLEN_ALCHEMY,
                 new Ingredient[]{
                         new Ingredient("liquidslimetile", 1),
@@ -734,7 +735,7 @@ public class rangedarsenal {
         ).setCraftingCategory("shells"));
         Recipes.registerModRecipe(new Recipe(
                 "Grenade_Launcher_Mine_Shell",
-                25,
+                5,
                 RecipeTechRegistry.TUNGSTEN_ANVIL,
                 new Ingredient[]{
                         new Ingredient("ironbar", 2),
@@ -759,7 +760,7 @@ public class rangedarsenal {
                 RecipeTechRegistry.TUNGSTEN_ANVIL,
                 new Ingredient[]{
                         new Ingredient("ironbar", 2),
-                        new Ingredient("tungstenbar", 2),
+                        new Ingredient("tungstenbar", 1),
                         new Ingredient("firemone", 5),
                         new Ingredient("Gunpowder", 15)
                 }

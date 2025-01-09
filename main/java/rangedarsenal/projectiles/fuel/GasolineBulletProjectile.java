@@ -29,6 +29,7 @@ public class GasolineBulletProjectile extends BulletProjectile {
         super.init();
         this.particleSpeedMod = 0.5F;
         this.piercing = 100;
+        this.canBounce = false;
     }
     public Color getParticleColor() {
         return new Color(230, 120, 0);

@@ -58,7 +58,7 @@ public class BluntBulletProjectile extends BulletProjectile {
                 if (canHit && (this.amountHit() <= this.piercing || this.returningToOwner)) {
                     boolean addHit = true;
                     String mobname = mob.idData.getStringID().toString().toLowerCase();
-                    if (mobname.contains("skeleton")) {
+                    if (mobname.contains("skeleton") || mobname.contains("crystal")) {
                         this.setDamage(ogdamage.modDamage(1.5f));
                     }
                     if (this.isServer()) {

@@ -30,7 +30,7 @@ public class SplinteringBulletProjectile extends BulletProjectile {
     public void init() {
         super.init();
     }
-    PlayerMob player = ((PlayerMob)this.getOwner());
+    Mob player = (this.getOwner());
     int count;
 
     public void onHit(Mob mob, LevelObjectHit object, float x, float y, boolean fromPacket, ServerClient packetSubmitter) {
@@ -65,7 +65,7 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                 boolean canHit = this.checkHitCooldown(mob, !this.isServer() || packetSubmitter == null && this.handlingClient == null && (!this.clientHandlesHit || !mob.isPlayer) ? 0 : 100);
                 if (canHit && (this.amountHit() <= this.piercing || this.returningToOwner)) {
                     boolean addHit = true;
-                    SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(player).volume(0.9f).pitch(GameRandom.globalRandom.getFloatBetween(2f, 4f)));
+                    //SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(player).volume(0.9f).pitch(GameRandom.globalRandom.getFloatBetween(2f, 4f)));
                     SoundManager.playSound(GameResources.fireworkCrack, SoundEffect.effect(mob).volume(4f).pitch(GameRandom.globalRandom.getFloatBetween(2f, 4f)));
 
 
@@ -73,7 +73,9 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                         LevelEvent event = new ShrapnelEvent(this.getOwner(), new GameDamage(0F,0F), 0, mob.getX(), mob.getY(), GameRandom.globalRandom.getIntBetween(-50, 50), mob, i);
                         this.getOwner().getLevel().entityManager.addLevelEventHidden(event);
                         if (this.getLevel().isServer()) {
-                            this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketLevelEvent(event), event, player.getServerClient());
+                            if (player.isPlayer) {
+                                this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketLevelEvent(event), event, this.getOwner().getServer().getLocalServerClient());
+                            }
                         }
                     }
                     if (mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(),1) != null) {
@@ -82,7 +84,7 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                         mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
                             if (m != mob) {
                                 count++;
-                                if (!m.isSameTeam(player) || (!m.isPlayer && m.canBeHit(player) && m.canBeTargeted(player, player.getNetworkClient())) || (m.isPlayer && player.getServerClient().pvpEnabled)) {
+                                if (!m.isSameTeam(player) || (!m.isPlayer && m.canBeHit(player)) || (m.isPlayer && player.getClient().getPlayer().getServerClient().pvpEnabled)) {
                                     if (((m.x <= (mob.x + 16)) && (m.x >= (mob.x - 16))) && ((m.y <= (mob.y + 16)) && (m.y >= (mob.y - 16)))) {
                                         int damage = Math.round(this.getDamage().damage / 2.9f);
                                         if (damage > 120) {
@@ -91,7 +93,9 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                                             damage = 1;
                                         }
                                         m.setHealth(m.getHealth() - damage, player);
-                                        m.spawnDamageText(damage, 12, false);
+                                        if (!this.isServer()) {
+                                            m.spawnDamageText(damage, 12, false);
+                                        }
                                     }
                                     if (((m.x <= (mob.x + 33)) && (m.x >= (mob.x - 33))) && ((m.y <= (mob.y + 33)) && (m.y >= (mob.y - 33)))) {
                                         int damage = Math.round(this.getDamage().damage / 3.61f);
@@ -101,7 +105,9 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                                             damage = 1;
                                         }
                                         m.setHealth(m.getHealth() - damage, player);
-                                        m.spawnDamageText(damage, 12, false);
+                                        if (!this.isServer()) {
+                                            m.spawnDamageText(damage, 12, false);
+                                        }
                                     }
                                     if (((m.x <= (mob.x + 47)) && (m.x >= (mob.x - 47))) && ((m.y <= (mob.y + 47)) && (m.y >= (mob.y - 47)))) {
                                         int damage = Math.round(this.getDamage().damage / 4f);
@@ -111,7 +117,9 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                                             damage = 1;
                                         }
                                         m.setHealth(m.getHealth() - damage, player);
-                                        m.spawnDamageText(damage, 12, false);
+                                        if (!this.isServer()) {
+                                            m.spawnDamageText(damage, 12, false);
+                                        }
                                     }
                                 }
                             }

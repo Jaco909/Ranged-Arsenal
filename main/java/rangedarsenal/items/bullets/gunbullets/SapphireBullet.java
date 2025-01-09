@@ -15,7 +15,7 @@ import rangedarsenal.projectiles.bullets.SapphireBulletProjectile;
 public class SapphireBullet extends BulletItem {
     public SapphireBullet() {
         super(1000);
-        this.damage = 7;
+        this.damage = 8;
         this.rarity = Rarity.RARE;
         this.stackSize = 5000;
     }

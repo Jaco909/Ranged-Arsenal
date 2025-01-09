@@ -19,7 +19,7 @@ public class HellfireBuff extends Buff {
     }
 
     public void init(ActiveBuff buff, BuffEventSubscriber eventSubscriber) {
-        buff.setModifier(BuffModifiers.FIRE_DAMAGE_FLAT, 14.0F);
+        buff.setModifier(BuffModifiers.FIRE_DAMAGE_FLAT, 15.0F);
     }
     public void clientTick(ActiveBuff buff) {
         Mob owner = buff.owner;

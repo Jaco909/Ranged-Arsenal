@@ -86,7 +86,7 @@ Wheat_Food_Bullet=Wheat_Food_Bullet
 [itemtooltip]
 Shotguntier=Pellets per shot: <pellets>
 
-bouncingammotipnew=§#00B715+8%§#FFFFFF damage and §#00B715+1%§#FFFFFF crit chance per bounce
+bouncingammotipnew=§#00B715+6%§#FFFFFF damage and §#00B715+1%§#FFFFFF crit chance per bounce
 
 SeedgunTip=Uses seeds as ammo
 SeedgunTip2=Some seeds may have different effects
@@ -153,10 +153,11 @@ potatoammotip=Produce Weaponry: §#00B715+20§#F2800D damage, §#00B715+25§#F28
 pumpkinammotip=Produce Weaponry: §#00B715+60§#F2800D damage, §#00B715+20§#F2800D knockback, §#FF0000-300%§#F2800D projectile speed
 riceammotip=Produce Weaponry: §#00B715+7§#F2800D projectiles, §#FF0000-82%§#F2800D damage
 strawberryammotip=Produce Weaponry: §#00B715+20§#F2800D damage, §#00B715+25%§#F2800D projectile speed
-sugarbeetammotip=Produce Weaponry: §#00B715+10§#F2800D damage, §#00B715+4§#F2800D armor penetration, §#00B715+35%§#F2800D projectile speed
+sugarbeetammotip=Produce Weaponry: §#00B715+6§#F2800D damage, §#00B715+4§#F2800D armor penetration, §#00B715+35%§#F2800D projectile speed
 tomatoammotip=Produce Weaponry:  §#00B715+5§#F2800D damage, §#FF0000-18%§#F2800D projectile speed, small explosion on hit
 wheatammotip=Produce Weaponry: §#00B715+5§#F2800D projectiles, §#FF0000-76%§#F2800D damage, §#00B715+15%§#F2800D projectile speed
 raspberryammotip=Produce Weaponry: §#00B715x2§#F2800D projectile speed
+beetammotip=Produce Weaponry: §#00B715+9§#F2800D damage, §#00B715+2§#F2800D armor penetration, §#00B715+15%§#F2800D projectile speed
 
 [bullettooltip]
 frozenbullettip=Slowdown on hit: §#00B71520%

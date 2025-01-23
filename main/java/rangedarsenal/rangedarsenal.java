@@ -62,7 +62,7 @@ public class rangedarsenal {
 
     //LOAD CONSTANTS
     //public static HashSet<String> SEED_AMMO_TYPES = new HashSet(Arrays.asList("grassseed","swampgrassseed","plainsgrassseed","overgrownplainsgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"));
-    public static HashSet<String> FOOD_AMMO_TYPES = new HashSet(Arrays.asList("apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans","raspberry"));
+    public static HashSet<String> FOOD_AMMO_TYPES = new HashSet(Arrays.asList("apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans","raspberry","beet"));
     public static HashSet<String> FLAME_AMMO_TYPES = new HashSet(Arrays.asList("Gasoline", "CryoFlame", "Napalm", "MoltenSlime"));
     public static HashSet<String> SHELL_AMMO_TYPES = new HashSet(Arrays.asList("Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell","Grenade_Launcher_Fire_Shell"));
 
@@ -112,8 +112,6 @@ public class rangedarsenal {
     }
 
     public void init() {
-        System.out.println("Ranged Arsenal loaded!");
-
         //ITEMS
         ItemRegistry.registerItem("AmmoPouchPlus", new AmmoPouchPlus(), 100f, true);
         ItemRegistry.registerItem("AmmoBagPlus", new AmmoBagPlus(), 100f, true);
@@ -165,6 +163,8 @@ public class rangedarsenal {
         ItemRegistry.registerItem("Tomato_Food_Bullet", new TomatoFoodBullet(), 0f, false,false);
         ItemRegistry.registerItem("Wheat_Food_Bullet", new WheatFoodBullet(), 0f, false,false);
         ItemRegistry.registerItem("Raspberry_Food_Bullet", new RaspberryFoodBullet(), 0f, false,false);
+        ItemRegistry.registerItem("Beet_Food_Bullet", new BeetFoodBullet(), 0f, false,false);
+
 
         //Flamethrower
         ItemRegistry.registerItem("Gasoline", new GasolineBullet(), 0.2f, true);
@@ -241,7 +241,7 @@ public class rangedarsenal {
         ProjectileRegistry.registerProjectile("Sugarbeet_Bullet_Projectile", SugarbeetBulletProjectile.class,"Sugarbeet_Bullet_Projectile","Carrot_Bullet_Projectile_shadow");
         ProjectileRegistry.registerProjectile("Wheat_Bullet_Projectile", WheatBulletProjectile.class,"Wheat_Bullet_Projectile","Rice_Bullet_Projectile_shadow");
         ProjectileRegistry.registerProjectile("Raspberry_Bullet_Projectile", RaspberryBulletProjectile.class,"Raspberry_Bullet_Projectile","Coconut_Bullet_Projectile_shadow");
-
+        ProjectileRegistry.registerProjectile("Beet_Bullet_Projectile", BeetBulletProjectile.class,"Beet_Bullet_Projectile","Carrot_Bullet_Projectile_shadow");
 
         ProjectileRegistry.registerProjectile("Gasoline_Bullet_Projectile", GasolineBulletProjectile.class,"","");
         ProjectileRegistry.registerProjectile("CryoFlame_Bullet_Projectile", CryoFlameBulletProjectile.class,"","");

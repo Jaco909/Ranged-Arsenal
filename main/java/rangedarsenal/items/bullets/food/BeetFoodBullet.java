@@ -9,20 +9,20 @@ import necesse.entity.projectile.Projectile;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.item.bulletItem.BulletItem;
-import rangedarsenal.projectiles.food.SugarbeetBulletProjectile;
+import rangedarsenal.projectiles.food.BeetBulletProjectile;
 
-public class SugarbeetFoodBullet extends BulletItem {
-    public SugarbeetFoodBullet() {
+public class BeetFoodBullet extends BulletItem {
+    public BeetFoodBullet() {
         super(1000);
-        this.damage = 6;
-        this.armorPen = 4;
+        this.damage = 9;
+        this.armorPen = 2;
         this.rarity = Rarity.NORMAL;
     }
     public boolean overrideProjectile() {
         return true;
     }
     public Projectile getProjectile(float x, float y, float targetX, float targetY, float velocity, int range, GameDamage damage, int knockback, Mob owner) {
-        return new SugarbeetBulletProjectile(x, y, targetX, targetY, velocity*1.35f, Math.round(range*1.35f), damage, knockback, owner);
+        return new BeetBulletProjectile(x, y, targetX, targetY, velocity*1.15f, Math.round(range*1.15f), damage, knockback, owner);
     }
     public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         ListGameTooltips tooltips = super.getTooltips(item, perspective, blackboard);

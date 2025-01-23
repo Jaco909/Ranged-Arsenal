@@ -57,17 +57,17 @@ public class NewBouncingBulletProjectile extends BulletProjectile {
         if (mob == null) {
             int offset = (new GameRandom((long)(this.getUniqueID() + this.bounced * 1337))).getIntBetween(-5, 5);
             this.setAngle(this.getAngle() + (float)offset);
-            this.setDamage(new GameDamage(this.getDamage().damage*1.08f,this.getDamage().armorPen*1f,this.getDamage().baseCritChance+0.02f));
+            this.setDamage(new GameDamage(this.getDamage().damage*1.06f,this.getDamage().armorPen*1f,this.getDamage().baseCritChance+0.01f));
             this.bounced++;
             this.replaceTrail();
         }
     }
 
     public Trail getTrail() {
-        //System.out.println(this.bounced);
+        System.out.println(this.bounced);
         R2 = inRange(R2+this.bounced);
         G2 = inRange(G2+this.bounced*6);
-        B2 = inRange(B2+this.bounced*4);
+        B2 = inRange(B2+this.bounced*3);
         trail = new Trail(this, this.getLevel(), new Color(R2, G2, B2), 22.0F, 100, this.getHeight());
         trail.sprite = new GameSprite(GameResources.chains, 7, 0, 32);
         return trail;
@@ -85,21 +85,12 @@ public class NewBouncingBulletProjectile extends BulletProjectile {
         B = inRange(B+this.bounced*3);
         return new Color(R, G, B);
     }
+    public void clientTick() {
+        super.clientTick();
+        this.replaceTrail();
+    }
 
     public void refreshParticleLight() {
         this.getLevel().lightManager.refreshParticleLightFloat(this.x, this.y, 220.0F, this.lightSaturation);
-    }
-    protected void replaceTrail() {
-        if (this.trail != null) {
-            this.trail.removeOnFadeOut = true;
-            if (this.getLevel() != null && this.isClient()) {
-                this.trail = this.getTrail();
-                if (this.trail != null) {
-                    this.trail.removeOnFadeOut = false;
-                    this.getLevel().entityManager.addTrail(this.trail);
-                }
-            }
-        }
-
     }
 }

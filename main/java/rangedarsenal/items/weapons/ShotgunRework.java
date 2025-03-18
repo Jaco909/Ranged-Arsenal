@@ -1,8 +1,10 @@
 package rangedarsenal.items.weapons;
 
 import necesse.engine.localization.Localization;
+import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.item.ItemInteractAction;
 import necesse.inventory.item.toolItem.projectileToolItem.gunProjectileToolItem.GunProjectileToolItem;
@@ -46,69 +48,27 @@ public class ShotgunRework extends GunProjectileToolItem implements ItemInteract
         tooltips.add(Localization.translate("itemtooltip", "Shotguntier","pellets",Math.round(this.getUpgradeTier(item)/2 + 3)));
     }
 
-    protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
+    protected void fireProjectiles(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item, int seed, BulletItem bullet, boolean dropItem, GNDItemMap mapContent) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));
         int range;
         if (this.controlledRange) {
-            Point newTarget = this.controlledRangePosition(spreadRandom, player, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
+            Point newTarget = this.controlledRangePosition(new GameRandom((long)(seed + 10)), attackerMob, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
             x = newTarget.x;
             y = newTarget.y;
-            range = (int)player.getDistance((float)x, (float)y);
+            range = (int)attackerMob.getDistance((float)x, (float)y);
         } else {
             range = this.getAttackRange(item);
         }
 
         for(int i = 0; i <= (3 + Math.round(this.getUpgradeTier(item)/2)); ++i) {
-            Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
+            Projectile projectile = this.getProjectile(item, bullet, attackerMob.x, attackerMob.y, (float)x, (float)y, range, attackerMob);
             projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-            projectile.dropItem = consumeAmmo;
-            projectile.getUniqueID(random);
-            level.entityManager.projectiles.addHidden(projectile);
-            if (this.moveDist != 0) {
-                projectile.moveDist((double)this.moveDist);
-            }
-
+            projectile.dropItem = dropItem;
+            projectile.getUniqueID(new GameRandom((long)seed));
+            attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist);
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * (20.0F - this.getUpgradeTier(item)));
-            if (level.isServer()) {
-                level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
-            }
        }
-
-    }
-
-    protected void fireSettlerProjectiles(Level level, HumanMob mob, Mob target, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo) {
-        GameRandom random = new GameRandom((long)seed);
-        GameRandom spreadRandom = new GameRandom((long)(seed + 10));
-        int velocity = this.getVelocity(item, mob);
-        Point2D.Float targetPos = Projectile.getPredictedTargetPos(target, mob.x, mob.y, (float)velocity, -10.0F);
-        int x = (int)targetPos.x;
-        int y = (int)targetPos.y;
-        int range;
-        if (this.controlledRange) {
-            Point newTarget = this.controlledRangePosition(spreadRandom, mob, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
-            x = newTarget.x;
-            y = newTarget.y;
-            range = (int)mob.getDistance((float)x, (float)y);
-        } else {
-            range = this.getAttackRange(item);
-        }
-
-        for(int i = 0; i <= (3 + this.getUpgradeTier(item)); ++i) {
-            Projectile projectile = this.getProjectile(item, bullet, mob.x, mob.y, (float)x, (float)y, range, mob);
-            projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-            projectile.dropItem = consumeAmmo;
-            projectile.getUniqueID(random);
-            level.entityManager.projectiles.addHidden(projectile);
-            if (this.moveDist != 0) {
-                projectile.moveDist((double)this.moveDist);
-            }
-
-            projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * (20.0F - this.getUpgradeTier(item)));
-            if (level.isServer()) {
-                level.getServer().network.sendToClientsAt(new PacketSpawnProjectile(projectile), level);
-            }
-        }
 
     }
 

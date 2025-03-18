@@ -133,7 +133,11 @@ public class SapphireBulletProjectile extends BulletProjectile {
                         //projectile.setAngle(projectile.getAngle() + (random.nextFloat() - 0.5F) * 2.0F);
                         if (this.getLevel().isServer()) {
                             //this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), (PlayerMob)this.getOwner().getRegionPositions(), ((PlayerMob)this.getOwner()).getServerClient());
-                            this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, ((PlayerMob) this.getOwner()).getServerClient());
+                            if (this.getOwner().isPlayer) {
+                                this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, ((PlayerMob) this.getOwner()).getServerClient());
+                            } else {
+                                this.getLevel().getServer().network.sendToAllClients(new PacketSpawnProjectile(projectile));
+                            }
                         }
                     }
                 }

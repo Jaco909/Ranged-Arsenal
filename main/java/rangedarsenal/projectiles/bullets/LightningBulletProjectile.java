@@ -91,9 +91,12 @@ public class LightningBulletProjectile extends BulletProjectile {
                         //System.out.println("count: "+ counter);
                         players = 0;
                         mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
-                            if (m.isPlayer && !m.isSameTeam(player) && player.getServerClient().pvpEnabled && (((m.x <= (mob.x + 260)) && (m.x >= (mob.x - 260))) && ((m.y <= (mob.y + 260)) && (m.y >= (mob.y - 260))))) {
-                                players++;
-                            }});
+                            if (m.isPlayer) {
+                                if (!m.isSameTeam(player) && player.getServerClient().pvpEnabled && (((m.x <= (mob.x + 260)) && (m.x >= (mob.x - 260))) && ((m.y <= (mob.y + 260)) && (m.y >= (mob.y - 260))))) {
+                                    players++;
+                                }
+                            }
+                        });
                         //System.out.println("players: "+ players);
                         hostiles = 0;
                         mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
@@ -116,19 +119,21 @@ public class LightningBulletProjectile extends BulletProjectile {
                                     //found something not the target or owner
                                     //System.out.println("wack2");
                                     //this.player = this.getOwner().getFollowingPlayer();
-                                    if (m.isPlayer && !m.isSameTeam(player) && player.getServerClient().pvpEnabled) {
-                                        //System.out.println("PvP");
-                                        float distancemob = m.getDistance(mob);
-                                        if (closest == 0) {
-                                            closest = distancemob;
-                                            targetingX = Math.round(m.x);
-                                            targetingY = Math.round(m.y);
-                                        } else if (distancemob < closest) {
-                                            closest = distancemob;
-                                            targetingX = Math.round(m.x);
-                                            targetingY = Math.round(m.y);
+                                    if (m.isPlayer) {
+                                        if (!m.isSameTeam(player) && player.getServerClient().pvpEnabled) {
+                                            //System.out.println("PvP");
+                                            float distancemob = m.getDistance(mob);
+                                            if (closest == 0) {
+                                                closest = distancemob;
+                                                targetingX = Math.round(m.x);
+                                                targetingY = Math.round(m.y);
+                                            } else if (distancemob < closest) {
+                                                closest = distancemob;
+                                                targetingX = Math.round(m.x);
+                                                targetingY = Math.round(m.y);
+                                            }
+                                            done = true;
                                         }
-                                        done = true;
                                     } else if (m.isHostile && players == 0) {
                                         //System.out.println("NPC");
                                         float distancemob = m.getDistance(mob);

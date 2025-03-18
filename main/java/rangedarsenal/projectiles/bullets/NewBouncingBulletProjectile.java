@@ -64,7 +64,6 @@ public class NewBouncingBulletProjectile extends BulletProjectile {
     }
 
     public Trail getTrail() {
-        System.out.println(this.bounced);
         R2 = inRange(R2+this.bounced);
         G2 = inRange(G2+this.bounced*6);
         B2 = inRange(B2+this.bounced*3);

@@ -1,24 +1,19 @@
 package rangedarsenal.patches;
 
-import necesse.engine.events.ServerClientConnectedEvent;
-import necesse.engine.loading.ServerLoader;
 import necesse.engine.modLoader.annotations.ModMethodPatch;
 import necesse.engine.network.networkInfo.NetworkInfo;
 import necesse.engine.network.server.Server;
-import necesse.engine.network.server.ServerClient;
-import necesse.inventory.recipe.Ingredient;
 import necesse.inventory.recipe.Recipe;
 import necesse.inventory.recipe.Recipes;
 import net.bytebuddy.asm.Advice;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 //Unload vanilla recipes on Main Menu load
-@ModMethodPatch(target = Server.class, name = "addClient", arguments = {NetworkInfo.class, long.class, String.class, boolean.class})
+@ModMethodPatch(target = Server.class, name = "addClient", arguments = {NetworkInfo.class, long.class, String.class, boolean.class, boolean.class})
 public class RecipePatchDedicatedServer {
     @Advice.OnMethodExit()
-    static void onExit() {
+    static void onExit(@Advice.This Server server) {
 
         Iterator recipes = Recipes.getRecipes().iterator();
         while(recipes.hasNext()) {

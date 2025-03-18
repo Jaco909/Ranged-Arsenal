@@ -4,11 +4,15 @@ import necesse.engine.localization.Localization;
 import necesse.engine.localization.message.GameMessage;
 import necesse.engine.localization.message.LocalMessage;
 import necesse.engine.network.PacketReader;
+import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.util.GameBlackboard;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.PlayerMob;
+import necesse.entity.mobs.attackHandler.ShardCannonAttackHandler;
 import necesse.entity.mobs.friendly.human.HumanMob;
+import necesse.entity.mobs.itemAttacker.ItemAttackSlot;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.PlayerInventorySlot;
@@ -30,9 +34,6 @@ public class NormalRevolver extends GunProjectileToolItem {
         this.resilienceGain.setBaseValue(0.2f);
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }
-    public GameMessage getSettlerCanUseError(HumanMob mob, InventoryItem item) {
-        return new LocalMessage("ui", "settlercantuseitem");
-    }
 
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         super.addExtraGunTooltips(tooltips, item, perspective, blackboard);
@@ -44,15 +45,15 @@ public class NormalRevolver extends GunProjectileToolItem {
         super.addAmmoTooltips(tooltips, item);
     }
 
-   public int getAvailableAmmoNR(PlayerMob player, int bullets) {
+   public int getAvailableAmmoNR(ItemAttackerMob attackerMob, int bullets) {
        return bullets;
    }
-   public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
-       player.startAttackHandler(new BurstRevolverAttackHandler(player, slot, item, this, seed, x, y));
-       return item;
-   }
 
-    public InventoryItem superOnAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
-        return super.onAttack(level, x, y, player, attackHeight, item, slot, animAttack, seed, contentReader);
+    public InventoryItem superOnAttack(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int animAttack, int seed, GNDItemMap mapContent) {
+        return super.onAttack(level, x, y, attackerMob, attackHeight, item, slot, animAttack, seed, mapContent);
+    }
+    public InventoryItem onAttack(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int animAttack, int seed, GNDItemMap mapContent) {
+        attackerMob.startAttackHandler(new BurstRevolverAttackHandler(attackerMob, slot, item, this, seed, x, y));
+        return item;
     }
 }

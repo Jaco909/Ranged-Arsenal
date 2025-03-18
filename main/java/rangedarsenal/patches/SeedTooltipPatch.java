@@ -20,11 +20,13 @@ import net.bytebuddy.asm.Advice.Argument;
 public class SeedTooltipPatch {
     @Advice.OnMethodExit()
     static void onExit(@Advice.This SeedObjectItem seed, @Argument(0) InventoryItem item, @Argument(1) PlayerMob perspective, @Argument(2) GameBlackboard blackboard, @Advice.Return(readOnly = false) ListGameTooltips tooltips){
-        if ((perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("SeedGun")}, "bulletammo") != null) || (perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("SeedGunShotgun")}, "bulletammo") != null) || (perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("SeedGunMega")}, "bulletammo") != null) ) {
-            if (perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("seedgun")}, "bulletammo") != null) {
-                return;
-            } else {
-                tooltips.add(GameColor.ITEM_QUEST.getColorCode() + Localization.translate("itemtooltip", seed.getStringID() + "ammotip"));
+        if (perspective != null) {
+            if ((perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("SeedGun")}, "bulletammo") != null) || (perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("SeedGunShotgun")}, "bulletammo") != null) || (perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("SeedGunMega")}, "bulletammo") != null)) {
+                if (perspective.getInv().main.getFirstItem(perspective.getLevel(), perspective, new Item[]{ItemRegistry.getItem("seedgun")}, "bulletammo") != null) {
+                    return;
+                } else {
+                    tooltips.add(GameColor.ITEM_QUEST.getColorCode() + Localization.translate("itemtooltip", seed.getStringID() + "ammotip"));
+                }
             }
         }
     }

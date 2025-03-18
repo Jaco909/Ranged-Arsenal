@@ -18,7 +18,6 @@ public class GrenadeLauncherExplosionEvent extends ExplosionEvent implements Att
         this.range = 175;
         this.owner = -1;
         this.knockback = 500;
-        this.hitsOwner = true;
         this.sendOwnerData = true;
         this.sendCustomData = true;
     }
@@ -27,6 +26,16 @@ public class GrenadeLauncherExplosionEvent extends ExplosionEvent implements Att
         super(x, y, 175, damage, false, 0, owner);
         this.sendCustomData = true;
         this.sendOwnerData = true;
+        try {
+            if (owner.isPlayer) {
+                this.hitsOwner = true;
+            } else {
+                this.hitsOwner = false;
+            }
+        } catch (Exception e) {
+            this.hitsOwner = false;
+        }
+        //this.hitsOwner = owner.isPlayer;
     }
 
     public static void spawnExplosionParticles(Level level, float x, float y, int particles, float minRange, float maxRange, ExplosionSpawnFunction spawnFunction) {

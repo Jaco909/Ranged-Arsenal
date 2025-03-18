@@ -5,11 +5,14 @@ import necesse.engine.network.gameNetworkData.GNDItem;
 import necesse.engine.network.gameNetworkData.GNDItemGameDamage;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketSpawnProjectile;
+import necesse.engine.registries.ItemRegistry;
 import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.*;
 import necesse.entity.mobs.buffs.ActiveBuff;
+import necesse.entity.mobs.itemAttacker.ItemAttackSlot;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.entity.projectile.modifiers.ResilienceOnHitProjectileModifier;
 import necesse.gfx.camera.GameCamera;
 import necesse.gfx.drawOptions.DrawOptions;
@@ -75,70 +78,71 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
     protected void addExtraGunTooltips(ListGameTooltips tooltips, InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         super.addExtraGunTooltips(tooltips, item, perspective, blackboard);
         tooltips.add(Localization.translate("itemtooltip", "Lever_Action_RifleSecondaryTip"), 400);
-        //tooltips.add(Localization.translate("itemtooltip", "Lever_Action_RifleTip"));
-        //tooltips.add(Localization.translate("itemtooltip", "Lever_Action_RifleTip2"));
     }
 
-    public boolean canLevelInteract(Level level, int x, int y, PlayerMob player, InventoryItem item) {
-        return !player.buffManager.hasBuff("LeverActionRifleCooldownDebuff");
+    public boolean canLevelInteract(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item) {
+        return !attackerMob.buffManager.hasBuff("LeverActionRifleCooldownDebuff");
     }
 
-    protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
-        GameRandom random = new GameRandom((long)seed);
-        GameRandom spreadRandom = new GameRandom((long)(seed + 10));
+    protected void fireProjectiles(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item, int seed, BulletItem bullet, boolean dropItem, GNDItemMap mapContent) {
         int range;
         if (this.controlledRange) {
-            Point newTarget = this.controlledRangePosition(spreadRandom, player, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
+            Point newTarget = this.controlledRangePosition(new GameRandom((long)(seed + 10)), attackerMob, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
             x = newTarget.x;
             y = newTarget.y;
-            range = (int)player.getDistance((float)x, (float)y);
+            range = (int)attackerMob.getDistance((float)x, (float)y);
         } else {
             range = this.getAttackRange(item);
         }
-        Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
+
+        Projectile projectile = this.getProjectile(item, bullet, attackerMob.x, attackerMob.y, (float)x, (float)y, range, attackerMob);
         projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
         projectile.piercing = projectile.piercing+1;
-        projectile.dropItem = consumeAmmo;
-        projectile.getUniqueID(random);
-        level.entityManager.projectiles.addHidden(projectile);
-        if (this.moveDist != 0) {
-            projectile.moveDist((double)this.moveDist);
-        }
-
-        projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 1.0F);
-        if (level.isServer()) {
-            level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
-        }
+        projectile.dropItem = dropItem;
+        projectile.getUniqueID(new GameRandom((long)seed));
+        attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist);
     }
-    public InventoryItem onLevelInteract(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int seed, PacketReader contentReader) {
-        Item bulletcheck = player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo");
-        if (bulletcheck != null) {
-            ActiveBuff ab = new ActiveBuff("LeverActionRifleCooldownDebuff", player, 5F, player);
-            player.buffManager.addBuff(ab, true);
 
-            Item bullet = player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo");
+    public InventoryItem onLevelInteract(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int seed, GNDItemMap mapContent) {
+        if (attackerMob.isPlayer) {
+            Item bulletcheck = attackerMob.getFirstPlayerOwner().getInv().main.getFirstItem(level, attackerMob.getFirstPlayerOwner(), this.ammoItems(), "bulletammo");
+            if (bulletcheck != null) {
+                ActiveBuff ab = new ActiveBuff("LeverActionRifleCooldownDebuff", attackerMob, 2F, attackerMob);
+                attackerMob.buffManager.addBuff(ab, true);
+
+                Item bullet = attackerMob.getFirstPlayerOwner().getInv().main.getFirstItem(level, attackerMob.getFirstPlayerOwner(), this.ammoItems(), "bulletammo");
+                int range;
+                range = this.getAttackRange(item);
+                Projectile projectile = this.getProjectile(item, (BulletItem) bullet, attackerMob.x, attackerMob.y, (float) x, (float) y, range, attackerMob);
+                projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
+                projectile.dropItem = true;
+                projectile.getUniqueID(new GameRandom((long) seed));
+                attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist);
+                projectile.piercing = 5;
+                projectile.setDamage(new GameDamage(this.getDamageType(item), this.attackDamage.getValue(this.getUpgradeTier(item)), 0, 1f));
+                attackerMob.getFirstPlayerOwner().getInv().removeItems(attackerMob.getFirstPlayerOwner().getInv().main.getFirstItem(level, attackerMob.getFirstPlayerOwner(), this.ammoItems(), "bulletammo"), 1, true, true, true, true, "bulletammo");
+
+                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(attackerMob).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.85f, 0.9f)));
+                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(attackerMob).volume(0.5f).pitch(GameRandom.globalRandom.getFloatBetween(0.4f, 0.45f)));
+                SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(attackerMob).volume(0.25F).pitch(1F));
+            }
+        } else {
+            ActiveBuff ab = new ActiveBuff("LeverActionRifleCooldownDebuff", attackerMob, 2F, attackerMob);
+            attackerMob.buffManager.addBuff(ab, true);
+
             int range;
             range = this.getAttackRange(item);
-            GameRandom random = new GameRandom((long) seed);
-            GameRandom spreadRandom = new GameRandom((long) (seed + 10));
-            Projectile projectile = this.getProjectile(item, (BulletItem) bullet, player.x, player.y, (float) x, (float) y, range, player);
+            Projectile projectile = this.getProjectile(item, (BulletItem) ItemRegistry.getItem("Standard_Bullet"), attackerMob.x, attackerMob.y, (float) x, (float) y, range, attackerMob);
             projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
+            projectile.dropItem = true;
+            projectile.getUniqueID(new GameRandom((long) seed));
+            attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist);
             projectile.piercing = 5;
-            player.getInv().removeItems(player.getInv().main.getFirstItem(level, player, this.ammoItems(), "bulletammo"),1,true,true,true, true,"bulletammo");
-            projectile.setDamage(new GameDamage(this.getDamageType(item), this.attackDamage.getValue(this.getUpgradeTier(item)),0,1f));
-            projectile.getUniqueID(random);
-            level.entityManager.projectiles.addHidden(projectile);
-            if (this.moveDist != 0) {
-                projectile.moveDist((double) this.moveDist);
-            }
+            projectile.setDamage(new GameDamage(this.getDamageType(item), this.attackDamage.getValue(this.getUpgradeTier(item)), 0, 1f));
 
-            projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 1.0F);
-            if (level.isServer()) {
-                level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
-            }
-            SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.85f, 0.9f)));
-            SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(player).volume(0.5f).pitch(GameRandom.globalRandom.getFloatBetween(0.4f, 0.45f)));
-            SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(player).volume(0.25F).pitch(1F));
+            SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(attackerMob).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.85f, 0.9f)));
+            SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(attackerMob).volume(0.5f).pitch(GameRandom.globalRandom.getFloatBetween(0.4f, 0.45f)));
+            SoundManager.playSound(GameResources.explosionLight, SoundEffect.effect(attackerMob).volume(0.25F).pitch(1F));
         }
         return item;
     }

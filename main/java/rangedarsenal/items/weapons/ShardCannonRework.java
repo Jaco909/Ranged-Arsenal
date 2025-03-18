@@ -2,6 +2,7 @@ package rangedarsenal.items.weapons;
 
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
+import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.ItemRegistry;
 import necesse.engine.sound.SoundEffect;
@@ -16,6 +17,8 @@ import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.attackHandler.ShardCannonAttackHandler;
 import necesse.entity.mobs.buffs.ActiveBuff;
 import necesse.entity.mobs.buffs.BuffModifiers;
+import necesse.entity.mobs.itemAttacker.ItemAttackSlot;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.entity.projectile.bulletProjectile.CrystalBulletProjectile;
 import necesse.entity.projectile.modifiers.ResilienceOnHitProjectileModifier;
@@ -62,10 +65,14 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
         this.addGlobalIngredient(new String[]{"bulletuser"});
     }
     public GameSprite getAttackSprite(InventoryItem item, PlayerMob player) {
-        if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-            return new GameSprite(ShardCannonREDtex,this.attackTexture.getWidth(),this.attackTexture.getHeight());
+        if (player != null) {
+            if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
+                return new GameSprite(ShardCannonREDtex, this.attackTexture.getWidth(), this.attackTexture.getHeight());
+            } else {
+                return this.attackTexture != null ? new GameSprite(this.attackTexture) : new GameSprite(this.getItemSprite(item, player), 24);
+            }
         } else {
-            return this.attackTexture != null ? new GameSprite(this.attackTexture) : new GameSprite(this.getItemSprite(item, player), 24);
+            return new GameSprite(this.attackTexture);
         }
     }
     public GameSprite getItemSprite(InventoryItem item, PlayerMob perspective) {
@@ -80,8 +87,8 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
             }
         }
     }
-    protected float getAmmoConsumeChance(PlayerMob player, InventoryItem item) {
-        float playerMod = player == null ? 1.0F : (Float)player.buffManager.getModifier(BuffModifiers.BULLET_USAGE);
+    protected float getAmmoConsumeChance(ItemAttackerMob attackerMob, InventoryItem item) {
+        float playerMod = attackerMob == null ? 1.0F : (Float)attackerMob.buffManager.getModifier(BuffModifiers.BULLET_USAGE);
         return (this.ammoConsumeChance-(this.getUpgradeTier(item)/10)) * playerMod;
     }
     public ListGameTooltips getPreEnchantmentTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
@@ -106,56 +113,40 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
         return tooltips;
     }
 
-    public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
-        player.startAttackHandler(new ShardCannonAttackHandlerFix(player, slot, item, this, seed, x, y));
+    public InventoryItem onAttack(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int animAttack, int seed, GNDItemMap mapContent) {
+        attackerMob.startAttackHandler(new ShardCannonAttackHandlerFix(attackerMob, slot, item, this, seed, x, y));
         return item;
     }
 
-    public InventoryItem superOnAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
-        return super.onAttack(level, x, y, player, attackHeight, item, slot, animAttack, seed, contentReader);
+    public InventoryItem superOnAttack(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int animAttack, int seed, GNDItemMap mapContent) {
+        return super.onAttack(level, x, y, attackerMob, attackHeight, item, slot, animAttack, seed, mapContent);
     }
-    public boolean canLevelInteract(Level level, int x, int y, PlayerMob player, InventoryItem item) {
-        return true;
+    public boolean canLevelInteract(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item) {
+        return attackerMob.isPlayer;
     }
 
-    protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
-        float distance = GameMath.diamondDistance(player.x, player.y, (float)x, (float)y);
-        float t = 20.0F / distance;
-        float projectileX = (1.0F - t) * player.x + t * (float)x;
-        float projectileY = (1.0F - t) * player.y + t * (float)y;
+    protected void fireProjectiles(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item, int seed, BulletItem bullet, boolean dropItem, GNDItemMap mapContent) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));
 
-        if (!player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-            Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, this.getAttackRange(item), player);
+        if (!attackerMob.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
+            Projectile projectile;
+            if (!attackerMob.isPlayer) {
+                projectile = this.getProjectile(item, (BulletItem) ItemRegistry.getItem("crystalbullet"), attackerMob.x, attackerMob.y, (float)x, (float)y, this.getAttackRange(item), attackerMob);
+            } else {
+                projectile = this.getProjectile(item, bullet, attackerMob.x, attackerMob.y, (float)x, (float)y, this.getAttackRange(item), attackerMob);
+            }
             projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-            projectile.dropItem = consumeAmmo;
+            projectile.dropItem = dropItem;
             projectile.getUniqueID(random);
-            level.entityManager.projectiles.addHidden(projectile);
-            if (this.moveDist != 0) {
-                projectile.moveDist((double) this.moveDist);
-            }
-
-            projectile.setAngle(projectile.getAngle() + spreadRandom.getFloatOffset(0.0F, 3.0F));
-            if (level.isServer()) {
-                level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
-            }
+            attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist, spreadRandom.getFloatOffset(0.0F, 3.0F));
         } else {
             for(int i = 0; i <= 4; ++i) {
-                Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, this.getAttackRange(item), player);
+                Projectile projectile = this.getProjectile(item, bullet, attackerMob.x, attackerMob.y, (float)x, (float)y, this.getAttackRange(item), attackerMob);
                 projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-                projectile.dropItem = consumeAmmo;
+                projectile.dropItem = dropItem;
                 projectile.getUniqueID(random);
-                projectile.setDamage(this.getAttackDamage(item).modFinalMultiplier(0.75F));
-                level.entityManager.projectiles.addHidden(projectile);
-                if (this.moveDist != 0) {
-                    projectile.moveDist((double)this.moveDist);
-                }
-
-                projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * (20.0F - this.getUpgradeTier(item)));
-                if (level.isServer()) {
-                    level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
-                }
+                attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist, spreadRandom.getFloatOffset(0.0F, (17.0F - this.getUpgradeTier(item))));
             }
         }
     }
@@ -163,17 +154,16 @@ public class ShardCannonRework extends GunProjectileToolItem implements ItemInte
     public void playFireSound(AttackAnimMob mob) {
     }
 
-    public InventoryItem onLevelInteract(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int seed, PacketReader contentReader) {
-        if (player.buffManager.hasBuff("ShardCannonCooldownDebuff")) {
-            player.buffManager.removeBuff("ShardCannonCooldownDebuff",true);
-            SoundManager.playSound(GameResources.crystalHit3, SoundEffect.effect(player).volume(1.6f).pitch(1f));
-            return item;
-        } else {
-            ActiveBuff ab = new ActiveBuff("ShardCannonCooldownDebuff", player, 999999F, player);
-            player.buffManager.addBuff(ab, true);
-            SoundManager.playSound(GameResources.crystalHit3, SoundEffect.effect(player).volume(1.6f).pitch(0.5f));
-            return item;
+    public InventoryItem onLevelInteract(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int seed, GNDItemMap mapContent) {
+        if (attackerMob.buffManager.hasBuff("ShardCannonCooldownDebuff") && attackerMob.isClient()) {
+            attackerMob.buffManager.removeBuff("ShardCannonCooldownDebuff",true);
+            SoundManager.playSound(GameResources.crystalHit3, SoundEffect.effect(attackerMob).volume(1.6f).pitch(1f));
+        } else if (!attackerMob.buffManager.hasBuff("ShardCannonCooldownDebuff") && attackerMob.isClient()) {
+            ActiveBuff ab = new ActiveBuff("ShardCannonCooldownDebuff", attackerMob, 999999F, attackerMob);
+            attackerMob.buffManager.addBuff(ab, true);
+            SoundManager.playSound(GameResources.crystalHit3, SoundEffect.effect(attackerMob).volume(1.6f).pitch(0.5f));
         }
+        return item;
     }
 
     public float getItemCooldownPercent(InventoryItem item, PlayerMob perspective) {

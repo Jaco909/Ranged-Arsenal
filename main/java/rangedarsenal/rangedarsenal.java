@@ -42,6 +42,7 @@ import rangedarsenal.projectiles.shells.*;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import static necesse.inventory.item.ItemCategory.craftingManager;
 
@@ -62,9 +63,9 @@ public class rangedarsenal {
 
     //LOAD CONSTANTS
     //public static HashSet<String> SEED_AMMO_TYPES = new HashSet(Arrays.asList("grassseed","swampgrassseed","plainsgrassseed","overgrownplainsgrassseed","iceblossomseed","firemoneseed","sunflowerseed","wheatseed","cornseed","tomatoseed","cabbageseed","chilipepperseed","sugarbeetseed","eggplantseed","potatoseed","riceseed","carrotseed","onionseed","pumpkinseed","strawberryseed","kew_copper_seed","kew_iron_seed","kew_gold_seed","kew_tier_1_seed","kew_tier_2_seed"));
-    public static HashSet<String> FOOD_AMMO_TYPES = new HashSet(Arrays.asList("apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans","raspberry","beet"));
-    public static HashSet<String> FLAME_AMMO_TYPES = new HashSet(Arrays.asList("Gasoline", "CryoFlame", "Napalm", "MoltenSlime"));
-    public static HashSet<String> SHELL_AMMO_TYPES = new HashSet(Arrays.asList("Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell","Grenade_Launcher_Fire_Shell"));
+    public static LinkedHashSet<String> FOOD_AMMO_TYPES = new LinkedHashSet(Arrays.asList("apple","banana","blackberry","blueberry","cabbage","carrot","chilipepper","coconut","corn","eggplant","lemon","onion","potato","pumpkin","rice","strawberry","sugarbeet","tomato","wheat","coffeebeans","raspberry","beet"));
+    public static LinkedHashSet<String> FLAME_AMMO_TYPES = new LinkedHashSet(Arrays.asList("Gasoline", "CryoFlame", "Napalm", "MoltenSlime"));
+    public static LinkedHashSet<String> SHELL_AMMO_TYPES = new LinkedHashSet(Arrays.asList("Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell","Grenade_Launcher_Fire_Shell"));
 
     public static GameSound proxyarm;
     public static GameSprite ShardCannonREDtex;

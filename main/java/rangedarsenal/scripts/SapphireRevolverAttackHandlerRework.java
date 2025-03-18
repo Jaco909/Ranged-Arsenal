@@ -2,30 +2,23 @@ package rangedarsenal.scripts;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
-import necesse.engine.network.Packet;
-import necesse.engine.network.PacketReader;
-import necesse.engine.network.PacketWriter;
-import necesse.engine.network.packet.PacketFireDeathRipper;
-import necesse.engine.network.packet.PacketPlayerStopAttack;
-import necesse.engine.network.packet.PacketShowAttack;
-import necesse.engine.network.server.Server;
-import necesse.engine.network.server.ServerClient;
+import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.sound.SoundEffect;
 import necesse.engine.sound.SoundManager;
 import necesse.engine.util.GameMath;
 import necesse.engine.util.GameRandom;
 import necesse.entity.ParticleTypeSwitcher;
-import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.attackHandler.MouseAngleAttackHandler;
+import necesse.entity.mobs.buffs.ActiveBuff;
+import necesse.entity.mobs.itemAttacker.ItemAttackSlot;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.entity.particle.Particle;
 import necesse.entity.particle.Particle.GType;
 import necesse.gfx.GameResources;
 import necesse.inventory.InventoryItem;
-import necesse.inventory.PlayerInventorySlot;
-import necesse.inventory.item.toolItem.projectileToolItem.gunProjectileToolItem.SapphireRevolverProjectileToolItem;
 import rangedarsenal.items.weapons.SapphireRevolverRework;
 
-import java.awt.geom.Point2D;
+import java.util.Iterator;
 
 public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler {
     public int chargeDelay = 1000;
@@ -37,19 +30,20 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
     private boolean charged2;
     private boolean charged3;
     private float tier;
+    protected int endAttackBuffer;
 
-    public SapphireRevolverAttackHandlerRework(PlayerMob player, PlayerInventorySlot slot, InventoryItem item, SapphireRevolverRework toolItem, int seed, int startTargetX, int startTargetY, float tier) {
-        super(player, slot, 20, 1000.0F, startTargetX, startTargetY);
+    public SapphireRevolverAttackHandlerRework(ItemAttackerMob attackerMob, ItemAttackSlot slot, InventoryItem item, SapphireRevolverRework toolItem, int seed, int startTargetX, int startTargetY, float tier) {
+        super(attackerMob, slot, 20, 1000.0F, startTargetX, startTargetY);
         this.item = item;
         this.toolItem = toolItem;
         this.seed = seed;
-        this.startTime = player.getWorldEntity().getLocalTime();
+        this.startTime = attackerMob.getWorldEntity().getLocalTime();
         this.chargeDelay = seed;
         this.tier = tier;
     }
 
     public long getTimeSinceStart() {
-        return this.player.getWorldEntity().getLocalTime() - this.startTime;
+        return this.attackerMob.getWorldEntity().getLocalTime() - this.startTime;
     }
 
     public float getChargePercent() {
@@ -57,27 +51,30 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
     }
 
     public float getChargeTime() {
-        float multiplier = (1.0F-(this.tier/10)) / this.toolItem.getAttackSpeedModifier(this.item, this.player);
+        float multiplier = (1.0F-(this.tier/10)) / this.toolItem.getAttackSpeedModifier(this.item, this.attackerMob);
         return (float) ((int) (multiplier * 1000.0F));
     }
-
     public void onUpdate() {
         super.onUpdate();
+        float chargePercent = this.getChargePercent();
+        if (!this.attackerMob.isPlayer && chargePercent >= 1.0F) {
+            this.endAttackBuffer += this.updateInterval;
+            if (this.endAttackBuffer >= 350) {
+                this.endAttackBuffer = 0;
+                this.attackerMob.endAttackHandler(true);
+                return;
+            }
+        }
+
         Point2D.Float dir = GameMath.getAngleDir(this.currentAngle);
-        int attackX = this.player.getX() + (int) (dir.x * 100.0F);
-        int attackY = this.player.getY() + (int) (dir.y * 100.0F);
-        long currentTime = this.player.getLevel().getWorldEntity().getLocalTime();
-        if (this.toolItem.canAttack(this.player.getLevel(), attackX, attackY, this.player, this.item) == null) {
-            Packet attackContent = new Packet();
-            this.toolItem.setupAttackContentPacket(new PacketWriter(attackContent), this.player.getLevel(), attackX, attackY, this.player, this.item);
-            this.player.showAttack(this.item, attackX, attackY, this.seed, attackContent);
-            if (this.player.isServer()) {
-                ServerClient client = this.player.getServerClient();
-                this.player.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketShowAttack(this.player, this.item, attackX, attackY, this.seed, attackContent), this.player, client);
-            } else if (this.getChargePercent() >= 3.0F && !this.charged3) {
+        int attackX = this.attackerMob.getX() + (int)(dir.x * 100.0F);
+        int attackY = this.attackerMob.getY() + (int)(dir.y * 100.0F);
+        if (this.toolItem.canAttack(this.attackerMob.getLevel(), attackX, attackY, this.attackerMob, this.item) == null) {
+            this.attackerMob.showAttackAndSendAttacker(this.item, attackX, attackY, 0, this.seed);
+            if (this.attackerMob.isClient() && this.getChargePercent() >= 3.0F && !this.charged3) {
                 this.charged3 = true;
-                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(2.0F));
-                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(1.0F).pitch(1.0F));
+                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.attackerMob).volume(1.0F).pitch(2.0F));
+                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.attackerMob).volume(1.0F).pitch(1.0F));
                 ParticleTypeSwitcher typeSwitcher = new ParticleTypeSwitcher(new Particle.GType[]{GType.CRITICAL, GType.IMPORTANT_COSMETIC, GType.COSMETIC});
                 float anglePerParticle = 12.0F;
 
@@ -85,12 +82,12 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
                     int angle = (int) ((float) i * anglePerParticle + GameRandom.globalRandom.nextFloat() * anglePerParticle);
                     float dx = (float) Math.sin(Math.toRadians((double) angle)) * 50.0F;
                     float dy = (float) Math.cos(Math.toRadians((double) angle)) * 50.0F * 0.8F;
-                    this.player.getLevel().entityManager.addParticle(this.player, typeSwitcher.next()).movesFriction(dx, dy, 0.8F).color(new Color(253, 44, 44)).heightMoves(0.0F, 10.0F).sizeFades(22, 44).sprite(GameResources.magicSparkParticles.sprite(GameRandom.globalRandom.nextInt(4), 0, 22)).lifeTime(500);
+                    this.attackerMob.getLevel().entityManager.addParticle(this.attackerMob, typeSwitcher.next()).movesFriction(dx, dy, 0.8F).color(new Color(253, 44, 44)).heightMoves(0.0F, 10.0F).sizeFades(22, 44).sprite(GameResources.magicSparkParticles.sprite(GameRandom.globalRandom.nextInt(4), 0, 22)).lifeTime(500);
                 }
-            } else if (this.getChargePercent() >= 2.0F && !this.charged2) {
+            } else if (this.attackerMob.isClient() && this.getChargePercent() >= 2.0F && !this.charged2) {
                 this.charged2 = true;
-                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(1.2F));
-                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(0.75F).pitch(1.0F));
+                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.attackerMob).volume(1.0F).pitch(1.2F));
+                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.attackerMob).volume(0.75F).pitch(1.0F));
                 ParticleTypeSwitcher typeSwitcher = new ParticleTypeSwitcher(new Particle.GType[]{GType.CRITICAL, GType.IMPORTANT_COSMETIC, GType.COSMETIC});
                 float anglePerParticle = 24.0F;
 
@@ -98,12 +95,13 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
                     int angle = (int) ((float) i * anglePerParticle + GameRandom.globalRandom.nextFloat() * anglePerParticle);
                     float dx = (float) Math.sin(Math.toRadians((double) angle)) * 50.0F;
                     float dy = (float) Math.cos(Math.toRadians((double) angle)) * 50.0F * 0.8F;
-                    this.player.getLevel().entityManager.addParticle(this.player, typeSwitcher.next()).movesFriction(dx, dy, 0.8F).color(new Color(255, 225, 71)).heightMoves(0.0F, 10.0F).sizeFades(22, 44).sprite(GameResources.magicSparkParticles.sprite(GameRandom.globalRandom.nextInt(4), 0, 22)).lifeTime(500);
+                    this.attackerMob.getLevel().entityManager.addParticle(this.attackerMob, typeSwitcher.next()).movesFriction(dx, dy, 0.8F).color(new Color(255, 225, 71)).heightMoves(0.0F, 10.0F).sizeFades(22, 44).sprite(GameResources.magicSparkParticles.sprite(GameRandom.globalRandom.nextInt(4), 0, 22)).lifeTime(500);
                 }
-            } else if (this.getChargePercent() >= 1.0F && !this.charged) {
+            }
+            else if (this.attackerMob.isClient() && this.getChargePercent() >= 1.0F && !this.charged) {
                 this.charged = true;
-                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.player).volume(1.0F).pitch(0.7F));
-                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.player).volume(0.5F).pitch(1.0F));
+                SoundManager.playSound(GameResources.cling, SoundEffect.effect(this.attackerMob).volume(1.0F).pitch(0.7F));
+                SoundManager.playSound(GameResources.jingle, SoundEffect.effect(this.attackerMob).volume(0.5F).pitch(1.0F));
                 ParticleTypeSwitcher typeSwitcher = new ParticleTypeSwitcher(new Particle.GType[]{GType.CRITICAL, GType.IMPORTANT_COSMETIC, GType.COSMETIC});
                 float anglePerParticle = 36.0F;
 
@@ -111,7 +109,7 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
                     int angle = (int) ((float) i * anglePerParticle + GameRandom.globalRandom.nextFloat() * anglePerParticle);
                     float dx = (float) Math.sin(Math.toRadians((double) angle)) * 50.0F;
                     float dy = (float) Math.cos(Math.toRadians((double) angle)) * 50.0F * 0.8F;
-                    this.player.getLevel().entityManager.addParticle(this.player, typeSwitcher.next()).movesFriction(dx, dy, 0.8F).color(new Color(116, 245, 253)).heightMoves(0.0F, 10.0F).sizeFades(22, 44).sprite(GameResources.magicSparkParticles.sprite(GameRandom.globalRandom.nextInt(4), 0, 22)).lifeTime(500);
+                    this.attackerMob.getLevel().entityManager.addParticle(this.attackerMob, typeSwitcher.next()).movesFriction(dx, dy, 0.8F).color(new Color(116, 245, 253)).heightMoves(0.0F, 10.0F).sizeFades(22, 44).sprite(GameResources.magicSparkParticles.sprite(GameRandom.globalRandom.nextInt(4), 0, 22)).lifeTime(500);
                 }
             }
         }
@@ -121,35 +119,27 @@ public class SapphireRevolverAttackHandlerRework extends MouseAngleAttackHandler
     public void onEndAttack(boolean bySelf) {
         if (this.getChargePercent() >= 1.0F) {
             Point2D.Float dir = GameMath.getAngleDir(this.currentAngle);
-            int attackX = this.player.getX() + (int) (dir.x * 100.0F);
-            int attackY = this.player.getY() + (int) (dir.y * 100.0F);
-            Packet attackContent = new Packet();
-            this.toolItem.setupAttackContentPacket(new PacketWriter(attackContent), this.player.getLevel(), attackX, attackY, this.player, this.item);
-            this.toolItem.onAttack(this.player.getLevel(), attackX, attackY, this.player, this.player.getCurrentAttackHeight(), this.item, this.slot, 0, this.seed, new PacketReader(attackContent),this.getChargePercent());
-            if (this.player.isClient() && this.charged3) {
-                SoundManager.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
-                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(1.1F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
-                SoundManager.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(2.2F).pitch(GameRandom.globalRandom.getFloatBetween(0.95F, 1.25F)));
-            } else if (this.player.isClient() && this.charged2) {
-                SoundManager.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
-                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(0.7F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
-                SoundManager.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(1.5F).pitch(GameRandom.globalRandom.getFloatBetween(0.75F, 0.9F)));
-            } else if (this.player.isClient() && this.charged) {
-                SoundManager.playSound(GameResources.shatter1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(1.3F, 1.7F)));
-                SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(this.player).volume(0.5F).pitch(GameRandom.globalRandom.getFloatBetween(0.4F, 0.6F)));
-                SoundManager.playSound(GameResources.laserBlast1, SoundEffect.effect(this.player).volume(1.0F).pitch(GameRandom.globalRandom.getFloatBetween(0.45F, 0.65F)));
-            } else if (this.player.isServer()) {
-                ServerClient client = this.player.getServerClient();
-                Server server = this.player.getLevel().getServer();
-                server.network.sendToClientsWithEntityExcept(new PacketFireDeathRipper(client.slot), this.player, client);
+            int attackX = this.attackerMob.getX() + (int)(dir.x * 100.0F);
+            int attackY = this.attackerMob.getY() + (int)(dir.y * 100.0F);
+            InventoryItem attackItem = this.item.copy();
+            attackItem.getGndData().setFloat("charge", this.getChargePercent());
+            if (this.attackerMob.isClient() && this.charged3) {
+                attackItem.getGndData().setBoolean("charged3", true);
+            } else if (this.attackerMob.isClient() && this.charged2) {
+                attackItem.getGndData().setBoolean("charged2", true);
+            } else if (this.attackerMob.isClient() && this.charged) {
+                attackItem.getGndData().setBoolean("charged", true);
+            }
+            GNDItemMap attackMap = this.attackerMob.showAttackAndSendAttacker(attackItem, attackX, attackY, 0, this.seed);
+            this.toolItem.superOnAttack(this.attackerMob.getLevel(), attackX, attackY, this.attackerMob, this.attackerMob.getCurrentAttackHeight(), attackItem, this.slot, 0, this.seed, attackMap);
+            Iterator var7 = this.attackerMob.buffManager.getArrayBuffs().iterator();
+
+            while(var7.hasNext()) {
+                ActiveBuff b = (ActiveBuff)var7.next();
+                b.onItemAttacked(attackX, attackY, this.attackerMob, this.attackerMob.getCurrentAttackHeight(), attackItem, this.slot, 0);
             }
         }
 
-        this.player.stopAttack(false);
-        if (this.player.isServer()) {
-            ServerClient client = this.player.getServerClient();
-            this.player.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketPlayerStopAttack(client.slot), this.player, client);
-        }
-
+        this.attackerMob.doAndSendStopAttackAttacker(false);
     }
 }

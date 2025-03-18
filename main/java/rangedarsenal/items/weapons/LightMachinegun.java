@@ -2,6 +2,7 @@ package rangedarsenal.items.weapons;
 
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
+import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.sound.SoundEffect;
@@ -10,6 +11,7 @@ import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.PlayerMob;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.entity.projectile.modifiers.ResilienceOnHitProjectileModifier;
 import necesse.gfx.GameResources;
@@ -46,38 +48,30 @@ public class LightMachinegun extends GunProjectileToolItem {
     }
 
     public void playFireSound(AttackAnimMob mob) {
-        SoundManager.playSound(GameResources.handgun, SoundEffect.effect(mob)
-                .volume(0.7f)
-                .pitch(GameRandom.globalRandom.getFloatBetween(1.5f, 1.7f)));;
+        SoundManager.playSound(GameResources.handgun, SoundEffect.effect(mob).volume(0.7f).pitch(GameRandom.globalRandom.getFloatBetween(1.5f, 1.7f)));;
     }
     public float getAttackMovementMod(InventoryItem item) {
         return 0.7F;
     }
 
-    protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
+    protected void fireProjectiles(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item, int seed, BulletItem bullet, boolean dropItem, GNDItemMap mapContent) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));
         int range;
         if (this.controlledRange) {
-            Point newTarget = this.controlledRangePosition(spreadRandom, player, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
+            Point newTarget = this.controlledRangePosition(new GameRandom((long)(seed + 10)), attackerMob, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
             x = newTarget.x;
             y = newTarget.y;
-            range = (int)player.getDistance((float)x, (float)y);
+            range = (int)attackerMob.getDistance((float)x, (float)y);
         } else {
             range = this.getAttackRange(item);
         }
-        Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
-        projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-        projectile.dropItem = consumeAmmo;
-        projectile.getUniqueID(random);
-        level.entityManager.projectiles.addHidden(projectile);
-        if (this.moveDist != 0) {
-            projectile.moveDist((double)this.moveDist);
-        }
 
+        Projectile projectile = this.getProjectile(item, bullet, attackerMob.x, attackerMob.y, (float)x, (float)y, range, attackerMob);
+        projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
+        projectile.dropItem = dropItem;
         projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * (12F - this.getUpgradeTier(item)));
-        if (level.isServer()) {
-            level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
-        }
+        projectile.getUniqueID(new GameRandom((long)seed));
+        attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist);
     }
 }

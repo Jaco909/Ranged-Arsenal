@@ -84,7 +84,7 @@ public class SplinteringBulletProjectile extends BulletProjectile {
                         mob.getLevel().entityManager.mobs.streamArea(mob.getX(),mob.getY(), 1).forEach((m) -> {
                             if (m != mob) {
                                 count++;
-                                if (!m.isSameTeam(player) || (!m.isPlayer && m.canBeHit(player)) || (m.isPlayer && player.getClient().getPlayer().getServerClient().pvpEnabled)) {
+                                if ((!m.isPlayer && m.canBeHit(player)) || (m.isPlayer && m.getClient().pvpEnabled() && player.getClient().pvpEnabled()) || m.isPlayer && player.getWorldSettings().forcedPvP) {
                                     if (((m.x <= (mob.x + 16)) && (m.x >= (mob.x - 16))) && ((m.y <= (mob.y + 16)) && (m.y >= (mob.y - 16)))) {
                                         int damage = Math.round(this.getDamage().damage / 2.9f);
                                         if (damage > 120) {

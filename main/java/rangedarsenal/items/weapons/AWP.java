@@ -13,8 +13,11 @@ import necesse.engine.util.GameBlackboard;
 import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.AttackAnimMob;
 import necesse.entity.mobs.GameDamage;
+import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.buffs.ActiveBuff;
+import necesse.entity.mobs.itemAttacker.ItemAttackSlot;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.entity.projectile.modifiers.ResilienceOnHitProjectileModifier;
 import necesse.gfx.GameResources;
@@ -100,17 +103,19 @@ public class AWP extends GunProjectileToolItem implements ItemInteractAction {
     public float zoomAmount() {
         return zoom;
     }
-    public boolean canLevelInteract(Level level, int x, int y, PlayerMob player, InventoryItem item) {
-        return true;
+    public boolean canLevelInteract(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item) {
+        return attackerMob.isPlayer;
     }
-    public InventoryItem onLevelInteract(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int seed, PacketReader contentReader) {
-        if (player.buffManager.hasBuff("AWPZoomBuff")) {
-            player.buffManager.removeBuff("AWPZoomBuff",true);
-        } else {
-            ActiveBuff ab = new ActiveBuff("AWPZoomBuff", player, 0.01F, player);
-            player.buffManager.addBuff(ab, true);
+    public InventoryItem onLevelInteract(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int seed, GNDItemMap mapContent) {
+        if (attackerMob.isPlayer) {
+            if (attackerMob.buffManager.hasBuff("AWPZoomBuff") && attackerMob.isClient()) {
+                attackerMob.buffManager.removeBuff("AWPZoomBuff", true);
+            } else if (!attackerMob.buffManager.hasBuff("AWPZoomBuff") && attackerMob.isClient()) {
+                ActiveBuff ab = new ActiveBuff("AWPZoomBuff", attackerMob, 0.01F, attackerMob);
+                attackerMob.buffManager.addBuff(ab, true);
+            }
+            zoomAmount();
         }
-        zoomAmount();
         return item;
     }
     public float getItemCooldownPercent(InventoryItem item, PlayerMob perspective) {
@@ -128,34 +133,31 @@ public class AWP extends GunProjectileToolItem implements ItemInteractAction {
             }
         };
     }
-    protected void fireProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, BulletItem bullet, boolean consumeAmmo, PacketReader contentReader) {
+    protected void fireProjectiles(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item, int seed, BulletItem bullet, boolean dropItem, GNDItemMap mapContent) {
         GameRandom random = new GameRandom((long)seed);
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));
         int range;
         if (this.controlledRange) {
-            Point newTarget = this.controlledRangePosition(spreadRandom, player, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
+            Point newTarget = this.controlledRangePosition(spreadRandom, attackerMob, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
             x = newTarget.x;
             y = newTarget.y;
-            range = (int)player.getDistance((float)x, (float)y);
+            range = (int)attackerMob.getDistance((float)x, (float)y);
         } else {
             range = this.getAttackRange(item);
         }
-        Projectile projectile = this.getProjectile(item, bullet, player.x, player.y, (float)x, (float)y, range, player);
+        Projectile projectile = this.getProjectile(item, bullet, attackerMob.x, attackerMob.y, (float)x, (float)y, range, attackerMob);
         projectile.setModifier(new ResilienceOnHitProjectileModifier(this.getResilienceGain(item)));
-        projectile.dropItem = consumeAmmo;
+        projectile.dropItem = dropItem;
         projectile.getUniqueID(random);
         level.entityManager.projectiles.addHidden(projectile);
         if (this.moveDist != 0) {
             projectile.moveDist((double)this.moveDist);
         }
 
-        if (player.buffManager.hasBuff("AWPZoomBuff")) {
+        if (attackerMob.buffManager.hasBuff("AWPZoomBuff") || !attackerMob.isPlayer) {
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.01F) * 0F);
         } else {
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * 16.5F);
-        }
-        if (level.isServer()) {
-            level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
         }
     }
 }

@@ -15,6 +15,7 @@ import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.friendly.human.HumanMob;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.entity.projectile.modifiers.ResilienceOnHitProjectileModifier;
 import necesse.gfx.GameResources;
@@ -82,7 +83,7 @@ public class MorterDebug extends GunProjectileToolItem {
         }
         return item;
     }
-    public Projectile getProjectile(InventoryItem item, BulletItem bulletItem, float x, float y, float targetX, float targetY, int range, Mob owner) {
+    public Projectile getProjectile(InventoryItem item, BulletItem bulletItem, float x, float y, float targetX, float targetY, int range, ItemAttackerMob owner) {
         float velocity = bulletItem.modVelocity((float)this.getProjectileVelocity(item, owner));
         range = bulletItem.modRange(range);
         GameDamage damage;

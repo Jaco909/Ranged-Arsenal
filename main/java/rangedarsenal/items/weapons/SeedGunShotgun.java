@@ -5,6 +5,7 @@ import necesse.engine.localization.Localization;
 import necesse.engine.localization.message.GameMessage;
 import necesse.engine.localization.message.LocalMessage;
 import necesse.engine.network.PacketReader;
+import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.network.packet.PacketSpawnProjectile;
 import necesse.engine.registries.DamageTypeRegistry;
 import necesse.engine.registries.ItemRegistry;
@@ -17,6 +18,10 @@ import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.friendly.human.HumanMob;
+import necesse.entity.mobs.itemAttacker.AmmoConsumed;
+import necesse.entity.mobs.itemAttacker.AmmoUserMob;
+import necesse.entity.mobs.itemAttacker.ItemAttackSlot;
+import necesse.entity.mobs.itemAttacker.ItemAttackerMob;
 import necesse.entity.projectile.Projectile;
 import necesse.entity.projectile.bulletProjectile.SeedBulletProjectile;
 import necesse.entity.projectile.modifiers.ResilienceOnHitProjectileModifier;
@@ -76,64 +81,67 @@ public class SeedGunShotgun extends GunProjectileToolItem {
         SoundManager.playSound(GameResources.grass, SoundEffect.effect(mob).volume(2f).pitch(GameRandom.globalRandom.getFloatBetween(1.35f, 1.85f)));
     }
 
-    public Projectile getNormalProjectile(float x, float y, float targetX, float targetY, float velocity, int range, GameDamage toolItemDamage, int knockback, Mob owner) {
-        return new SeedBulletProjectile(x, y, targetX, targetY, velocity, range, toolItemDamage, knockback, owner);
+    public Projectile getNormalProjectile(float x, float y, float targetX, float targetY, float velocity, int range, GameDamage toolItemDamage, int knockback, ItemAttackerMob attackerMob) {
+        return new SeedBulletProjectile(x, y, targetX, targetY, velocity, range, toolItemDamage, knockback, attackerMob);
     }
 
-    public GameMessage getSettlerCanUseError(HumanMob mob, InventoryItem item) {
-        return new LocalMessage("ui", "settlercantuseitem");
-    }
-
-    public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
-        int bulletID = contentReader.getNextShortUnsigned();
+    public InventoryItem onAttack(Level level, int x, int y, ItemAttackerMob attackerMob, int attackHeight, InventoryItem item, ItemAttackSlot slot, int animAttack, int seed, GNDItemMap mapContent) {
+        int bulletID = mapContent.getShortUnsigned("bulletID", 65535);
         if (bulletID != 65535) {
             Item seedObjectItem = ItemRegistry.getItem(bulletID);
             if (seedObjectItem != null && seedObjectItem.type == Type.SEED) {
                 GameRandom random = new GameRandom((long)(seed + 5));
-                float ammoConsumeChance = this.getAmmoConsumeChance(player, item);
+                float ammoConsumeChance = this.getAmmoConsumeChance(attackerMob, item);
                 boolean consumeAmmo = ammoConsumeChance >= 1.0F || ammoConsumeChance > 0.0F && random.getChance(ammoConsumeChance);
-                if (!consumeAmmo || player.getInv().main.removeItems(level, player, seedObjectItem, 1, "bulletammo") >= 1) {
-                    this.fireSeedProjectiles(level, x, y, player, item, seed, (SeedObjectItem)seedObjectItem, consumeAmmo, contentReader);
+                boolean dropItem;
+                boolean shouldFire;
+                if (!consumeAmmo) {
+                    shouldFire = true;
+                    dropItem = false;
+                } else if (attackerMob instanceof AmmoUserMob) {
+                    AmmoConsumed consumed = ((AmmoUserMob)attackerMob).removeAmmo(seedObjectItem, 1, "bulletammo");
+                    shouldFire = consumed.amount >= 1;
+                    dropItem = random.getChance(consumed.dropChance);
+                } else {
+                    shouldFire = true;
+                    dropItem = false;
+                }
+
+                if (shouldFire) {
+                    this.fireSeedProjectiles(level, x, y, attackerMob, item, seed, (SeedObjectItem)seedObjectItem, dropItem, mapContent);
                     boolean isAttackSpeedBullet = seedObjectItem.getStringID().equals("riceseed") || seedObjectItem.getStringID().equals("strawberryseed");
                     item.getGndData().setBoolean("attackSpeedBullet", isAttackSpeedBullet);
                 }
             } else {
-                GameLog.warn.println(player.getDisplayName() + " tried to use item " + (seedObjectItem == null ? bulletID : seedObjectItem.getStringID()) + " as seed seedObjectItem.");
+                GameLog.warn.println(attackerMob.getDisplayName() + " tried to use item " + (seedObjectItem == null ? bulletID : seedObjectItem.getStringID()) + " as seed seedObjectItem.");
             }
         }
 
         return item;
     }
-    protected void fireSeedProjectiles(Level level, int x, int y, PlayerMob player, InventoryItem item, int seed, SeedObjectItem seedObjectItem, boolean consumeAmmo, PacketReader contentReader) {
+    protected void fireSeedProjectiles(Level level, int x, int y, ItemAttackerMob attackerMob, InventoryItem item, int seed, SeedObjectItem seedObjectItem, boolean dropItem, GNDItemMap mapContent) {
         int range;
         GameRandom spreadRandom = new GameRandom((long)(seed + 10));
         if (this.controlledRange) {
-            Point newTarget = this.controlledRangePosition(new GameRandom((long)(seed + 10)), player, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
+            Point newTarget = this.controlledRangePosition(new GameRandom((long)(seed + 10)), attackerMob, x, y, item, this.controlledMinRange, this.controlledInaccuracy);
             x = newTarget.x;
             y = newTarget.y;
-            range = (int)player.getDistance((float)x, (float)y);
+            range = (int)attackerMob.getDistance((float)x, (float)y);
         } else {
             range = this.getAttackRange(item);
         }
         for(int i = 0; i <= (6 + Math.round(this.getUpgradeTier(item)/2)); ++i) {
             Item seedBullet = ItemRegistry.getItem("seedbullet");
-            Projectile projectile = this.getProjectile(item, (SeedBulletItem) seedBullet, player.x, player.y, (float) x, (float) y, range, player);
+            Projectile projectile = this.getProjectile(item, (SeedBulletItem) seedBullet, attackerMob.x, attackerMob.y, (float) x, (float) y, range, attackerMob);
             ((SeedBulletProjectile) projectile).setSeedBulletVariant(seedObjectItem);
             String seedName = seedObjectItem.getStringID();
             float resGain = !seedName.equals("cornseed") && !seedName.equals("wheatseed") ? this.getResilienceGain(item) : this.getResilienceGain(item) + 1.0F;
             projectile.setModifier(new ResilienceOnHitProjectileModifier(resGain));
             projectile.setDamage(this.getDamage(item).modFinalMultiplier(0.78F));
             projectile.setAngle(projectile.getAngle() + (spreadRandom.nextFloat() - 0.5F) * (14.5F - this.getUpgradeTier(item)/2f));
-            projectile.dropItem = consumeAmmo;
+            projectile.dropItem = dropItem;
             projectile.getUniqueID(new GameRandom((long) seed));
-            level.entityManager.projectiles.addHidden(projectile);
-            if (this.moveDist != 0) {
-                projectile.moveDist((double) this.moveDist);
-            }
-
-            if (level.isServer()) {
-                level.getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, player.getServerClient());
-            }
+            attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist);
         }
     }
 }

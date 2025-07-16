@@ -4,21 +4,13 @@ import necesse.engine.modLoader.annotations.ModEntry;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.registries.*;
 import necesse.engine.util.GameRandom;
-import necesse.entity.mobs.hostile.ZombieMob;
-import necesse.entity.mobs.hostile.ZombieArcherMob;
-import necesse.entity.mobs.hostile.CrawlingZombieMob;
-import necesse.entity.mobs.hostile.EnchantedCrawlingZombieMob;
-import necesse.entity.mobs.hostile.EnchantedZombieMob;
-import necesse.entity.mobs.hostile.EnchantedZombieArcherMob;
-import necesse.entity.mobs.hostile.SwampZombieMob;
 import necesse.entity.mobs.hostile.bosses.PestWardenHead;
 import necesse.engine.sound.gameSound.GameSound;
-import necesse.gfx.gameTexture.GameSprite;
 import necesse.gfx.gameTexture.GameTexture;
+import necesse.inventory.InventoryItem;
 import necesse.inventory.item.ItemCategory;
-import necesse.inventory.lootTable.LootTable;
+import necesse.inventory.lootTable.LootList;
 import necesse.inventory.lootTable.lootItem.ChanceLootItem;
-import necesse.inventory.lootTable.lootItem.LootItem;
 import necesse.inventory.lootTable.presets.CrateLootTable;
 import necesse.inventory.recipe.Ingredient;
 import necesse.inventory.recipe.Recipe;
@@ -37,11 +29,12 @@ import rangedarsenal.items.weapons.*;
 import rangedarsenal.projectiles.bullets.*;
 import rangedarsenal.projectiles.food.*;
 import rangedarsenal.projectiles.fuel.*;
+import rangedarsenal.projectiles.modifiers.CrystalizeModifier;
+import rangedarsenal.projectiles.modifiers.WebbedModifier;
 import rangedarsenal.projectiles.shells.*;
 
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import static necesse.inventory.item.ItemCategory.craftingManager;
@@ -68,8 +61,6 @@ public class rangedarsenal {
     public static LinkedHashSet<String> SHELL_AMMO_TYPES = new LinkedHashSet(Arrays.asList("Grenade_Launcher_Shell","Grenade_Launcher_Mine_Shell","Grenade_Launcher_Proxy_Shell","Grenade_Launcher_Fire_Shell"));
 
     public static GameSound proxyarm;
-    public static GameSprite ShardCannonREDtex;
-    public static GameSprite ShardCannonREDInvTex;
     public static GameTexture GlProxyArmingTex;
     public static GameTexture GlProxyArmedTex;
 
@@ -88,6 +79,7 @@ public class rangedarsenal {
         GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Splintering_Bullet");
         GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Ruby_Bullet");
         GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Sapphire_Bullet");
+        GunProjectileToolItem.NORMAL_AMMO_TYPES.add("Amethyst_Bullet");
 
         //CATEGORIES
         ItemCategory.masterManager.createCategory("A-C-B", "bullets");
@@ -114,8 +106,10 @@ public class rangedarsenal {
 
     public void init() {
         //ITEMS
-        ItemRegistry.registerItem("AmmoPouchPlus", new AmmoPouchPlus(), 100f, true);
-        ItemRegistry.registerItem("AmmoBagPlus", new AmmoBagPlus(), 100f, true);
+        if (!ItemRegistry.itemExists("AmmoPouchPlus")) {
+            ItemRegistry.registerItem("AmmoPouchPlus", new AmmoPouchPlus(), 100f, true);
+            ItemRegistry.registerItem("AmmoBagPlus", new AmmoBagPlus(), 100f, true);
+        }
 
         //MATERIALS
         ItemRegistry.registerItem("Niter", new Niter(), 0.05f, true);
@@ -132,7 +126,6 @@ public class rangedarsenal {
         ItemRegistry.registerItem("Frozen_Bullet", new FrozenBullet(), 0.1f, true);
         ItemRegistry.registerItem("Leach_Bullet", new LeachBullet(), 0.3f, true);
         ItemRegistry.replaceItem("frostbullet", new FrozenBullet(),0.1f,true,true);
-        ItemRegistry.replaceItem("voidbullet", new NewVoidBullet(),0.1f,true,true);
         ItemRegistry.replaceItem("bouncingbullet", new NewBouncingBullet(),0.1f,true,true);
         ItemRegistry.registerItem("Flame_Bullet", new FlameBullet(), 0.1f, true);
         ItemRegistry.registerItem("Blunt_Bullet", new BluntBullet(), 0.2f, true);
@@ -140,7 +133,7 @@ public class rangedarsenal {
         ItemRegistry.registerItem("Splintering_Bullet", new SplinteringBullet(), 0.1f, true);
         ItemRegistry.replaceItem("crystalbullet", new SapphireBullet(), 0.2f, true);
         ItemRegistry.registerItem("Ruby_Bullet", new RubyBullet(), 0.2f, true);
-        //ItemRegistry.registerItem("Amethyst_Bullet", new AmethystBullet(), 0.2f, true);
+        ItemRegistry.registerItem("Amethyst_Bullet", new AmethystBullet(), 0.2f, true);
 
         //Produce Cannon
         ItemRegistry.registerItem("Apple_Food_Bullet", new AppleFoodBullet(), 0f, false,false);
@@ -188,7 +181,6 @@ public class rangedarsenal {
         ItemRegistry.registerItem("Flamethrower", new Flamethrower(), 300f, true,true);
         ItemRegistry.registerItem("Grenade_Launcher", new GrenadeLauncher(), 400f, true,true);
         ItemRegistry.replaceItem("sniperrifle", new SniperRework(),100f,true,true);
-        ItemRegistry.replaceItem("shotgun", new ShotgunRework(),100f,true,true);
         ItemRegistry.replaceItem("cryoblaster", new CryoBlasterRework(),200f,true,true);
         ItemRegistry.registerItem("AWP", new AWP(),300f,true,true);
         ItemRegistry.registerItem("SeedGun", new SeedGun(),60f,true,true);
@@ -198,12 +190,7 @@ public class rangedarsenal {
         ItemRegistry.registerItem("ProduceCannonMega", new ProduceCannonMega(),300f,true,true);
         ItemRegistry.replaceItem("shardcannon", new ShardCannonRework(),1500f,true,true);
         ItemRegistry.replaceItem("sapphirerevolver", new SapphireRevolverRework(),1500f,true,true);
-        ItemRegistry.replaceItem("machinegun", new MachinegunRework(),65f,true,true);
-
-        //unused weapons
-        //ItemRegistry.registerItem("morter", new MorterCannon(),1f,false,false);
-        //ItemRegistry.registerItem("morterrange", new MorterCannonRanged(),1f,false,false);
-        //ItemRegistry.registerItem("morterdebug", new MorterDebug(),1f,false,false);
+        ItemRegistry.replaceItem("webbedgun", new WebGunRework(),300f,true,true);
 
 
         //PROJECTILES
@@ -213,12 +200,11 @@ public class rangedarsenal {
         ProjectileRegistry.registerProjectile("Leach_Bullet_Projectile", LeachBulletProjectile.class,"","");
         ProjectileRegistry.registerProjectile("Lightning_Bullet_Projectile", LightningBulletProjectile.class,"","");
         ProjectileRegistry.registerProjectile("Splintering_Bullet_Projectile", SplinteringBulletProjectile.class,"","");
-        ProjectileRegistry.registerProjectile("New_Void_Bullet_Projectile", NewVoidBulletProjectile.class,"","");
-        ProjectileRegistry.registerProjectile("LightningRifle_Bullet_Projectile", LightningRifleBulletProjectile.class,"","");
         ProjectileRegistry.registerProjectile("Sapphire_Bullet_Projectile", SapphireBulletProjectile.class,"crystalbullet","crystalbullet_shadow");
         ProjectileRegistry.registerProjectile("Ruby_Bullet_Projectile", RubyBulletProjectile.class,"rubybullet","crystalbullet_shadow");
-        ProjectileRegistry.registerProjectile("SapphireSplosion_Bullet_Projectile", SapphireSplosionBulletProjectile.class,"crystalbullet","crystalbullet_shadow");
+        ProjectileRegistry.registerProjectile("SapphireSplosion_Bullet_Projectile", SapphireSplosionBulletProjectile.class,"amethystbullet","crystalbullet_shadow");
         ProjectileRegistry.registerProjectile("bouncingbulletnew", NewBouncingBulletProjectile.class,"","");
+        ProjectileRegistry.registerProjectile("Amethyst_Bullet_Projectile", AmethystBulletProjectile.class,"amethystbullet","crystalbullet_shadow");
 
         //food
         ProjectileRegistry.registerProjectile("Apple_Bullet_Projectile", AppleBulletProjectile.class,"Apple_Bullet_Projectile","Coconut_Bullet_Projectile_shadow");
@@ -253,7 +239,6 @@ public class rangedarsenal {
         ProjectileRegistry.registerProjectile("Grenade_Launcher_Mine_Projectile", GrenadeLauncherMineProjectile.class,"Grenade_Launcher_Mine_Projectile","Grenade_Launcher_Projectile_shadow");
         ProjectileRegistry.registerProjectile("Grenade_Launcher_Fire_Projectile", GrenadeLauncherFireProjectile.class,"Grenade_Launcher_Fire_Projectile","Grenade_Launcher_Projectile_shadow");
         ProjectileRegistry.registerProjectile("Grenade_Launcher_Proxy_Projectile", GrenadeLauncherProxyProjectile.class,"Grenade_Launcher_Proxy_Projectile","Coconut_Bullet_Projectile_shadow");
-        //ProjectileRegistry.registerProjectile("Morter_Projectile", MorterProjectile.class,"Morter_Projectile","Morter_Projectile");
 
 
         //BUFFS
@@ -276,10 +261,9 @@ public class rangedarsenal {
         BuffRegistry.registerBuff("BouncyDebuff", new BouncyDebuff());
         BuffRegistry.registerBuff("HealDelayBuff", new HealDelayBuff());
         BuffRegistry.registerBuff("FreezeNerfDebuff", new FreezeNerfDebuff());
-        BuffRegistry.registerBuff("ShardCannonCooldownDebuff", new ShardCannonCooldownDebuff());
+        BuffRegistry.registerBuff("AmethystDebuff", new AmethystDebuff());
+        BuffRegistry.registerBuff("WebbedGunDebuff", new WebbedGunDebuff());
         BuffRegistry.registerBuff("LightningBlockerDebuff", new LightningBlockerDebuff());
-        //BuffRegistry.registerBuff("MorterPlacementBuff", new MorterPlacementBuff());
-        //BuffRegistry.registerBuff("MorterMegaPlacementBuff", new MorterPlacementBuff());
 
         //EVENTS
         LevelEventRegistry.registerEvent("GrenadeLauncherExplosionEvent", GrenadeLauncherExplosionEvent.class);
@@ -290,8 +274,9 @@ public class rangedarsenal {
         LevelEventRegistry.registerEvent("LightningJumperEvent", LightningJumperEvent.class);
         LevelEventRegistry.registerEvent("FruitBoomEvent", FruitBoomEvent.class);
         LevelEventRegistry.registerEvent("ShrapnelEvent", ShrapnelEvent.class);
-        LevelEventRegistry.registerEvent("LightningRifleEvent", LightningRifleEvent.class);
-        LevelEventRegistry.registerEvent("BeamRifleEvent", BeamRifleEvent.class);
+
+        ProjectileModifierRegistry.registerModifier("CrystalizeModifier", CrystalizeModifier.class);
+        ProjectileModifierRegistry.registerModifier("WebbedModifier", WebbedModifier.class);
 
     }
     public void initResources() {
@@ -300,36 +285,16 @@ public class rangedarsenal {
         GlProxyArmingTex = GameTexture.fromFile("projectiles/Grenade_Launcher_Proxy_Projectile_arming");
         GlProxyArmedTex = GameTexture.fromFile("projectiles/Grenade_Launcher_Proxy_Projectile_armed");
 
-        //SPRITES
-        try {
-            ShardCannonREDtex = new GameSprite(GameTexture.fromFileRaw("player/weapons/shardcannonRED"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            ShardCannonREDInvTex = new GameSprite(GameTexture.fromFileRaw("items/shardcannonRED"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
         //SOUNDS
         proxyarm = GameSound.fromFile("activate_single_mono");
     }
     public void postInit() {
-        //Add Niter to zombie loot pool
-        ZombieMob.lootTable = new LootTable(ZombieMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
-        ZombieArcherMob.lootTable = new LootTable(ZombieMob.lootTable, new ChanceLootItem(0.5f, "Niter"));
-        CrawlingZombieMob.lootTable = new LootTable(CrawlingZombieMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
-        EnchantedZombieMob.lootTable = new LootTable(EnchantedZombieMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
-        EnchantedZombieArcherMob.lootTable = new LootTable(EnchantedZombieArcherMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
-        EnchantedCrawlingZombieMob.lootTable = new LootTable(EnchantedCrawlingZombieMob.lootTable, new ChanceLootItem(0.35f, "Niter"));
-        SwampZombieMob.lootTable = new LootTable(SwampZombieMob.lootTable, new ChanceLootItem(0.45f, "Niter"));
-
-        //Replace livingshotty with produce cannon
-        PestWardenHead.uniqueDrops.items.remove(2);
-        PestWardenHead.uniqueDrops.items.add(2,(new LootItem("ProduceCannonMega")));
-
-        //add simple bullets to crate loot pool
+        if (ItemRegistry.itemExists("pinkflamerfuel")) {
+            FLAME_AMMO_TYPES.add("flamerfuel");
+            FLAME_AMMO_TYPES.add("pinkflamerfuel");
+            FLAME_AMMO_TYPES.add("stickyflamerfuel");
+        }
+        PestWardenHead.uniqueDrops.addPossibleLoot(new LootList().add("ProduceCannonMega"));
         CrateLootTable.basicCrate.items.add(new ChanceLootItem(0.20f, "simplebullet", GameRandom.globalRandom.getIntBetween(5, 8)));
         
         //Add recipes
@@ -352,27 +317,37 @@ public class rangedarsenal {
                         new Ingredient("ironbar", 10),
                         new Ingredient("Mechanical_Parts",2)
                 }
-        ).showBefore("Junk_Pistol").showAfter("Lever_Action_Rifle").setCraftingCategory("ballistic"));
-        Recipes.registerModRecipe(new Recipe(
-                "Lever_Action_Rifle",
-                1,
-                RecipeTechRegistry.DEMONIC_ANVIL,
-                new Ingredient[]{
-                        new Ingredient("goldbar", 10),
-                        new Ingredient("anylog", 5),
-                        new Ingredient("Mechanical_Parts",2)
-                }
         ).showBefore("Junk_Pistol").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "machinegun",
                 1,
                 RecipeTechRegistry.DEMONIC_ANVIL,
                 new Ingredient[]{
-                        new Ingredient("ivybar", 15),
+                        new Ingredient("frostshard", 15),
                         new Ingredient("demonicbar", 5),
                         new Ingredient("Mechanical_Parts",3)
                 }
-        ).showBefore("Junk_Pistol").setCraftingCategory("ballistic"));
+        ).showBefore("Junk_Pistol").showAfter("handgun").setCraftingCategory("ballistic"));
+        Recipes.registerModRecipe(new Recipe(
+                "shotgun",
+                1,
+                RecipeTechRegistry.DEMONIC_ANVIL,
+                new Ingredient[]{
+                        new Ingredient("voidshard", 15),
+                        new Ingredient("demonicbar", 15),
+                        new Ingredient("Mechanical_Parts",4)
+                }
+        ).showBefore("Junk_Pistol").showAfter("machinegun").setCraftingCategory("ballistic"));
+        Recipes.registerModRecipe(new Recipe(
+                "Lever_Action_Rifle",
+                1,
+                RecipeTechRegistry.DEMONIC_ANVIL,
+                new Ingredient[]{
+                        new Ingredient("runestone", 10),
+                        new Ingredient("anylog", 5),
+                        new Ingredient("Mechanical_Parts",2)
+                }
+        ).showBefore("Junk_Pistol").showAfter("shotgun").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "sniperrifle",
                 1,
@@ -384,16 +359,6 @@ public class rangedarsenal {
                 }
         ).showBefore("Junk_Pistol").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
-                "shotgun",
-                1,
-                RecipeTechRegistry.DEMONIC_ANVIL,
-                new Ingredient[]{
-                        new Ingredient("voidshard", 15),
-                        new Ingredient("demonicbar", 15),
-                        new Ingredient("Mechanical_Parts",4)
-                }
-        ).showBefore("Junk_Pistol").setCraftingCategory("ballistic"));
-        Recipes.registerModRecipe(new Recipe(
                 "Normal_Revolver",
                 1,
                 RecipeTechRegistry.TUNGSTEN_ANVIL,
@@ -402,7 +367,7 @@ public class rangedarsenal {
                         new Ingredient("tungstenbar", 10),
                         new Ingredient("Mechanical_Parts_Good",3)
                 }
-        ).showBefore("Lever_Action_Rifle").setCraftingCategory("ballistic"));
+        ).showBefore("handgun").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "Light_Machinegun",
                 1,
@@ -412,38 +377,18 @@ public class rangedarsenal {
                         new Ingredient("tungstenbar", 15),
                         new Ingredient("Mechanical_Parts_Good",5)
                 }
-        ).showAfter("Normal_Revolver").setCraftingCategory("ballistic"));
+        ).showBefore("handgun").showAfter("Normal_Revolver").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "Double_Barrel",
                 1,
                 RecipeTechRegistry.TUNGSTEN_ANVIL,
                 new Ingredient[]{
-                        new Ingredient("myceliumbar", 10),
+                        new Ingredient("amber", 10),
                         new Ingredient("demonicbar", 3),
-                        new Ingredient("anylog", 10),
+                        new Ingredient("dryadlog", 10),
                         new Ingredient("Mechanical_Parts_Good",4)
                 }
-        ).showAfter("Light_Machinegun").setCraftingCategory("ballistic"));
-        Recipes.registerModRecipe(new Recipe(
-                "cryoblaster",
-                1,
-                RecipeTechRegistry.FALLEN_ANVIL,
-                new Ingredient[]{
-                        new Ingredient("cryoessence", 15),
-                        new Ingredient("demonicbar", 25),
-                        new Ingredient("Mechanical_Parts_Great",1)
-                }
-        ).showBefore("Normal_Revolver").setCraftingCategory("ballistic"));
-        Recipes.registerModRecipe(new Recipe(
-                "livingshotty",
-                1,
-                RecipeTechRegistry.FALLEN_ANVIL,
-                new Ingredient[]{
-                        new Ingredient("bioessence", 15),
-                        new Ingredient("demonicbar", 25),
-                        new Ingredient("Mechanical_Parts_Great",2)
-                }
-        ).showBefore("Normal_Revolver").setCraftingCategory("ballistic"));
+        ).showBefore("handgun").showAfter("Light_Machinegun").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "deathripper",
                 1,
@@ -455,6 +400,26 @@ public class rangedarsenal {
                 }
         ).showBefore("Normal_Revolver").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
+                "cryoblaster",
+                1,
+                RecipeTechRegistry.FALLEN_ANVIL,
+                new Ingredient[]{
+                        new Ingredient("cryoessence", 15),
+                        new Ingredient("demonicbar", 25),
+                        new Ingredient("Mechanical_Parts_Great",1)
+                }
+        ).showBefore("Normal_Revolver").showAfter("deathripper").setCraftingCategory("ballistic"));
+        Recipes.registerModRecipe(new Recipe(
+                "livingshotty",
+                1,
+                RecipeTechRegistry.FALLEN_ANVIL,
+                new Ingredient[]{
+                        new Ingredient("bioessence", 15),
+                        new Ingredient("demonicbar", 25),
+                        new Ingredient("Mechanical_Parts_Great",2)
+                }
+        ).showBefore("Normal_Revolver").showAfter("cryoblaster").setCraftingCategory("ballistic"));
+        Recipes.registerModRecipe(new Recipe(
                 "antiquerifle",
                 1,
                 RecipeTechRegistry.FALLEN_ANVIL,
@@ -463,7 +428,7 @@ public class rangedarsenal {
                         new Ingredient("demonicbar", 25),
                         new Ingredient("Mechanical_Parts_Great",1)
                 }
-        ).showBefore("Normal_Revolver").setCraftingCategory("ballistic"));
+        ).showBefore("Normal_Revolver").showAfter("livingshotty").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "AWP",
                 1,
@@ -473,7 +438,7 @@ public class rangedarsenal {
                         new Ingredient("demonicbar", 15),
                         new Ingredient("Mechanical_Parts_Great",3)
                 }
-        ).showBefore("Normal_Revolver").setCraftingCategory("ballistic"));
+        ).showBefore("Normal_Revolver").showAfter("antiquerifle").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "sapphirerevolver",
                 1,
@@ -485,7 +450,7 @@ public class rangedarsenal {
                 },
                 false,
                 (new GNDItemMap().setInt("upgradeLevel", 100))
-        ).showBefore("Normal_Revolver").showBefore("shardcannon").setCraftingCategory("ballistic"));
+        ).showBefore("Normal_Revolver").showAfter("AWP").setCraftingCategory("ballistic"));
         Recipes.registerModRecipe(new Recipe(
                 "shardcannon",
                 1,
@@ -498,7 +463,7 @@ public class rangedarsenal {
                 },
                 false,
                 (new GNDItemMap().setInt("upgradeLevel", 100))
-        ).showBefore("Normal_Revolver").showAfter("sapphirerevolver").showAfter("AWP").setCraftingCategory("ballistic"));
+        ).showBefore("Normal_Revolver").showAfter("sapphirerevolver").setCraftingCategory("ballistic"));
 
         //MATERIALS
         Recipes.registerModRecipe(new Recipe(
@@ -506,9 +471,18 @@ public class rangedarsenal {
                 10,
                 RecipeTechRegistry.ALCHEMY,
                 new Ingredient[]{
-                        new Ingredient("Niter", 1),
+                        new Ingredient("firemone", 1),
                         new Ingredient("sandtile", 2)
                 }
+        ));
+        Recipes.registerModRecipe(new Recipe(
+                "firemone",
+                1,
+                RecipeTechRegistry.ALCHEMY,
+                new Ingredient[]{
+                        new Ingredient("Niter", 1)
+                },
+                true
         ));
         Recipes.registerModRecipe(new Recipe(
                 "Bullet_Casing",
@@ -534,7 +508,6 @@ public class rangedarsenal {
                 100,
                 RecipeTechRegistry.IRON_ANVIL,
                 new Ingredient[]{
-                        //new Ingredient("copperbar", 2),
                         new Ingredient("ironbar", 1),
                         new Ingredient("Bullet_Casing", 100)
                 }
@@ -551,24 +524,24 @@ public class rangedarsenal {
         ).showBefore("simplebullet").setCraftingCategory("bullets"));
         Recipes.registerModRecipe(new Recipe(
                 "bouncingbullet",
-                50,
+                100,
                 RecipeTechRegistry.DEMONIC_ANVIL,
                 new Ingredient[]{
                         new Ingredient("copperbar", 1),
                         new Ingredient("halffish", 2),
-                        new Ingredient("Gunpowder", 1),
-                        new Ingredient("Bullet_Casing", 50)
+                        new Ingredient("Gunpowder", 2),
+                        new Ingredient("Bullet_Casing", 100)
                 }
         ).showAfter("Standard_Bullet").showBefore("simplebullet").setCraftingCategory("bullets"));
         Recipes.registerModRecipe(new Recipe(
                 "bouncingbullet",
-                100,
+                200,
                 RecipeTechRegistry.FALLEN_ANVIL,
                 new Ingredient[]{
                         new Ingredient("copperbar", 1),
                         new Ingredient("slimematter", 1),
-                        new Ingredient("Gunpowder", 1),
-                        new Ingredient("Bullet_Casing", 100)
+                        new Ingredient("Gunpowder", 2),
+                        new Ingredient("Bullet_Casing", 200)
                 }
         ).showAfter("Standard_Bullet").showAfter("bouncingbullet").showBefore("Frozen_Bullet").setCraftingCategory("bullets"));
         Recipes.registerModRecipe(new Recipe(
@@ -600,7 +573,7 @@ public class rangedarsenal {
                 new Ingredient[]{
                         new Ingredient("copperbar", 1),
                         new Ingredient("goldbar", 1),
-                        new Ingredient("Gunpowder", 3),
+                        new Ingredient("Gunpowder", 2),
                         new Ingredient("Bullet_Casing", 100)
                 }
         ).showAfter("Flame_Bullet").showBefore("simplebullet").setCraftingCategory("bullets"));
@@ -619,9 +592,8 @@ public class rangedarsenal {
                 100,
                 RecipeTechRegistry.TUNGSTEN_ANVIL,
                 new Ingredient[]{
-                        new Ingredient("obsidian", 1),
-                        new Ingredient("voidshard", 1),
-                        new Ingredient("Gunpowder", 3),
+                        new Ingredient("voidshard", 2),
+                        new Ingredient("Gunpowder", 2),
                         new Ingredient("Bullet_Casing", 100)
                 }
         ).showBefore("Standard_Bullet").showAfter("Blunt_Bullet").setCraftingCategory("bullets"));
@@ -631,7 +603,7 @@ public class rangedarsenal {
                 RecipeTechRegistry.TUNGSTEN_ANVIL,
                 new Ingredient[]{
                         new Ingredient("sapphire", 3),
-                        new Ingredient("Gunpowder", 5),
+                        new Ingredient("Gunpowder", 3),
                         new Ingredient("Bullet_Casing", 100)
                 }
         ).showBefore("Standard_Bullet").showAfter("Blunt_Bullet").setCraftingCategory("bullets"));
@@ -652,9 +624,9 @@ public class rangedarsenal {
                 RecipeTechRegistry.FALLEN_ANVIL,
                 new Ingredient[]{
                         new Ingredient("obsidian", 1),
-                        new Ingredient("lifequartz", 10),
-                        new Ingredient("alchemyshard", 25),
-                        new Ingredient("Gunpowder", 5),
+                        new Ingredient("lifequartz", 5),
+                        new Ingredient("alchemyshard", 15),
+                        new Ingredient("Gunpowder", 3),
                         new Ingredient("Bullet_Casing", 25)
                 }
         ).showBefore("Blunt_Bullet").showAfter("Lightning_Bullet").setCraftingCategory("bullets"));
@@ -664,11 +636,22 @@ public class rangedarsenal {
                 RecipeTechRegistry.FALLEN_ANVIL,
                 new Ingredient[]{
                         new Ingredient("ruby", 3),
-                        new Ingredient("obsidian", 5),
-                        new Ingredient("Gunpowder", 5),
+                        new Ingredient("obsidian", 2),
+                        new Ingredient("Gunpowder", 3),
                         new Ingredient("Bullet_Casing", 100)
                 }
         ).showBefore("Blunt_Bullet").showAfter("Lightning_Bullet").showAfter("Leach_Bullet").setCraftingCategory("bullets"));
+        Recipes.registerModRecipe(new Recipe(
+                "Amethyst_Bullet",
+                100,
+                RecipeTechRegistry.FALLEN_ANVIL,
+                new Ingredient[]{
+                        new Ingredient("amethyst", 3),
+                        new Ingredient("obsidian", 2),
+                        new Ingredient("Gunpowder", 3),
+                        new Ingredient("Bullet_Casing", 100)
+                }
+        ).showBefore("Blunt_Bullet").showAfter("Ruby_Bullet").showAfter("Lightning_Bullet").showAfter("Leach_Bullet").setCraftingCategory("bullets"));
 
         //FUEL
         Recipes.registerModRecipe(new Recipe(
@@ -680,17 +663,51 @@ public class rangedarsenal {
                         new Ingredient("firemone", 5)
                         //new Ingredient("Canister", 1)
                 }
-        ).setCraftingCategory("fuel"));
+        ).setCraftingCategory("fuel").onCrafted((event) -> {
+            boolean found = false;
+            for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                if (event.itemsUsed.get(0).inventory.getItem(i).item.getStringID().equalsIgnoreCase("bucket")) {
+                    event.itemsUsed.get(0).inventory.getItem(i).setAmount(event.itemsUsed.get(0).inventory.getItem(i).getAmount()+1);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                    if (event.itemsUsed.get(0).inventory.isSlotClear(i)) {
+                        event.itemsUsed.get(0).inventory.setItem(i,new InventoryItem("bucket"));
+                        break;
+                    }
+                }
+            }
+        }));
         Recipes.registerModRecipe(new Recipe(
                 "CryoFlame",
                 200,
                 RecipeTechRegistry.CAVEGLOW_ALCHEMY,
                 new Ingredient[]{
+                        new Ingredient("watertile", 1),
                         new Ingredient("glacialshard", 2),
-                        new Ingredient("iceblossom", 3),
-                        new Ingredient("bucket", 1)
+                        new Ingredient("iceblossom", 2)
                 }
-        ).showBefore("Gasoline").setCraftingCategory("fuel"));
+        ).showBefore("Gasoline").setCraftingCategory("fuel").onCrafted((event) -> {
+            boolean found = false;
+            for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                if (event.itemsUsed.get(0).inventory.getItem(i).item.getStringID().equalsIgnoreCase("bucket")) {
+                    event.itemsUsed.get(0).inventory.getItem(i).setAmount(event.itemsUsed.get(0).inventory.getItem(i).getAmount()+1);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                    if (event.itemsUsed.get(0).inventory.isSlotClear(i)) {
+                        event.itemsUsed.get(0).inventory.setItem(i,new InventoryItem("bucket"));
+                        break;
+                    }
+                }
+            }
+        }));
         Recipes.registerModRecipe(new Recipe(
                 "Napalm",
                 200,
@@ -699,7 +716,24 @@ public class rangedarsenal {
                         new Ingredient("lavatile", 1),
                         new Ingredient("primordialessence", 1)
                 }
-        ).showBefore("CryoFlame").setCraftingCategory("fuel"));
+        ).showBefore("CryoFlame").setCraftingCategory("fuel").onCrafted((event) -> {
+            boolean found = false;
+            for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                if (event.itemsUsed.get(0).inventory.getItem(i).item.getStringID().equalsIgnoreCase("bucket")) {
+                    event.itemsUsed.get(0).inventory.getItem(i).setAmount(event.itemsUsed.get(0).inventory.getItem(i).getAmount()+1);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                    if (event.itemsUsed.get(0).inventory.isSlotClear(i)) {
+                        event.itemsUsed.get(0).inventory.setItem(i,new InventoryItem("bucket"));
+                        break;
+                    }
+                }
+            }
+        }));
         Recipes.registerModRecipe(new Recipe(
                 "MoltenSlime",
                 200,
@@ -708,7 +742,24 @@ public class rangedarsenal {
                         new Ingredient("liquidslimetile", 1),
                         new Ingredient("lifequartz", 3)
                 }
-        ).showBefore("Napalm").setCraftingCategory("fuel"));
+        ).showBefore("Napalm").setCraftingCategory("fuel").onCrafted((event) -> {
+            boolean found = false;
+            for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                if (event.itemsUsed.get(0).inventory.getItem(i).item.getStringID().equalsIgnoreCase("bucket")) {
+                    event.itemsUsed.get(0).inventory.getItem(i).setAmount(event.itemsUsed.get(0).inventory.getItem(i).getAmount()+1);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                for (int i = 0; i < event.itemsUsed.get(0).inventory.streamSlots().count(); i++) {
+                    if (event.itemsUsed.get(0).inventory.isSlotClear(i)) {
+                        event.itemsUsed.get(0).inventory.setItem(i,new InventoryItem("bucket"));
+                        break;
+                    }
+                }
+            }
+        }));
 
         //FLAMETHROWER
         Recipes.registerModRecipe(new Recipe(
@@ -793,7 +844,7 @@ public class rangedarsenal {
                 1,
                 RecipeTechRegistry.TUNGSTEN_ANVIL,
                 new Ingredient[]{
-                        new Ingredient("SeedGun", 3),
+                        new Ingredient("SeedGun", 1),
                         new Ingredient("myceliumbar", 15),
                         new Ingredient("Mechanical_Parts_Good", 3)
                 }
@@ -859,7 +910,7 @@ public class rangedarsenal {
                         new Ingredient("ammopouch", 1),
                         new Ingredient("Mechanical_Parts_Good", 1)
                 }
-        ).onCrafted((event) -> {
+        ).setCraftingCategory("equipment").onCrafted((event) -> {
             event.itemsUsed.stream().filter((item) -> {
                 return item.invItem.item.getStringID().equals("ammopouch");
             }).findFirst().ifPresent((previousPouch) -> {
@@ -875,7 +926,7 @@ public class rangedarsenal {
                         new Ingredient("AmmoPouchPlus", 1),
                         new Ingredient("Mechanical_Parts_Great", 2)
                 }
-        ).showBefore("ammobag").onCrafted((event) -> {
+        ).setCraftingCategory("equipment").showBefore("ammobag").onCrafted((event) -> {
             event.itemsUsed.stream().filter((item) -> {
                 return item.invItem.item.getStringID().equals("AmmoPouchPlus");
             }).findFirst().ifPresent((previousPouch) -> {

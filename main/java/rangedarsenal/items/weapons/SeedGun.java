@@ -46,11 +46,11 @@ public class SeedGun extends GunProjectileToolItem {
     public SeedGun() {
         super(SEED_AMMO_TYPES, 300);
         this.rarity = Rarity.NORMAL;
-        this.attackAnimTime.setBaseValue(342);
+        this.attackAnimTime.setBaseValue(520);
         this.attackDamage.setBaseValue(24.0F).setUpgradedValue(1.0F, 112F);
         this.attackXOffset = 10;
         this.attackYOffset = 10;
-        this.attackRange.setBaseValue(500).setUpgradedValue(1.0F, 1000);
+        this.attackRange.setBaseValue(360).setUpgradedValue(1.0F, 600);
         this.velocity.setBaseValue(152).setUpgradedValue(1.0F, 300);
         this.knockback.setBaseValue(0);
     }

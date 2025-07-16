@@ -18,10 +18,9 @@ public class AmmoPouchPatch {
     static boolean onExit(@Advice.This AmmoPouch pouch, @Argument(0) Item item, @Advice.Return(readOnly = false) boolean itemtype){
         if (item == null) {
             itemtype = !pouch.isValidRequestType(null);
-            return itemtype;
         } else {
             itemtype = pouch.isValidRequestType(item.type);
-            return itemtype;
         }
+        return itemtype;
     }
 }

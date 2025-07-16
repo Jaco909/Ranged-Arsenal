@@ -129,12 +129,16 @@ AmmoPouchPlusTip1=Does not store picked up ammo
 
 FlamethrowerAmmoTip=Flamethrower fuel
 
-shardcannontip=Crystallizes foes depending on crit chance and damage modifiers
+shardcannontip=Crystallizes foes depending on crit chance and crit damage modifiers
 shardcannontipalt=[input=mouse2]Switch between firing modes
 shardcannontipammo=Has a <ammouse>% chance to not consume ammo
+shardcannontipnew=Crystallizes foes depending on crit chance and crit damage modifiers
 
 sapphirerevolvertip=Charges up a projectile that will hit anything in an instant
 sapphirerevolvertip2=Charge level increases crit chance and pierce amount
+
+WebbedGunTip1=Creates sticky webs around anyone hit
+WebbedGunTip2=Webs increase depending on crit chance and crit damage modifiers
 
 appleammotip=Produce Weaponry: §#00B715+20§#F2800D damage, §#00B715+25§#F2800D knockback
 bananaammotip=Produce Weaponry: §#EAAC00Boomerang§#F2800D projectile
@@ -203,9 +207,11 @@ MoltenSlimeTip2=15% increased range & flame speed
 seedbullettip=§#FF0000DEV ITEM ONLY
 seedbullettip2=§#FF0000UNUSEABLE IN-GAME
 
-crystalammotip=Sticks to targets, explodes after a delay\nDamage based on crit chance and crit damage
+crystalammotip=Sticks to targets, explodes after a delay\nExplosion damage based on crit chance and crit damage
 
 rubyammotip=§#EAAC00Penetrates §#FFFFFFup to §#00B7153 §#FFFFFFtargets
+
+amethystammotip=Sticks to targets, explodes after a delay\nExplosion shoots out projectiles based on crit chance and crit damage
 
 [text]
 

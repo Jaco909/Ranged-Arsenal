@@ -3,8 +3,11 @@ package rangedarsenal.patches;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import necesse.engine.modLoader.annotations.ModConstructorPatch;
 import necesse.engine.registries.RecipeTechRegistry;
 import necesse.engine.world.WorldEntity;
+import necesse.entity.mobs.friendly.human.humanShop.SellingShopItem;
+import necesse.entity.mobs.friendly.human.humanShop.ShopManager;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.recipe.Ingredient;
 import necesse.inventory.recipe.Recipe;
@@ -18,45 +21,35 @@ import necesse.entity.mobs.friendly.human.humanShop.GunsmithHumanMob;
 import necesse.level.maps.levelData.villageShops.ShopItem;
 import necesse.level.maps.levelData.villageShops.VillageShopsData;
 
-@ModMethodPatch(
+@ModConstructorPatch(
         target = GunsmithHumanMob.class,
-        name = "getShopItems",
-        arguments = {VillageShopsData.class, ServerClient.class}
+        arguments = {}
 )
 public class GunsmithItems {
     public GunsmithItems() {
     }
+    /*@Advice.OnMethodEnter()
+    static void onEnter(@Advice.This GunsmithHumanMob mobShop) {
+        //mobShop.shop.sellingShop.addItem("gunpowder",new SellingShopItem()).setItem(new InventoryItem("gunpowder", 10)).setStaticPriceBasedOnHappiness(250, 750, 50);
+        //mobShop.shop.addSellingItem("gunpowder", new SellingShopItem()).setItem(new InventoryItem("gunpowder", 10)).setStaticPriceBasedOnHappiness(250, 750, 50);
+        *//*mobShop.shop.addSellingItem("obsidian", new SellingShopItem()).setItem(new InventoryItem("obsidian", 5)).setStaticPriceBasedOnHappiness(100, 1000, 25).addKilledMobRequirement("fallenwizard");
+        mobShop.shop.addSellingItem("Mechanical_Parts", new SellingShopItem()).setItem(new InventoryItem("Mechanical_Parts", 1)).setStaticPriceBasedOnHappiness(100, 400, 50).addKilledMobRequirement("piratecaptain");
+        mobShop.shop.addSellingItem("Mechanical_Parts_Good", new SellingShopItem()).setItem(new InventoryItem("Mechanical_Parts_Good", 1)).setStaticPriceBasedOnHappiness(200, 700, 50).addKilledMobRequirement("fallenwizard");*//*
+    }*/
     @Advice.OnMethodExit()
-    static void onExit(@Advice.This GunsmithHumanMob gunsmith, @Argument(0) VillageShopsData data, @Argument(1) ServerClient client, @Advice.Return(readOnly = false) ArrayList<ShopItem> list) {
+    static void onExit(@Advice.This GunsmithHumanMob mobShop) {
+        mobShop.shop.sellingShop.getItem("handgun").addKilledMobRequirement("flameling");
+        mobShop.shop.sellingShop.getItem("machinegun").addKilledMobRequirement("flameling");
+        mobShop.shop.sellingShop.getItem("shotgun").addKilledMobRequirement("flameling");
+        mobShop.shop.sellingShop.getItem("sniperrifle").addKilledMobRequirement("flameling");
+        mobShop.shop.sellingShop.getItem("deathripper").addKilledMobRequirement("flameling");
+        //mobShop.shop.sellingShop.getItem("debug").setItem("gunpowder");
+        //mobShop.shop.sellingShop.getItem("handgun").setItem(new InventoryItem("gunpowder", 10)).setStaticPriceBasedOnHappiness(250, 750, 50);
 
-        //remove vanilla weps
-        if (list == null) {
-            //stops crashes from wandering gunsmiths
-        } else {
-            int listcount = 0;
-            while (listcount < list.size()) {
-                if (list.get(listcount) != null) {
-                    if (list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("handgun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("shotgun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("machinegun") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("sniperrifle") || list.get(listcount).item.item.idData.getStringID().equalsIgnoreCase("deathripper")) {
-                        list.remove(listcount);
-                    } else {
-                        listcount++;
-                    }
-                } else {
-                    listcount++;
-                }
-            }
-
-            //add new items
-            GameRandom random = new GameRandom(gunsmith.getShopSeed() + 5L);
-
-            if (client.characterStats().mob_kills.getKills("piratecaptain") > 0) {
-                list.add(ShopItem.item(new InventoryItem("Gunpowder", 1), gunsmith.getRandomHappinessPrice(random, 40, 80, 10)));
-                list.add(ShopItem.item(new InventoryItem("Mechanical_Parts", 1), gunsmith.getRandomHappinessPrice(random, 100, 300, 50)));
-            }
-            if (client.characterStats().mob_kills.getKills("fallenwizard") > 0) {
-                list.add(ShopItem.item(new InventoryItem("Mechanical_Parts_Good", 1), gunsmith.getRandomHappinessPrice(random, 200, 500, 50)));
-                list.add(ShopItem.item(new InventoryItem("obsidian", 1), gunsmith.getRandomHappinessPrice(random, 100, 200, 20)));
-            }
-        }
+        //mobShop.shop.sellingShop.addItem("gunpowder",new SellingShopItem()).setItem(new InventoryItem("gunpowder", 10)).setStaticPriceBasedOnHappiness(250, 750, 50);
+        //mobShop.shop.addSellingItem("gunpowder", new SellingShopItem()).setItem(new InventoryItem("gunpowder", 10)).setStaticPriceBasedOnHappiness(250, 750, 50);
+        /*mobShop.shop.addSellingItem("obsidian", new SellingShopItem()).setItem(new InventoryItem("obsidian", 5)).setStaticPriceBasedOnHappiness(100, 1000, 25).addKilledMobRequirement("fallenwizard");
+        mobShop.shop.addSellingItem("Mechanical_Parts", new SellingShopItem()).setItem(new InventoryItem("Mechanical_Parts", 1)).setStaticPriceBasedOnHappiness(100, 400, 50).addKilledMobRequirement("piratecaptain");
+        mobShop.shop.addSellingItem("Mechanical_Parts_Good", new SellingShopItem()).setItem(new InventoryItem("Mechanical_Parts_Good", 1)).setStaticPriceBasedOnHappiness(200, 700, 50).addKilledMobRequirement("fallenwizard");*/
     }
 }

@@ -93,53 +93,11 @@ public class SapphireBulletProjectile extends BulletProjectile {
                 if (mob.buffManager.getBuff(crystallizeBuff).getStacks() >= stackThreshold) {
                     this.getLevel().entityManager.addLevelEvent(new CrystallizeShatterEvent(mob, ParticleType.SAPPHIRE));
                     mob.buffManager.removeBuff(crystallizeBuff, true);
-                    GameDamage finalDamage = this.getDamage().modDamage(crystallizeDamageMultiplier);
+                    GameDamage finalDamage = this.getDamage().modDamage(crystallizeDamageMultiplier).modDamage(2.5F);
                     mob.isServerHit(finalDamage, 0.0F, 0.0F, 0.0F, this);
 
                     int shotCount = Math.round(GameMath.limit(this.getDamage().damage/15,1f,15f));
                     //System.out.println(shotCount);
-
-                    for(int i = 0; i <= shotCount; ++i) {
-                        GameRandom random = GameRandom.globalRandom;
-                        int shootangle = GameRandom.globalRandom.getIntBetween(0, 7);
-                        if (shootangle == 0) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(-5, 5);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(5, 15);
-                        } else if (shootangle == 1) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(5, 15);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(5, 15);
-                        } else if (shootangle == 2) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(5, 15);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(-5, 5);
-                        } else if (shootangle == 3) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(5, 15);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(-5, -15);
-                        } else if (shootangle == 4) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(-5, 5);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(-5, -15);
-                        } else if (shootangle == 5) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(-15, -5);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(-15, -5);
-                        } else if (shootangle == 6) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(-15, -5);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(-5, 5);
-                        } else if (shootangle == 7) {
-                            this.targetX = mob.getX()+GameRandom.globalRandom.getIntBetween(-15, -5);
-                            this.targetY = mob.getY()+GameRandom.globalRandom.getIntBetween(5, 15);
-                        }
-                        Projectile projectile = new SapphireSplosionBulletProjectile(mob.x, mob.y, targetX, targetY, 470, 97, this.getDamage().modDamage(2), 0, mob, this.getOwner());
-                        projectile.getUniqueID(random);
-                        this.getLevel().entityManager.projectiles.add(projectile);
-                        //projectile.setAngle(projectile.getAngle() + (random.nextFloat() - 0.5F) * 2.0F);
-                        if (this.getLevel().isServer()) {
-                            //this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), (PlayerMob)this.getOwner().getRegionPositions(), ((PlayerMob)this.getOwner()).getServerClient());
-                            if (this.getOwner().isPlayer) {
-                                this.getLevel().getServer().network.sendToClientsWithEntityExcept(new PacketSpawnProjectile(projectile), projectile, ((PlayerMob) this.getOwner()).getServerClient());
-                            } else {
-                                this.getLevel().getServer().network.sendToAllClients(new PacketSpawnProjectile(projectile));
-                            }
-                        }
-                    }
                 }
             }
         }

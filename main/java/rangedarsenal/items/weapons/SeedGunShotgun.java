@@ -50,7 +50,7 @@ public class SeedGunShotgun extends GunProjectileToolItem {
         this.attackXOffset = 10;
         this.attackYOffset = 10;
         this.moveDist = 50;
-        this.attackRange.setBaseValue(650).setUpgradedValue(1.0F, 800);
+        this.attackRange.setBaseValue(400).setUpgradedValue(1.0F, 450);
         this.velocity.setBaseValue(222);
         this.knockback.setBaseValue(5).setUpgradedValue(1.0F, 20);
         this.resilienceGain.setBaseValue(0.1F);

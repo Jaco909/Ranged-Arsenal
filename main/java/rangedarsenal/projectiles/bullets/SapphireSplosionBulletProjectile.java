@@ -116,15 +116,19 @@ public class SapphireSplosionBulletProjectile extends BulletProjectile {
                                 }
                             }
                         } else if (this.isClient()) {
-                            if (fromPacket) {
-                                this.doHitLogic(mob, object, x, y);
-                            } else if (this.getLevel().getClient().allowClientsPower()) {
-                                ClientClient client = this.getLevel().getClient().getClient();
-                                if (this.clientHandlesHit && mob == client.playerMob || this.handlingClient == client) {
-                                    this.getLevel().getClient().network.sendPacket(new PacketProjectileHit(this, x, y, mob));
-                                    mob.startHitCooldown();
+                            if (!this.getClient().hasStrictServerAuthority()) {
+                                ClientClient client = this.getClient().getClient();
+                                if ((!this.clientHandlesHit || mob != client.playerMob) && this.handlingClient != client) {
                                     this.doHitLogic(mob, object, x, y);
+                                } else if (!fromPacket) {
+                                    this.getClient().network.sendPacket(new PacketProjectileHit(this, x, y, mob));
+                                    this.startMobHitCooldown(mob);
+                                    this.doHitLogic(mob, object, x, y);
+                                } else {
+                                    addHit = false;
                                 }
+                            } else {
+                                this.doHitLogic(mob, object, x, y);
                             }
                         } else if (this.doesImpactDamage) {
                             this.applyDamage(mob, x, y);
@@ -190,13 +194,13 @@ public class SapphireSplosionBulletProjectile extends BulletProjectile {
     }
 
     public Trail getTrail() {
-        Trail trail = new Trail(this, this.getLevel(), new Color(116, 245, 253), 22.0F, 100, this.height);
+        Trail trail = new Trail(this, this.getLevel(), new Color(172, 118, 192), 22.0F, 100, this.height);
         trail.sprite = new GameSprite(GameResources.chains, 7, 0, 32);
         return trail;
     }
 
     protected Color getWallHitColor() {
-        return new Color(116, 245, 253);
+        return new Color(159, 13, 199);
     }
 
     public void refreshParticleLight() {

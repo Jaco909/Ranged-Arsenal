@@ -62,7 +62,7 @@ public class FlameBulletProjectile extends BulletProjectile {
                 if (canHit && (this.amountHit() <= this.piercing || this.returningToOwner)) {
                     boolean addHit = true;
                     String mobname = mob.idData.getStringID().toString().toLowerCase();
-                    if (mobname.contains("zombie") || mobname.contains("vampire") || mobname.contains("mummy")) {
+                    if (mobname.contains("zombie") || mobname.contains("vampire") || mobname.contains("mummy") || mobname.contains("dryad")) {
                         this.setDamage(ogdamage.modDamage(1.5f));
                     }
                     if (this.isServer()) {
@@ -82,15 +82,19 @@ public class FlameBulletProjectile extends BulletProjectile {
                             }
                         }
                     } else if (this.isClient()) {
-                        if (fromPacket) {
-                            this.doHitLogic(mob, object, x, y);
-                        } else if (this.getLevel().getClient().allowClientsPower()) {
-                            ClientClient client = this.getLevel().getClient().getClient();
-                            if (this.clientHandlesHit && mob == client.playerMob || this.handlingClient == client) {
-                                this.getLevel().getClient().network.sendPacket(new PacketProjectileHit(this, x, y, mob));
-                                mob.startHitCooldown();
+                        if (!this.getClient().hasStrictServerAuthority()) {
+                            ClientClient client = this.getClient().getClient();
+                            if ((!this.clientHandlesHit || mob != client.playerMob) && this.handlingClient != client) {
                                 this.doHitLogic(mob, object, x, y);
+                            } else if (!fromPacket) {
+                                this.getClient().network.sendPacket(new PacketProjectileHit(this, x, y, mob));
+                                this.startMobHitCooldown(mob);
+                                this.doHitLogic(mob, object, x, y);
+                            } else {
+                                addHit = false;
                             }
+                        } else {
+                            this.doHitLogic(mob, object, x, y);
                         }
                     } else if (this.doesImpactDamage) {
                         this.applyDamage(mob, x, y);

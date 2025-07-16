@@ -45,14 +45,14 @@ public class SeedGunMega extends GunProjectileToolItem {
     public SeedGunMega() {
         super(SEED_AMMO_TYPES, 1400);
         this.rarity = Rarity.RARE;
-        this.attackAnimTime.setBaseValue(124).setUpgradedValue(1.0F, 111).setUpgradedValue(2.0F, 98).setUpgradedValue(3.0F, 90).setUpgradedValue(4.0F, 82);
-        this.attackDamage.setBaseValue(41.0F);
+        this.attackAnimTime.setBaseValue(124).setUpgradedValue(1.0F, 111).setUpgradedValue(2.0F, 98).setUpgradedValue(3.0F, 90).setUpgradedValue(4.0F, 82).setUpgradedValue(5.0F, 79);
+        this.attackDamage.setBaseValue(31.0F).setUpgradedValue(1.0F, 32).setUpgradedValue(2.0F, 33).setUpgradedValue(3.0F, 34).setUpgradedValue(4.0F, 35).setUpgradedValue(5.0F, 36);
         this.attackXOffset = 10;
         this.attackYOffset = 10;
         this.moveDist = 50;
-        this.attackRange.setBaseValue(771);
-        this.velocity.setBaseValue(389);
-        this.resilienceGain.setBaseValue(0.5F);
+        this.attackRange.setBaseValue(400);
+        this.velocity.setBaseValue(321);
+        this.resilienceGain.setBaseValue(0.1F);
         this.knockback.setBaseValue(10);
     }
 

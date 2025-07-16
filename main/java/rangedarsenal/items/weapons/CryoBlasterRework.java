@@ -74,9 +74,9 @@ public class CryoBlasterRework extends GunProjectileToolItem implements ItemInte
         if (attackerMob.getLevel().entityManager.mobs.streamArea(attackerMob.getX(),attackerMob.getY(),2) != null) {
 
             attackerMob.getLevel().entityManager.mobs.streamArea(attackerMob.getX(),attackerMob.getY(), 2).forEach((m) -> {
-                if ((m != attackerMob) && !m.isSameTeam(attackerMob) && (m.isHostile) ) {
+                if ((m != attackerMob) && !m.isSameTeam(attackerMob) && (m.isHostile) && (!m.isBoss()) ) {
                     if (((m.x <= (attackerMob.x+(100+this.getUpgradeTier(item)*12))) && (m.x >= (attackerMob.x-(100+this.getUpgradeTier(item)*12)))) && ((m.y <= (attackerMob.y+(100+this.getUpgradeTier(item)*12))) && (m.y >= (attackerMob.y-(100+this.getUpgradeTier(item)*12))))) {
-                        ActiveBuff mb = new ActiveBuff("CryoFreezeDebuff", attackerMob, 3F + (this.getUpgradeTier(item)/2), attackerMob);
+                        ActiveBuff mb = new ActiveBuff("frozenenemy", attackerMob, 3F + (this.getUpgradeTier(item)/2), attackerMob);
                         m.buffManager.addBuff(mb, true);
                     }
                 }

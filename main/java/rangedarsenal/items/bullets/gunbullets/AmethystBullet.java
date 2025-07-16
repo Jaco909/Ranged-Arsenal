@@ -15,7 +15,7 @@ import rangedarsenal.projectiles.bullets.AmethystBulletProjectile;
 public class AmethystBullet extends BulletItem {
     public AmethystBullet() {
         super(1000);
-        this.damage = 9;
+        this.damage = 8;
         this.rarity = Rarity.RARE;
     }
 
@@ -29,7 +29,7 @@ public class AmethystBullet extends BulletItem {
 
     public ListGameTooltips getTooltips(InventoryItem item, PlayerMob perspective, GameBlackboard blackboard) {
         ListGameTooltips tooltips = super.getTooltips(item, perspective, blackboard);
-        tooltips.add(Localization.translate("bullettooltip", "crystalammotip"));
+        tooltips.add(Localization.translate("bullettooltip", "amethystammotip"));
         return tooltips;
     }
 }

@@ -118,8 +118,8 @@ public class LeverActionRifle extends GunProjectileToolItem implements ItemInter
                 projectile.dropItem = true;
                 projectile.getUniqueID(new GameRandom((long) seed));
                 attackerMob.addAndSendAttackerProjectile(projectile, this.moveDist);
-                projectile.piercing = 5;
-                projectile.setDamage(new GameDamage(this.getDamageType(item), this.attackDamage.getValue(this.getUpgradeTier(item)), 0, 1f));
+                projectile.piercing = projectile.piercing+2;
+                projectile.setDamage(new GameDamage(this.getDamageType(item), this.attackDamage.getValue(this.getUpgradeTier(item)), 0, 0.30f + (this.getUpgradeTier(item)*0.04f)));
                 attackerMob.getFirstPlayerOwner().getInv().removeItems(attackerMob.getFirstPlayerOwner().getInv().main.getFirstItem(level, attackerMob.getFirstPlayerOwner(), this.ammoItems(), "bulletammo"), 1, true, true, true, true, "bulletammo");
 
                 SoundManager.playSound(GameResources.sniperrifle, SoundEffect.effect(attackerMob).volume(1.1f).pitch(GameRandom.globalRandom.getFloatBetween(0.85f, 0.9f)));

@@ -1,5 +1,7 @@
 package rangedarsenal;
 
+import necesse.engine.modLoader.LoadedMod;
+import necesse.engine.modLoader.ModLoader;
 import necesse.engine.modLoader.annotations.ModEntry;
 import necesse.engine.network.gameNetworkData.GNDItemMap;
 import necesse.engine.registries.*;
@@ -35,6 +37,7 @@ import rangedarsenal.projectiles.shells.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import static necesse.inventory.item.ItemCategory.craftingManager;
@@ -105,6 +108,29 @@ public class rangedarsenal {
     }
 
     public void init() {
+        //Jabe Archipelago makes a shit ton of overrides that assume no other mods replace an item
+        //Run this so it doesn't crash if it loads after RA
+        boolean arch = false;
+        Iterator mods = ModLoader.getEnabledMods().iterator();
+        while (mods.hasNext()) {
+            LoadedMod mod = (LoadedMod) mods.next();
+            if (mod.id.equalsIgnoreCase("fredyjabe.jabearchipelago")) {
+                arch= true;
+            }
+        }
+        if (!arch) {
+            ItemRegistry.replaceItem("bouncingbullet", new NewBouncingBullet(), 0.1f, true, true);
+            ItemRegistry.replaceItem("crystalbullet", new SapphireBullet(), 0.2f, true);
+            ItemRegistry.replaceItem("sniperrifle", new SniperRework(),100f,true,true);
+            ItemRegistry.replaceItem("cryoblaster", new CryoBlasterRework(),200f,true,true);
+            ItemRegistry.replaceItem("shardcannon", new ShardCannonRework(),1500f,true,true);
+            ItemRegistry.replaceItem("sapphirerevolver", new SapphireRevolverRework(),1500f,true,true);
+            ItemRegistry.replaceItem("webbedgun", new WebGunRework(),300f,true,true);
+            ItemRegistry.replaceItem("frostbullet", new FrozenBullet(),0.1f,true,true);
+        }
+
+
+
         //ITEMS
         if (!ItemRegistry.itemExists("AmmoPouchPlus")) {
             ItemRegistry.registerItem("AmmoPouchPlus", new AmmoPouchPlus(), 100f, true);
@@ -125,13 +151,10 @@ public class rangedarsenal {
         ItemRegistry.registerItem("Standard_Bullet", new StandardBullet(), 0.1f, true);
         ItemRegistry.registerItem("Frozen_Bullet", new FrozenBullet(), 0.1f, true);
         ItemRegistry.registerItem("Leach_Bullet", new LeachBullet(), 0.3f, true);
-        ItemRegistry.replaceItem("frostbullet", new FrozenBullet(),0.1f,true,true);
-        ItemRegistry.replaceItem("bouncingbullet", new NewBouncingBullet(),0.1f,true,true);
         ItemRegistry.registerItem("Flame_Bullet", new FlameBullet(), 0.1f, true);
         ItemRegistry.registerItem("Blunt_Bullet", new BluntBullet(), 0.2f, true);
         ItemRegistry.registerItem("Lightning_Bullet", new LightningBullet(), 0.3f, true);
         ItemRegistry.registerItem("Splintering_Bullet", new SplinteringBullet(), 0.1f, true);
-        ItemRegistry.replaceItem("crystalbullet", new SapphireBullet(), 0.2f, true);
         ItemRegistry.registerItem("Ruby_Bullet", new RubyBullet(), 0.2f, true);
         ItemRegistry.registerItem("Amethyst_Bullet", new AmethystBullet(), 0.2f, true);
 
@@ -180,17 +203,12 @@ public class rangedarsenal {
         ItemRegistry.registerItem("Normal_Revolver", new NormalRevolver(), 300f, true,true);
         ItemRegistry.registerItem("Flamethrower", new Flamethrower(), 300f, true,true);
         ItemRegistry.registerItem("Grenade_Launcher", new GrenadeLauncher(), 400f, true,true);
-        ItemRegistry.replaceItem("sniperrifle", new SniperRework(),100f,true,true);
-        ItemRegistry.replaceItem("cryoblaster", new CryoBlasterRework(),200f,true,true);
         ItemRegistry.registerItem("AWP", new AWP(),300f,true,true);
         ItemRegistry.registerItem("SeedGun", new SeedGun(),60f,true,true);
         ItemRegistry.registerItem("SeedGunShotgun", new SeedGunShotgun(),100f,true,true);
         ItemRegistry.registerItem("SeedGunMega", new SeedGunMega(),300f,true,true);
         ItemRegistry.registerItem("ProduceCannon", new ProduceCannon(),200f,true,true);
         ItemRegistry.registerItem("ProduceCannonMega", new ProduceCannonMega(),300f,true,true);
-        ItemRegistry.replaceItem("shardcannon", new ShardCannonRework(),1500f,true,true);
-        ItemRegistry.replaceItem("sapphirerevolver", new SapphireRevolverRework(),1500f,true,true);
-        ItemRegistry.replaceItem("webbedgun", new WebGunRework(),300f,true,true);
 
 
         //PROJECTILES
@@ -293,6 +311,11 @@ public class rangedarsenal {
             FLAME_AMMO_TYPES.add("flamerfuel");
             FLAME_AMMO_TYPES.add("pinkflamerfuel");
             FLAME_AMMO_TYPES.add("stickyflamerfuel");
+        }
+        if (ItemRegistry.itemExists("pinkflamerfuel")) {
+            FLAME_AMMO_TYPES.add("archipelago_fuelcanister");
+            FLAME_AMMO_TYPES.add("archipelago_nitrogencanister");
+            FLAME_AMMO_TYPES.add("archipelago_ectoplasmcanister");
         }
         PestWardenHead.uniqueDrops.addPossibleLoot(new LootList().add("ProduceCannonMega"));
         CrateLootTable.basicCrate.items.add(new ChanceLootItem(0.20f, "simplebullet", GameRandom.globalRandom.getIntBetween(5, 8)));

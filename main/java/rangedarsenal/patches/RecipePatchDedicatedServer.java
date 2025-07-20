@@ -51,19 +51,22 @@ public class RecipePatchDedicatedServer {
             if (recipe.resultStringID.equalsIgnoreCase("livingshotty") && recipe.ingredients.length == 1) {
                 recipes.remove();
             }
-            if (recipe.resultStringID.toLowerCase().contains("bullet") && !recipe.resultStringID.equalsIgnoreCase("Bullet_Casing")) {
-                //moves mod bullets
-                recipe.setCraftingCategory("bullets");
-            }
             if (recipe.resultStringID.equalsIgnoreCase("cannonball")) {
                 recipe.setCraftingCategory("shells");
             }
-            if (recipe.resultStringID.equalsIgnoreCase("handgun") || recipe.resultStringID.equalsIgnoreCase("machinegun") || recipe.resultStringID.equalsIgnoreCase("sniperrifle") || recipe.resultStringID.equalsIgnoreCase("shotgun")) {
-                //moves mod recipes
+            //Mod items
+            Class baseItem = recipe.resultItem.item.getClass().getSuperclass();
+            if (baseItem.getName().equalsIgnoreCase("necesse.inventory.item.toolItem.projectileToolItem.gunProjectileToolItem.GunProjectileToolItem")) {
                 if (recipe.getCraftingCategory() == null) {
                     recipe.setCraftingCategory("ballistic");
-                    recipe.showAfter("Junk_Pistol");
                 }
+            } else if (baseItem.getName().equalsIgnoreCase("necesse.inventory.item.bulletItem.BulletItem") && !recipe.resultStringID.equalsIgnoreCase("Bullet_Casing") && !recipe.resultItem.item.getStringID().equalsIgnoreCase("flamerfuel")) {
+                if (recipe.getCraftingCategory() == null) {
+                    recipe.setCraftingCategory("bullets");
+                }
+            }
+            if (recipe.resultStringID.contains("flamethrower") || recipe.resultStringID.equalsIgnoreCase("flamer")) {
+                recipe.setCraftingCategory("flame");
             }
         }
     }
